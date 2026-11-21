@@ -33,9 +33,21 @@ All in `services/api/app/data/`:
   `0.714 × 219 = 156`. The Lidl 20.11 receipt (from `Lidl Plus.pdf`) has 7 discounts and 3 weighed
   items. A receipt total is the sum of `line_total_rp − discount_rp`: without the discounts, Lidl
   20.11 adds up to 85.88 instead of 84.44.
+- Rules for spending numbers:
+  - `transfer` rows are the monthly credit card payments from `privat` to `kk`. They are not
+    spending; counting them counts each card purchase twice.
+  - `income` on `privat` is salary. `income` on `kk` is a merchant refund and reduces the spending
+    of that merchant in its month.
+  - The 13 EUR rows are not converted in the export (exchange rate 1.0), so `amount_rp` equals
+    the EUR amount. Use it as CHF; this is a known limit of the data.
 - Matching receipt to transaction is by date plus `total_rp == amount_rp`, with the store name
   contained in `counterparty`. Coop 19.11 → K-0241, Migros 14.11 → P-0233, Lidl 20.11 → K-0242 and
   Lidl 21.11 → K-0247 match. Denner 20.11 has no transaction.
+- A scanned receipt (`source: photo`) is matched by `total_rp == amount_rp` plus day and month;
+  the year is ignored. The bank data is from 2025, but a receipt photographed now shows 2026: the
+  LOLA Mattenhof photo (21.11.2026, CHF 9.10) belongs to the 2025-11-21 debit card payment of
+  CHF 9.10 on `privat`. `Lidl Plus.pdf` shows 20.11.2026 for the same reason, while its JSON
+  uses 2025.
 - Five receipts are too few for trends, so the backend generates more fake receipts (task BE-2).
 
 ## API contract (frontend and backend build against this)
