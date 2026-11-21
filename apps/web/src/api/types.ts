@@ -58,11 +58,11 @@ export type ReceiptItem = {
   category: ItemCategory
   /** Pieces, or kilograms (decimal) when unit is "kg". */
   quantity: number
-  /** Only for weighed items. */
-  unit?: 'kg'
+  /** "kg" for weighed items. */
+  unit?: 'pcs' | 'kg'
   unit_price_rp: number
   line_total_rp: number
-  /** Discount on this line, subtracted from line_total_rp. */
+  /** Discount on this line (0 when none), subtracted from line_total_rp. */
   discount_rp?: number
 }
 

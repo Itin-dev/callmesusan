@@ -4,18 +4,25 @@ import axe from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import * as transactions from '@/api/transactions'
 import i18n from '@/i18n'
-import { renderApp } from '@/test-utils'
+import { TRANSACTION_FIXTURES } from '@/api/transactions.fixtures'
+import { mockApi, renderApp } from '@/test-utils'
 
 const NBSP = ' '
 
 beforeEach(async () => {
   await i18n.changeLanguage('en')
+  mockApi()
 })
 
-afterEach(() => vi.restoreAllMocks())
+afterEach(() => {
+  vi.restoreAllMocks()
+  vi.unstubAllGlobals()
+})
 
 describe('TransactionPage', () => {
   it('shows the amount, raw bank text and the Psst explanation', async () => {
+    const explanation = 'Groceries at Coop in Luzern station, paid with your credit card.'
+    mockApi({ transactions: { 'K-0241': { ...TRANSACTION_FIXTURES['K-0241'], explanation } } })
     renderApp('/transactions/K-0241')
     expect(screen.getByRole('heading', { level: 1, name: 'Transaction' })).toBeInTheDocument()
     expect(await screen.findByText(`CHF${NBSP}119.70–`)).toBeInTheDocument()
@@ -34,6 +41,7 @@ describe('TransactionPage', () => {
     expect(within(rows[1]).getByText('23.90')).toBeInTheDocument()
     expect(within(receipt).getByText('Total')).toBeInTheDocument()
     expect(within(receipt).getByText(`CHF${NBSP}119.70`)).toBeInTheDocument()
+    expect(within(receipt).queryByText('Discount')).not.toBeInTheDocument()
   })
 
   it('shows weighed items and discounts', async () => {
@@ -62,6 +70,12 @@ describe('TransactionPage', () => {
       'href',
       `/psst?q=${encodeURIComponent('How can I spend less on chocolate?')}`,
     )
+  })
+
+  it('hides the explanation when the backend has none', async () => {
+    renderApp('/transactions/K-0241')
+    await screen.findByRole('region', { name: 'Receipt' })
+    expect(screen.queryByText(/Psst explains/)).not.toBeInTheDocument()
   })
 
   it('works without a receipt', async () => {
