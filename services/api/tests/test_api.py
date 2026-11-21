@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 from app.config import Settings, get_settings
 from app.llm import get_llm
 from app.main import app
+from app.spending import current_summary
 
 
 class FakeLLM:
@@ -63,6 +64,12 @@ def test_chat_system_prompt_holds_the_psst_persona(client):
     system = fake.calls[0][0]["content"]
     assert "Psst" in system
     assert "never move" in system
+
+
+def test_chat_system_prompt_holds_the_spending_summary(client):
+    fake = use(FakeLLM())
+    client.post("/api/chat", json=user("Where can I save?"))
+    assert current_summary() in fake.calls[0][0]["content"]
 
 
 def test_chat_rejects_empty_message(client):

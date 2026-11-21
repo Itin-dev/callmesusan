@@ -34,6 +34,10 @@ class ChatReply(BaseModel):
     reply: str
 
 
-def build_messages(conversation: list[Message], *, language: str, persona: str) -> list[Message]:
-    system = "\n\n".join([persona, f"Write the reply in the language with ISO code '{language}'."])
+def build_messages(
+    conversation: list[Message], *, language: str, persona: str, context: str = ""
+) -> list[Message]:
+    """Put the persona, the optional data context and the language rule into one system message."""
+    parts = [persona, context, f"Write the reply in the language with ISO code '{language}'."]
+    system = "\n\n".join(part for part in parts if part)
     return [{"role": "system", "content": system}, *conversation]
