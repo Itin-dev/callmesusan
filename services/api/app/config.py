@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     # "openrouter/auto" lets OpenRouter pick a model; set a specific one in .env.
     openrouter_model: str = "openrouter/auto"
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
+    # reads receipt photos; it must accept images and JSON-schema answers
+    openrouter_vision_model: str = "google/gemini-2.5-flash"
     # the Psst persona (docs/mvp.md, BE-4); .env can override it with SYSTEM_PROMPT
     system_prompt: str = (
         "You are Psst, the money assistant inside the PostFinance app. You only read the"
