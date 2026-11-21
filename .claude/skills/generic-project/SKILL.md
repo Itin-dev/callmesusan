@@ -9,7 +9,7 @@ description: Explains repository layout, separation of responsibilities, librari
 
 - Prefer `services/` + `apps/` for microservices
 - Use `src/` only for a single-process project (not both long-term)
-- Shared code → `packages/`
+- Shared code → a `packages/<name>/` library, created only when two parts really need it
 - Integration tests → `tests/`
 
 ## Rules

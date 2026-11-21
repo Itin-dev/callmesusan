@@ -24,9 +24,7 @@ README.md
 SECURITY.md
 apps
 design
-docker
 docs
-packages
 scripts
 services
 skills-lock.json

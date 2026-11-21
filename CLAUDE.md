@@ -78,14 +78,14 @@ See [docs/agent-os.md](docs/agent-os.md) for sources and registries.
 ## Project layout
 
 ```
-services/         # microservices (preferred)
-apps/             # frontends / CLIs / BFF
-packages/         # shared libraries
+services/api/     # FastAPI backend (Psst API)
+apps/web/         # React frontend (mobile web app)
+api/              # Vercel serverless entrypoint for the FastAPI app
+design/           # Figma screen exports
 tests/            # integration / repo-level tests
 scripts/          # validate, bootstrap, secrets (invoked by hooks/CI)
 docs/             # modular docs — start at docs/INDEX.md
 .claude/skills/   # Claude Code skills
-docker/           # compose example (infra placeholders)
 ```
 
 ## Mandatory workflow
@@ -118,7 +118,7 @@ needed). Stack: FastAPI (`services/api`) + React (`apps/web`) — see `docs/stac
 ### 3. Modular changes
 
 - Prefer `services/<name>/` with a single responsibility per service
-- Shared code → `packages/`
+- Shared code → a `packages/<name>/` library, created only when two parts really need it
 - Thin entrypoints; no mixed concerns
 
 ### 4. Documentation
