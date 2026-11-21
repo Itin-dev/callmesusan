@@ -28,6 +28,11 @@ All in `services/api/app/data/`:
   `income` or `transfer`, amounts as integer Rappen (`amount_rp`).
 - `receipts/*.json` holds 5 supermarket receipts from November 2025. Each item has `category`,
   `quantity`, `unit_price_rp`, `line_total_rp` and `vat_rate_pct`.
+- Two item fields are optional. `discount_rp` is a discount that is subtracted from
+  `line_total_rp`. `unit: "kg"` marks a weighed item with a decimal `quantity`, for example
+  `0.714 × 219 = 156`. The Lidl 20.11 receipt (from `Lidl Plus.pdf`) has 7 discounts and 3 weighed
+  items. A receipt total is the sum of `line_total_rp − discount_rp`: without the discounts, Lidl
+  20.11 adds up to 85.88 instead of 84.44.
 - Matching receipt to transaction is by date plus `total_rp == amount_rp`, with the store name
   contained in `counterparty`. Coop 19.11 → K-0241, Migros 14.11 → P-0233, Lidl 20.11 → K-0242 and
   Lidl 21.11 → K-0247 match. Denner 20.11 has no transaction.
@@ -77,9 +82,14 @@ The same fields plus `receipt` (or `null`). 404 if the id is unknown.
     "total_rp": 11970,
     "items": [
       { "name": "Feldschlösschen Original 10x50cl", "category": "alcohol",
-        "quantity": 1, "unit_price_rp": 1295, "line_total_rp": 1295 }
+        "quantity": 1, "unit_price_rp": 1295, "line_total_rp": 1295 },
+      // item shape from the Lidl 20.11 receipt, to show the optional fields
+      { "name": "Apfel rot lose", "category": "fruit",
+        "quantity": 0.714, "unit": "kg",          // optional, weighed items only
+        "unit_price_rp": 219, "line_total_rp": 156,
+        "discount_rp": 17 }                       // optional, subtract from line_total_rp
     ],
-    "category_totals": [ { "category": "alcohol", "total_rp": 11165 } ]
+    "category_totals": [ { "category": "alcohol", "total_rp": 11165 } ]  // net: line_total_rp − discount_rp
   }
 }
 ```
