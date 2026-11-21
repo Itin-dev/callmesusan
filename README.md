@@ -1,7 +1,10 @@
-# aihackaton
+# Call me Susan
 
-Team repository for the [Powercoders Hackathon "AI for Access"](https://hackathon.powercoders.org/en/)
+Team **Call me Susan** — repository for the [Powercoders Hackathon "AI for Access"](https://hackathon.powercoders.org/en/)
 (Bern, 20–21 November 2026). Code freeze: Saturday 18:00.
+
+Challenge: **Beyond the List** (PostFinance AG) — what if your bank could do more than show
+transactions and actually help you make smarter decisions? See [PLAN.md](PLAN.md).
 
 ## Team
 
@@ -22,7 +25,7 @@ Figma: [Core project info](https://www.figma.com/board/u8YyBh0deFEbRGSNhzfKJB/Co
 ## Quick start
 
 ```bash
-git clone <repo-url> && cd aihackaton
+git clone <repo-url> && cd callmesusan
 bash scripts/bootstrap.sh   # once: git hooks, pre-commit, shellcheck, then runs the doctor
 bash scripts/doctor.sh      # any time: checks your machine matches the team setup
 ```

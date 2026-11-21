@@ -1,6 +1,6 @@
 # Tech stack
 
-Decided in [#19](https://github.com/Itin-dev/aihackaton_test/issues/19).
+Inherited from the team template.
 
 | Part | Path | Tech |
 | --- | --- | --- |
@@ -36,15 +36,12 @@ Vercel: frontend as static files, FastAPI as a serverless function — see [depl
 ```jsonc
 // request
 { "messages": [{ "role": "user", "content": "..." }],  // user|assistant, last one from the user
-  "language": "de",        // ISO code, default "en"
-  "topic": "housing" }     // optional home tile id
+  "language": "de" }       // en|de|uk|ru|ar, default "en"
 // response
-{ "reply": "...", "mode": 2,                // 1 info, 2 referral, 3 letter
-  "organization_ids": ["mieterverband-luzern"], "source_url": "https://..." }
+{ "reply": "..." }
 ```
 
-The model only sees knowledge-base entries for the topic (plus emergency numbers); ids and
-URLs that are not in `app/data/knowledge.json` are dropped from the response. Logic: `app/chat.py`.
+The system prompt comes from `SYSTEM_PROMPT` in `.env` (default in `app/config.py`). Logic: `app/chat.py`.
 
 ## Frontend UI
 

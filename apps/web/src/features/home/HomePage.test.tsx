@@ -22,6 +22,11 @@ beforeEach(async () => {
 })
 
 describe('HomePage', () => {
+  it('shows the product title', () => {
+    renderAt()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Beyond the List')
+  })
+
   it('offers the languages by their native names', () => {
     renderAt()
     const picker = screen.getByRole('group', { name: /language/i })
@@ -30,31 +35,12 @@ describe('HomePage', () => {
     }
   })
 
-  it('shows the nine topic tiles as links', () => {
-    renderAt()
-    const topics = screen.getByRole('navigation', { name: /topics/i })
-    expect(within(topics).getAllByRole('link')).toHaveLength(9)
-    expect(within(topics).getByRole('link', { name: /urgent help/i })).toBeInTheDocument()
-  })
-
   it('translates the screen when a language is picked', async () => {
     renderAt()
     await userEvent.click(screen.getByRole('button', { name: 'Deutsch' }))
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Hilfe in Luzern finden')
-    expect(screen.getByRole('link', { name: /wohnen/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Mehr als eine Liste')
     expect(screen.getByRole('button', { name: 'Deutsch' })).toHaveAttribute('aria-pressed', 'true')
-  })
-
-  it('offers Russian', async () => {
-    renderAt()
-    await userEvent.click(screen.getByRole('button', { name: 'Русский' }))
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Найдите помощь в Люцерне')
-    expect(document.documentElement).toHaveAttribute('lang', 'ru')
-  })
-
-  it('describes each topic in a short line', () => {
-    renderAt()
-    expect(screen.getByRole('link', { name: /housing/i })).toHaveTextContent(/find a flat/i)
+    expect(document.documentElement).toHaveAttribute('lang', 'de')
   })
 
   it('switches the page to right-to-left for Arabic', async () => {
@@ -62,14 +48,6 @@ describe('HomePage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'العربية' }))
     expect(document.documentElement).toHaveAttribute('dir', 'rtl')
     expect(document.documentElement).toHaveAttribute('lang', 'ar')
-  })
-
-  it('opens the topic screen in the chosen language', async () => {
-    renderAt()
-    await userEvent.click(screen.getByRole('button', { name: 'Українська' }))
-    await userEvent.click(screen.getByRole('link', { name: /житло/i }))
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Житло')
-    expect(screen.getByRole('link', { name: /назад/i })).toHaveAttribute('href', '/')
   })
 
   it('has no detectable accessibility violations', async () => {

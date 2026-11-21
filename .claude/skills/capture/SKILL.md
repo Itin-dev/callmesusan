@@ -29,7 +29,7 @@ is where work is tracked. Content flows **Figma → GitHub issues**, never the o
 
 | Role | File | Contents | Becomes on GitHub |
 |---|---|---|---|
-| Project guide | [Core project info](https://www.figma.com/board/u8YyBh0deFEbRGSNhzfKJB/Core-project-info) (FigJam) | Project description, hackathon and partner KUNIGO, key problems and themes, the two personas (Amina and Carlos), product description with the three agent modes, final feature list | `idea` issues and feature tickets; personas referenced as "Target user" |
+| Project guide | [Core project info](https://www.figma.com/board/u8YyBh0deFEbRGSNhzfKJB/Core-project-info) (FigJam) | Project description, challenge partner (PostFinance), key problems, personas, product description, feature list | `idea` issues and feature tickets; personas referenced as "Target user" |
 | Pitch deck | [Presentation](https://www.figma.com/slides/cb3hUbajEGqza7XUGuQfCj) (Figma Slides) | Project presentation (structure to be defined) | `area:pitch` tickets |
 | Final app design | [Design-Project](https://www.figma.com/design/oOu7PPG4eIaWZPFVOELCCI/Design-Project) (Figma Design) | Screens and components — source of truth for the UI | `area:fe` / `area:design` tickets, one per screen |
 

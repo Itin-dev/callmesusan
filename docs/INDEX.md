@@ -21,12 +21,6 @@ Entrypoint for humans and agents. Prefer linking here instead of duplicating gui
 | [stack.md](stack.md) | FastAPI + React: run, conventions, tests |
 | [deploy.md](deploy.md) | Vercel deploy, CI/CD pipeline, one-time setup |
 
-## Pitch
-
-| Doc | Purpose |
-|-----|---------|
-| [pitch-deck.md](pitch-deck.md) | Pitch deck structure, stage timing, visual direction |
-
 ## Root entrypoints
 
 | File | Audience |

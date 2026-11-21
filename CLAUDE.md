@@ -1,6 +1,6 @@
-# aihackaton — Agent Entrypoint
+# Call me Susan — Agent Entrypoint
 
-Claude Code entrypoint for the team's Powercoders "AI for Access" hackathon repo (Bern, 20–21 Nov 2026, ~10 hours of hack time). Project skills live in `.claude/skills/` and load automatically.
+Claude Code entrypoint for team Call me Susan's Powercoders "AI for Access" hackathon repo (Bern, 20–21 Nov 2026, ~10 hours of hack time). Challenge: **Beyond the List** (PostFinance) — see `PLAN.md`. Project skills live in `.claude/skills/` and load automatically.
 
 ## What this project is
 

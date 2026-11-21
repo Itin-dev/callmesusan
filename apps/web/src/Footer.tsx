@@ -6,7 +6,7 @@ type Props = {
   repo?: string
 }
 
-export default function Footer({ commit, env, repo = 'Itin-dev/aihackaton_test' }: Props) {
+export default function Footer({ commit, env, repo = 'Itin-dev/callmesusan' }: Props) {
   const label = env && env !== 'production' ? ` · ${env}` : ''
   return (
     <footer className="mt-auto pt-6 text-center text-xs text-muted-foreground">
