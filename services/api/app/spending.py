@@ -21,6 +21,8 @@ MONTHS_PER_YEAR = 12
 WEEKS_SHOWN = 6
 # demo "usual month" per item category: receipts exist only for November, so no average exists
 USUAL_FILE = DATA_DIR / "usual_categories.json"
+# account names as the user knows them, for the data list and the statement
+ACCOUNT_NAMES = {"privat": "Privatkonto", "kk": "credit card"}
 # own names, because strftime("%A") follows the server locale
 WEEKDAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
@@ -114,8 +116,56 @@ def week_lines(transactions: list[dict], today: date) -> list[str]:
     return lines
 
 
+def _seen_data(transactions: list[dict], receipts: list[dict], today: date) -> list[str]:
+    """The data list behind "What can you see?" (pitch slide "Transparent")."""
+    first = min((tx["date"] for tx in transactions), default=today.isoformat())
+    shops = ", ".join(sorted({receipt["store"] for receipt in receipts}))
+    return [
+        "What Psst can see:",
+        f"- {len(transactions)} transactions of the Privatkonto and the credit card account"
+        f" (KK-Konto) from {first} to {today.isoformat()}.",
+        f"- {len(receipts)} digital receipts from partner shops ({shops}) with their item lists.",
+        "- Psst cannot see other banks, cash payments, or receipts of other shops unless the user"
+        " scans them.",
+        "- Psst only reads: it cannot pay, transfer money or sign anything.",
+    ]
+
+
+def _statement_lines(transactions: list[dict], today: date) -> list[str]:
+    """Every row of the current month up to today, oldest first, with its sign."""
+    month = today.isoformat()[:7]
+    lines = [f"Transactions of {month} up to today (for a statement):"]
+    for tx in sorted(transactions, key=lambda tx: tx["date"]):
+        if not tx["date"].startswith(month):
+            continue
+        account = ACCOUNT_NAMES.get(tx["account"], tx["account"])
+        kind = "refund" if _is_refund(tx) else tx["type"]
+        sign = "-" if tx["type"] == "expense" else "+" if tx["type"] == "income" else ""
+        lines.append(
+            f"{tx['date']} {account} {kind} {tx['counterparty']} {sign}{_chf(tx['amount_rp'])}"
+        )
+    return lines
+
+
+def _receipt_category_lines(receipts: list[dict], usual: dict[str, int] | None) -> list[str]:
+    lines = []
+    for month, entries in receipt_categories(receipts).items():
+        parts = []
+        for category, total in entries:
+            usual_rp = (usual or {}).get(category)
+            compared = (
+                f" (usual {_chf(usual_rp)}, {round(total / usual_rp, 2)}x)" if usual_rp else ""
+            )
+            parts.append(f"{category} {_chf(total)}{compared}")
+        lines.append(f"{month}: {', '.join(parts)}")
+    return lines
+
+
 def spending_summary(
-    transactions: list[dict], receipts: list[dict], today: date | None = None
+    transactions: list[dict],
+    receipts: list[dict],
+    today: date | None = None,
+    usual: dict[str, int] | None = None,
 ) -> str:
     """Text context for the chat. With today, rows and receipts after that day stay hidden."""
     lines = []
@@ -128,6 +178,7 @@ def spending_summary(
             f"Today is {WEEKDAYS[today.weekday()]}, {cutoff}. The data covers {first} to {cutoff};"
             f" there is no data before {first}."
         )
+        lines += _seen_data(transactions, receipts, today)
     lines += [
         "Spending data of the user in CHF. Transfers between the user's own accounts are not"
         " spending; refunds are already subtracted.",
@@ -144,10 +195,14 @@ def spending_summary(
     if today is not None:
         lines.append(f"Last {WEEKS_SHOWN} weeks (Monday to Sunday), spending per day:")
         lines.extend(week_lines(transactions, today))
-    categories = receipt_categories(receipts)
-    if categories:
-        lines.append("Shop receipt items by category (only partner shops send receipts):")
-        lines.extend(f"{month}: {_amounts(entries)}" for month, entries in categories.items())
+        lines.extend(_statement_lines(transactions, today))
+    category_lines = _receipt_category_lines(receipts, usual)
+    if category_lines:
+        lines.append(
+            "Shop receipt items by category, compared with the user's usual month"
+            " (only partner shops send receipts):"
+        )
+        lines.extend(category_lines)
     return "\n".join(lines)
 
 
@@ -241,4 +296,4 @@ def current_summary(today: date | None = None) -> str:
     receipts = [
         json.loads(p.read_text(encoding="utf-8")) for p in sorted(RECEIPTS_DIR.glob("*.json"))
     ]
-    return spending_summary(transactions, receipts, today)
+    return spending_summary(transactions, receipts, today, _usual_month())
