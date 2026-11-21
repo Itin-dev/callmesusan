@@ -9,11 +9,12 @@ from app.chat import ChatReply, ChatRequest, build_messages
 from app.config import Settings, get_settings
 from app.llm import LLM, get_llm
 from app.scan import MAX_UPLOAD_BYTES, ModelAnswerError, ScanResult, UploadError, scan_receipt
-from app.spending import current_summary
+from app.spending import SpendingSummary, current_summary, data_years, year_summary
 from app.transactions import (
     Account,
     TransactionDetail,
     TransactionOut,
+    all_transactions,
     get_transaction,
     list_transactions,
 )
@@ -42,6 +43,17 @@ def transaction(transaction_id: str) -> TransactionDetail:
     if detail is None:
         raise HTTPException(404, "unknown transaction id")
     return detail
+
+
+@app.get("/api/spending/summary")
+def spending_summary(year: int | None = None) -> SpendingSummary:
+    transactions = all_transactions()
+    years = data_years(transactions)
+    # without a year the Analytics screen shows the latest year in the data
+    chosen = year if year is not None else years[-1]
+    if chosen not in years:
+        raise HTTPException(404, f"no transactions in {chosen}")
+    return SpendingSummary.model_validate(year_summary(transactions, chosen))
 
 
 @app.post("/api/chat")
