@@ -3,11 +3,5 @@
     "title": "Mehr als eine Liste",
     "intro": "Mehr als eine Liste von Buchungen: Verstehe dein Geld und entscheide klüger.",
     "language": "Sprache"
-  },
-  "theme": {
-    "label": "Farbschema",
-    "light": "Hell",
-    "dark": "Dunkel",
-    "system": "System"
   }
 }

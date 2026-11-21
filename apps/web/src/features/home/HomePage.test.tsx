@@ -4,15 +4,12 @@ import axe from 'axe-core'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from '@/App'
-import { ThemeProvider } from '@/features/theme/ThemeProvider'
 import i18n from '@/i18n'
 
 function renderAt(path = '/') {
   return render(
     <MemoryRouter initialEntries={[path]}>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <App />
     </MemoryRouter>,
   )
 }

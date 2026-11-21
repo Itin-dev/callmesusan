@@ -3,11 +3,5 @@
     "title": "Beyond the List",
     "intro": "More than a list of transactions: understand your money and make smarter decisions.",
     "language": "Language"
-  },
-  "theme": {
-    "label": "Color theme",
-    "light": "Light",
-    "dark": "Dark",
-    "system": "System"
   }
 }

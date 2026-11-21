@@ -2,11 +2,10 @@ import { Wallet } from 'lucide-react'
 import { Link, Route, Routes } from 'react-router'
 import ChatDemo from '@/features/chat/ChatDemo'
 import HomePage from '@/features/home/HomePage'
-import { ThemeToggle } from '@/features/theme/ThemeToggle'
 import Footer from '@/Footer'
 import '@/i18n'
 
-/** App shell (header, routes, footer); providers (router, theme) are set up in main.tsx. */
+/** App shell (header, routes, footer); the router provider are set up in main.tsx. */
 export default function App() {
   return (
     <div className="flex min-h-dvh flex-col">
@@ -18,7 +17,6 @@ export default function App() {
             </span>
             <span lang="en">Beyond the List</span>
           </Link>
-          <ThemeToggle />
         </div>
       </header>
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6 sm:py-12">
