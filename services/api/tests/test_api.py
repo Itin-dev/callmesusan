@@ -114,3 +114,30 @@ def test_chat_without_api_key_is_503(client):
     response = client.post("/api/chat", json=user("Hello"))
     assert response.status_code == 503
     assert "OPENROUTER_API_KEY" in response.json()["detail"]
+
+
+def test_spending_summary_matches_the_contract_values(client):
+    assert client.get("/api/spending/summary", params={"year": 2025}).json() == {
+        "period_start": "2025-01-01",
+        "period_end": "2025-12-31",
+        "income": {"total_rp": 9703200, "count": 13, "monthly_average_rp": 808600},
+        "expenses": {"total_rp": 8897751, "count": 461, "monthly_average_rp": 741479},
+    }
+
+
+def test_spending_summary_without_year_uses_the_latest_year(client):
+    assert client.get("/api/spending/summary").json()["period_start"] == "2025-01-01"
+
+
+def test_spending_summary_for_a_year_without_data_is_404(client):
+    assert client.get("/api/spending/summary", params={"year": 2024}).status_code == 404
+
+
+@pytest.mark.parametrize("year", ["abc", "2025.5", "2025-01", ""])
+def test_spending_summary_rejects_a_year_that_is_no_number(client, year):
+    assert client.get("/api/spending/summary", params={"year": year}).status_code == 422
+
+
+def test_spending_summary_trims_spaces_around_the_year(client):
+    response = client.get("/api/spending/summary", params={"year": " 2025 "})
+    assert response.json()["period_start"] == "2025-01-01"

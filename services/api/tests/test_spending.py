@@ -4,6 +4,7 @@ from app.spending import (
     receipt_categories,
     spending_summary,
     top_merchants,
+    year_summary,
 )
 
 
@@ -68,3 +69,42 @@ def test_current_summary_uses_the_demo_data():
     assert text.count("\n2025-") >= 12
     assert "2025-11: income 7464.00" in text
     assert "2025-11: alcohol 139.50" in text
+
+
+def test_year_summary_leaves_out_transfers():
+    rows = [tx("2025-03-02", "expense", 5000, "Coop"),
+            tx("2025-03-23", "transfer", 5000, "KK-Konto", account="privat")]  # fmt: skip
+    assert year_summary(rows, 2025)["expenses"] == {
+        "total_rp": 5000, "count": 1, "monthly_average_rp": 416,
+    }  # fmt: skip
+
+
+def test_year_summary_subtracts_refunds_but_does_not_count_them():
+    rows = [tx("2025-06-10", "expense", 15915, "Abercrombie & Fitch"),
+            tx("2025-06-12", "income", 8365, "Abercrombie & Fitch")]  # fmt: skip
+    summary = year_summary(rows, 2025)
+    assert summary["expenses"]["total_rp"] == 7550
+    assert summary["expenses"]["count"] == 1
+    assert summary["income"] == {"total_rp": 0, "count": 0, "monthly_average_rp": 0}
+
+
+def test_year_summary_counts_salary_on_privat_as_income():
+    rows = [tx("2025-01-25", "income", 746400, "Employer AG", account="privat")]
+    assert year_summary(rows, 2025)["income"] == {
+        "total_rp": 746400, "count": 1, "monthly_average_rp": 62200,
+    }  # fmt: skip
+
+
+def test_year_summary_rounds_the_monthly_average_down():
+    rows = [tx("2025-01-05", "expense", 23, "Kiosk")]
+    assert year_summary(rows, 2025)["expenses"]["monthly_average_rp"] == 1
+
+
+def test_year_summary_only_uses_rows_of_that_year():
+    rows = [tx("2024-12-31", "expense", 999, "Coop"), tx("2025-01-01", "expense", 100, "Coop")]
+    assert year_summary(rows, 2025)["expenses"]["total_rp"] == 100
+
+
+def test_year_summary_names_the_whole_year_as_period():
+    summary = year_summary([tx("2025-05-05", "expense", 100, "Coop")], 2025)
+    assert (summary["period_start"], summary["period_end"]) == ("2025-01-01", "2025-12-31")
