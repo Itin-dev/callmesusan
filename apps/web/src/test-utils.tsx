@@ -4,12 +4,13 @@ import { MemoryRouter } from 'react-router'
 import { vi } from 'vitest'
 import { ACCOUNTS_FIXTURE } from '@/api/accounts.fixtures'
 import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
-import { SUMMARY_FIXTURE } from '@/api/spending.fixtures'
+import { CATEGORIES_FIXTURE, SUMMARY_FIXTURE } from '@/api/spending.fixtures'
 import { TRANSACTION_FIXTURES, TRANSACTION_LIST_FIXTURES } from '@/api/transactions.fixtures'
 import type {
   AccountsOverview,
   ChatRequest,
   ScanResult,
+  SpendingByCategory,
   SpendingSummary,
   Transaction,
   TransactionAccount,
@@ -41,6 +42,7 @@ const echoChat = ({ messages }: ChatRequest) =>
  * - POST /api/chat answers with `chat(request)`: a reply string, or a Response (e.g. an error).
  * - POST /api/receipts/scan answers `scan` (default: the LOLA photo), or a Response (e.g. 413).
  * - GET /api/spending/summary[?year=] answers `summary` (default: 2025), or a Response (e.g. 404).
+ * - GET /api/spending/categories?month= answers `categories` for that month, or a Response (e.g. 422).
  */
 export function mockApi({
   accounts = ACCOUNTS_FIXTURE,
@@ -49,6 +51,7 @@ export function mockApi({
   chat = echoChat,
   scan = LOLA_SCAN_FIXTURE,
   summary = SUMMARY_FIXTURE,
+  categories = CATEGORIES_FIXTURE,
 }: {
   accounts?: AccountsOverview
   lists?: Partial<Record<TransactionAccount, Transaction[]>>
@@ -56,6 +59,7 @@ export function mockApi({
   chat?: (request: ChatRequest) => string | Response | Promise<string | Response>
   scan?: ScanResult | Response
   summary?: SpendingSummary | Response
+  categories?: SpendingByCategory | Response
 } = {}) {
   const data = { ...TRANSACTION_FIXTURES, ...transactions }
   const listData: Record<string, Transaction[]> = { ...TRANSACTION_LIST_FIXTURES, ...lists }
@@ -72,6 +76,8 @@ export function mockApi({
     if (/^\/api\/spending\/summary(\?year=\d+)?$/.test(url)) {
       return summary instanceof Response ? summary : Response.json(summary)
     }
+    const month = url.match(/^\/api\/spending\/categories\?month=(\d{4}-\d{2})$/)
+    if (month) return categories instanceof Response ? categories : Response.json({ ...categories, month: month[1] })
     const list = url.match(/^\/api\/transactions\?account=([^&]+)$/)
     if (list) {
       const rows = listData[decodeURIComponent(list[1])]

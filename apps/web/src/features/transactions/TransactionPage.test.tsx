@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -70,6 +70,16 @@ describe('TransactionPage', () => {
       'href',
       `/psst?q=${encodeURIComponent('How can I spend less on chocolate?')}`,
     )
+  })
+
+  it('shows the receipt without an insight when the spending categories fail to load', async () => {
+    const fetch = mockApi({ categories: Response.json({ detail: 'down' }, { status: 500 }) })
+    renderApp('/transactions/K-0241')
+    await screen.findByRole('region', { name: 'Receipt' })
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith('/api/spending/categories?month=2025-11', expect.anything()),
+    )
+    expect(screen.queryByText(/your usual/)).not.toBeInTheDocument()
   })
 
   it('hides the explanation when the backend has none', async () => {
