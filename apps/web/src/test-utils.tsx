@@ -4,11 +4,13 @@ import { MemoryRouter } from 'react-router'
 import { vi } from 'vitest'
 import { ACCOUNTS_FIXTURE } from '@/api/accounts.fixtures'
 import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
+import { SUMMARY_FIXTURE } from '@/api/spending.fixtures'
 import { TRANSACTION_FIXTURES, TRANSACTION_LIST_FIXTURES } from '@/api/transactions.fixtures'
 import type {
   AccountsOverview,
   ChatRequest,
   ScanResult,
+  SpendingSummary,
   Transaction,
   TransactionAccount,
   TransactionDetail,
@@ -38,6 +40,7 @@ const echoChat = ({ messages }: ChatRequest) =>
  * - GET /api/transactions/{id} from the fixtures (404 otherwise); `transactions` overrides or adds some.
  * - POST /api/chat answers with `chat(request)`: a reply string, or a Response (e.g. an error).
  * - POST /api/receipts/scan answers `scan` (default: the LOLA photo), or a Response (e.g. 413).
+ * - GET /api/spending/summary[?year=] answers `summary` (default: 2025), or a Response (e.g. 404).
  */
 export function mockApi({
   accounts = ACCOUNTS_FIXTURE,
@@ -45,12 +48,14 @@ export function mockApi({
   transactions = {},
   chat = echoChat,
   scan = LOLA_SCAN_FIXTURE,
+  summary = SUMMARY_FIXTURE,
 }: {
   accounts?: AccountsOverview
   lists?: Partial<Record<TransactionAccount, Transaction[]>>
   transactions?: Record<string, TransactionDetail>
   chat?: (request: ChatRequest) => string | Response | Promise<string | Response>
   scan?: ScanResult | Response
+  summary?: SpendingSummary | Response
 } = {}) {
   const data = { ...TRANSACTION_FIXTURES, ...transactions }
   const listData: Record<string, Transaction[]> = { ...TRANSACTION_LIST_FIXTURES, ...lists }
@@ -64,6 +69,9 @@ export function mockApi({
       return scan instanceof Response ? scan : Response.json(scan)
     }
     if (url === '/api/accounts') return Response.json(accounts)
+    if (/^\/api\/spending\/summary(\?year=\d+)?$/.test(url)) {
+      return summary instanceof Response ? summary : Response.json(summary)
+    }
     const list = url.match(/^\/api\/transactions\?account=([^&]+)$/)
     if (list) {
       const rows = listData[decodeURIComponent(list[1])]

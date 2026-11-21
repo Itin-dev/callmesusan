@@ -153,9 +153,7 @@ Income vs expenses of one year for the Analytics donut and its rows. Same spendi
 - `monthly_average_rp` is `total_rp / months`, rounded down; a full year has 12 months.
 - `year` is optional: without it, the latest year in the data. An unknown year answers 404.
 
-The Analytics screen calls it without `year`, so it always shows the latest year. Until it is
-merged, `apps/web/src/api/spending.ts` returns these values (computed once from
-`transactions.json`).
+The Analytics screen calls it without `year`, so it always shows the latest year. Example (2025):
 
 ```jsonc
 {
