@@ -6,14 +6,17 @@ import { useSpendingSummary } from '@/api/queries'
 import QuickAction from '@/components/psst/QuickAction'
 import BackButton from '@/components/shell/BackButton'
 import { Button } from '@/components/ui/button'
-import { formatDate } from '@/lib/date'
-import { formatChf } from '@/lib/money'
+import SuggestionChip from '@/components/psst/SuggestionChip'
+import { formatPeriod } from '@/lib/date'
+import { formatChf, formatChfWhole } from '@/lib/money'
 import { cn } from '@/lib/utils'
 import IncomeExpenseChart from './IncomeExpenseChart'
 
+const PSST_QUESTIONS = ['analytics.psstCard.lastMonth', 'analytics.psstCard.spendLess'] as const
+
 /** Analytics (Figma "03 Analytics + Ask Psst"): income vs expenditures, with Ask Psst in the action row. */
 export default function AnalyticsPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { data: summary, isPending, isError, refetch } = useSpendingSummary()
   const question = t('analytics.askQuestion')
 
@@ -48,16 +51,20 @@ export default function AnalyticsPage() {
       )}
 
       {summary && (
-        <section aria-labelledby="analytics-period" className="flex flex-col items-center gap-1 rounded-lg bg-card p-4">
+        <section aria-labelledby="analytics-story" className="flex flex-col items-center gap-3 rounded-lg bg-card p-4">
           <IncomeExpenseChart incomeRp={summary.income.total_rp} expensesRp={summary.expenses.total_rp}>
-            <p id="analytics-period" className="text-caption text-muted-foreground" dir="ltr">
-              {`${formatDate(summary.period_start)} – ${formatDate(summary.period_end)}`}
+            <p className="text-title" dir="ltr">
+              {formatChfWhole(summary.expenses.monthly_average_rp)}
             </p>
-            <p className="text-caption text-muted-foreground">{t('analytics.monthlyAverage')}</p>
-            <p className="text-heading" dir="ltr">
-              {formatChf(summary.expenses.monthly_average_rp)}
-            </p>
+            <p className="max-w-28 text-caption text-muted-foreground">{t('analytics.perMonth')}</p>
           </IncomeExpenseChart>
+          <p id="analytics-story" className="text-center text-body">
+            {t('analytics.story', {
+              period: formatPeriod(summary.period_start, summary.period_end, i18n.language),
+              income: formatChfWhole(summary.income.total_rp),
+              expenses: formatChfWhole(summary.expenses.total_rp),
+            })}
+          </p>
         </section>
       )}
 
@@ -78,6 +85,18 @@ export default function AnalyticsPage() {
           <TotalsRow label={t('analytics.expenses')} dot="bg-chart-3" amountRp={summary.expenses.total_rp} count={summary.expenses.count} />
         </ul>
       )}
+
+      <section aria-labelledby="analytics-psst" className="flex flex-col items-start gap-3 rounded-xl bg-psst p-4 text-psst-foreground">
+        <h2 id="analytics-psst" className="flex items-center gap-2 text-heading">
+          <img src={psstIcon} alt="" width={24} height={24} />
+          {t('analytics.psstCard.title')}
+        </h2>
+        <div className="flex flex-wrap gap-2">
+          {PSST_QUESTIONS.map((key) => (
+            <SuggestionChip key={key} question={t(key)} />
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

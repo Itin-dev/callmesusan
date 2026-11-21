@@ -24,3 +24,10 @@ export function formatAmount(amountRp: number): string {
 export function formatSignedAmount(amountRp: number, direction: AmountDirection): string {
   return `${formatAmount(amountRp)}${direction === 'credit' ? '+' : '–'}`
 }
+
+const chfWhole = new Intl.NumberFormat('de-CH', { style: 'currency', currency: 'CHF', maximumFractionDigits: 0 })
+
+/** Whole francs for summary text and big numbers ("CHF 7'415"); lists keep the exact amount. */
+export function formatChfWhole(amountRp: number): string {
+  return asciiApostrophe(chfWhole.format(amountRp / 100))
+}

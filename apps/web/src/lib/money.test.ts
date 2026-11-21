@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatAmount, formatChf, formatSignedAmount } from './money'
+import { formatAmount, formatChf, formatChfWhole, formatSignedAmount } from './money'
 
 const NBSP = ' '
 
@@ -41,5 +41,12 @@ describe('formatSignedAmount', () => {
   it('formats a list amount without the currency and with a trailing sign', () => {
     expect(formatSignedAmount(6435, 'debit')).toBe('64.35–')
     expect(formatSignedAmount(123450, 'credit')).toBe("1'234.50+")
+  })
+})
+
+describe('formatChfWhole', () => {
+  it('rounds to whole francs for summaries', () => {
+    expect(formatChfWhole(8897751)).toBe(`CHF${NBSP}88'978`)
+    expect(formatChfWhole(741479)).toBe(`CHF${NBSP}7'415`)
   })
 })

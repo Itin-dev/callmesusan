@@ -135,18 +135,24 @@
   "analytics": {
     "title": "Аналитика",
     "summarised": "Итог",
-    "monthlyAverage": "Расходы в среднем за месяц",
     "actions": {
       "search": "Поиск",
       "co2": "След CO2",
       "askPsst": "Спросить Psst"
     },
     "askQuestion": "На что уходят мои деньги каждый месяц?",
-    "income": "Доходы",
+    "income": "Поступления",
     "expenses": "Расходы",
-    "count_one": "{{count}} транзакция",
-    "count_few": "{{count}} транзакции",
-    "count_many": "{{count}} транзакций",
-    "count_other": "{{count}} транзакции"
+    "perMonth": "в месяц в среднем",
+    "story": "{{period}}: вы заработали {{income}} и потратили {{expenses}}.",
+    "count_one": "{{count}} платёж",
+    "count_few": "{{count}} платежа",
+    "count_many": "{{count}} платежей",
+    "count_other": "{{count}} платежа",
+    "psstCard": {
+      "title": "Psst… интересно, куда уходят ваши деньги?",
+      "lastMonth": "На что я больше всего потратил в прошлом месяце?",
+      "spendLess": "Как мне тратить меньше каждый месяц?"
+    }
   }
 }

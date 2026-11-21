@@ -135,16 +135,22 @@
   "analytics": {
     "title": "Analyse",
     "summarised": "Zusammengefasst",
-    "monthlyAverage": "Ausgaben pro Monat im Schnitt",
     "actions": {
       "search": "Suche",
       "co2": "CO2-Fussabdruck",
       "askPsst": "Psst fragen"
     },
     "askQuestion": "Wofür gebe ich mein Geld jeden Monat aus?",
-    "income": "Einnahmen",
-    "expenses": "Ausgaben",
-    "count_one": "{{count}} Transaktion",
-    "count_other": "{{count}} Transaktionen"
+    "income": "Geld rein",
+    "expenses": "Geld raus",
+    "perMonth": "pro Monat im Schnitt",
+    "story": "{{period}}: Du hast {{income}} verdient und {{expenses}} ausgegeben.",
+    "count_one": "{{count}} Zahlung",
+    "count_other": "{{count}} Zahlungen",
+    "psstCard": {
+      "title": "Psst… willst du wissen, wohin dein Geld geht?",
+      "lastMonth": "Wofür habe ich letzten Monat am meisten ausgegeben?",
+      "spendLess": "Wie kann ich jeden Monat weniger ausgeben?"
+    }
   }
 }

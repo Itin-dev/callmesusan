@@ -26,16 +26,26 @@ describe('AnalyticsPage', () => {
     expect(await screen.findByRole('heading', { level: 1, name: 'Analytics' })).toBeInTheDocument()
   })
 
-  it('shows income and expenditures of the period from the API layer', async () => {
+  it('tells the year in plain words, with money in and out from the API layer', async () => {
     renderApp('/analytics')
-    const income = (await screen.findByText('Income')).closest('li')!
+    expect(await screen.findByText(`In 2025 you earned CHF${NBSP}97'032 and spent CHF${NBSP}88'978.`)).toBeInTheDocument()
+    expect(screen.getByText(`CHF${NBSP}7'415`)).toBeInTheDocument()
+    expect(screen.getByText('per month on average')).toBeInTheDocument()
+    const income = screen.getByText('Money in').closest('li')!
     expect(within(income).getByText(`CHF${NBSP}97'032.00`)).toBeInTheDocument()
-    expect(within(income).getByText('13 transactions')).toBeInTheDocument()
-    const expenses = screen.getByText('Expenditures').closest('li')!
+    expect(within(income).getByText('13 payments')).toBeInTheDocument()
+    const expenses = screen.getByText('Money out').closest('li')!
     expect(within(expenses).getByText(`CHF${NBSP}88'977.51`)).toBeInTheDocument()
-    expect(within(expenses).getByText('461 transactions')).toBeInTheDocument()
-    expect(screen.getByText('01.01.2025 – 31.12.2025')).toBeInTheDocument()
-    expect(screen.getByText(`CHF${NBSP}7'414.79`)).toBeInTheDocument()
+    expect(within(expenses).getByText('461 payments')).toBeInTheDocument()
+  })
+
+  it('offers questions for Psst in a Psst card', async () => {
+    renderApp('/analytics')
+    const card = await screen.findByRole('region', { name: 'Psst… curious where your money goes?' })
+    expect(within(card).getByRole('link', { name: 'What did I spend most on last month?' })).toHaveAttribute(
+      'href',
+      `/psst?q=${encodeURIComponent('What did I spend most on last month?')}`,
+    )
   })
 
   it('asks Psst from the action row and the chat sends the question', async () => {
@@ -54,7 +64,7 @@ describe('AnalyticsPage', () => {
 
     spy.mockRestore()
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }))
-    expect(await screen.findByText('Income')).toBeInTheDocument()
+    expect(await screen.findByText('Money in')).toBeInTheDocument()
   })
 
   it('renders right to left in Arabic with amounts kept left to right', async () => {
@@ -67,7 +77,7 @@ describe('AnalyticsPage', () => {
 
   it('has no detectable accessibility violations', async () => {
     const { container } = renderApp('/analytics')
-    await screen.findByText('Income')
+    await screen.findByText('Money in')
     const results = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } })
     expect(results.violations.map((v) => v.id)).toEqual([])
   })

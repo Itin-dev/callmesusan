@@ -135,16 +135,22 @@
   "analytics": {
     "title": "Analytics",
     "summarised": "Summarised",
-    "monthlyAverage": "Spent per month on average",
     "actions": {
       "search": "Search",
       "co2": "CO2 footprint",
       "askPsst": "Ask Psst"
     },
     "askQuestion": "Where does my money go each month?",
-    "income": "Income",
-    "expenses": "Expenditures",
-    "count_one": "{{count}} transaction",
-    "count_other": "{{count}} transactions"
+    "income": "Money in",
+    "expenses": "Money out",
+    "perMonth": "per month on average",
+    "story": "In {{period}} you earned {{income}} and spent {{expenses}}.",
+    "count_one": "{{count}} payment",
+    "count_other": "{{count}} payments",
+    "psstCard": {
+      "title": "Psst… curious where your money goes?",
+      "lastMonth": "What did I spend most on last month?",
+      "spendLess": "How can I spend less each month?"
+    }
   }
 }

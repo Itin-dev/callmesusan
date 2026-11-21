@@ -135,18 +135,24 @@
   "analytics": {
     "title": "Аналітика",
     "summarised": "Підсумок",
-    "monthlyAverage": "Витрати в середньому за місяць",
     "actions": {
       "search": "Пошук",
       "co2": "Слід CO2",
       "askPsst": "Спитати Psst"
     },
     "askQuestion": "На що йдуть мої гроші щомісяця?",
-    "income": "Доходи",
+    "income": "Надходження",
     "expenses": "Витрати",
-    "count_one": "{{count}} транзакція",
-    "count_few": "{{count}} транзакції",
-    "count_many": "{{count}} транзакцій",
-    "count_other": "{{count}} транзакції"
+    "perMonth": "на місяць у середньому",
+    "story": "{{period}}: ви заробили {{income}} і витратили {{expenses}}.",
+    "count_one": "{{count}} платіж",
+    "count_few": "{{count}} платежі",
+    "count_many": "{{count}} платежів",
+    "count_other": "{{count}} платежу",
+    "psstCard": {
+      "title": "Psst… цікаво, куди йдуть ваші гроші?",
+      "lastMonth": "На що я найбільше витратив минулого місяця?",
+      "spendLess": "Як мені витрачати менше щомісяця?"
+    }
   }
 }
