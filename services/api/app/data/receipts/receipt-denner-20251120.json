@@ -1,0 +1,78 @@
+{
+  "receipt_id": "DEN-20251120-0932",
+  "store": "Denner",
+  "branch": "Kriens Zentrum",
+  "date": "2025-11-20",
+  "time": "12:08",
+  "currency": "CHF",
+  "payment": "Cash",
+  "items": [
+    {
+      "name": "Ovomaltine Crunchy Cream 380g",
+      "category": "spreads",
+      "quantity": 1,
+      "unit_price_rp": 695,
+      "line_total_rp": 695,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Rivella Rot 6x1.5l",
+      "category": "beverages",
+      "quantity": 1,
+      "unit_price_rp": 1195,
+      "line_total_rp": 1195,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Prosecco DOC Extra Dry 75cl",
+      "category": "alcohol",
+      "quantity": 1,
+      "unit_price_rp": 895,
+      "line_total_rp": 895,
+      "vat_rate_pct": 8.1
+    },
+    {
+      "name": "Merlot del Ticino DOC 75cl",
+      "category": "alcohol",
+      "quantity": 1,
+      "unit_price_rp": 1295,
+      "line_total_rp": 1295,
+      "vat_rate_pct": 8.1
+    },
+    {
+      "name": "Zweifel Chips Paprika 175g",
+      "category": "snacks",
+      "quantity": 1,
+      "unit_price_rp": 450,
+      "line_total_rp": 450,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Toblerone 360g",
+      "category": "chocolate",
+      "quantity": 1,
+      "unit_price_rp": 795,
+      "line_total_rp": 795,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Barilla Spaghetti n.5 1kg",
+      "category": "pasta",
+      "quantity": 2,
+      "unit_price_rp": 240,
+      "line_total_rp": 480,
+      "vat_rate_pct": 2.6
+    }
+  ],
+  "total_rp": 5805,
+  "vat": [
+    {
+      "rate_pct": 2.6,
+      "amount_rp": 92
+    },
+    {
+      "rate_pct": 8.1,
+      "amount_rp": 164
+    }
+  ]
+}
