@@ -77,7 +77,7 @@ def test_chat_persona_asks_for_plain_text_and_facts_only(client):
 def test_chat_system_prompt_holds_the_spending_summary(client):
     fake = use(FakeLLM())
     client.post("/api/chat", json=user("Where can I save?"))
-    assert current_summary() in fake.calls[0][0]["content"]
+    assert current_summary(Settings().demo_today) in fake.calls[0][0]["content"]
 
 
 def test_chat_rejects_empty_message(client):
@@ -141,3 +141,16 @@ def test_spending_summary_rejects_a_year_that_is_no_number(client, year):
 def test_spending_summary_trims_spaces_around_the_year(client):
     response = client.get("/api/spending/summary", params={"year": " 2025 "})
     assert response.json()["period_start"] == "2025-01-01"
+
+
+def test_chat_system_prompt_names_the_demo_date(client):
+    fake = use(FakeLLM())
+    client.post("/api/chat", json=user("How much did I spend last week?"))
+    assert "Today is Friday, 2025-11-21." in fake.calls[0][0]["content"]
+
+
+def test_demo_today_defaults_to_the_story_date_and_can_be_set(monkeypatch):
+    monkeypatch.delenv("DEMO_TODAY", raising=False)
+    assert Settings(_env_file=None).demo_today.isoformat() == "2025-11-21"
+    monkeypatch.setenv("DEMO_TODAY", "2025-11-14")
+    assert Settings(_env_file=None).demo_today.isoformat() == "2025-11-14"

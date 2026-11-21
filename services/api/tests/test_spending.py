@@ -1,3 +1,5 @@
+from datetime import date
+
 from app.spending import (
     current_summary,
     monthly_totals,
@@ -108,3 +110,58 @@ def test_year_summary_only_uses_rows_of_that_year():
 def test_year_summary_names_the_whole_year_as_period():
     summary = year_summary([tx("2025-05-05", "expense", 100, "Coop")], 2025)
     assert (summary["period_start"], summary["period_end"]) == ("2025-01-01", "2025-12-31")
+
+
+DEMO_TODAY = date(2025, 11, 21)
+
+
+def test_summary_starts_with_today_and_the_data_range():
+    rows = [tx("2025-01-05", "expense", 100, "Coop"), tx("2025-11-20", "expense", 100, "Coop")]
+    text = spending_summary(rows, [], today=DEMO_TODAY)
+    assert text.startswith(
+        "Today is Friday, 2025-11-21. The data covers 2025-01-05 to 2025-11-21;"
+        " there is no data before 2025-01-05."
+    )
+
+
+def test_summary_hides_transactions_after_today():
+    rows = [tx("2025-11-21", "expense", 100, "Coop"), tx("2025-11-22", "expense", 999, "Apple")]
+    text = spending_summary(rows, [], today=DEMO_TODAY)
+    assert "Apple" not in text
+    assert "2025-11: income 0.00, spending 1.00" in text
+
+
+def test_summary_hides_receipts_after_today():
+    later = {"date": "2025-11-22", "items": [{"category": "alcohol", "line_total_rp": 900}]}
+    assert "alcohol" not in spending_summary([], [later], today=DEMO_TODAY)
+
+
+def test_week_line_lists_the_spending_per_day_with_the_rules():
+    rows = [tx("2025-11-17", "expense", 1505, "Kantine AG", account="privat"),
+            tx("2025-11-19", "expense", 11970, "Coop Luzern Bahnhof"),
+            tx("2025-11-20", "transfer", 50000, "KK-Konto", account="privat"),
+            tx("2025-11-21", "income", 500, "Zalando")]  # fmt: skip
+    text = spending_summary(rows, [], today=DEMO_TODAY)
+    assert (
+        "2025-W47 (2025-11-17 to 2025-11-23): spending 129.75;"
+        " Mon 2025-11-17 15.05, Wed 2025-11-19 119.70, Fri 2025-11-21 -5.00"
+    ) in text
+
+
+def test_summary_has_the_last_six_weeks_up_to_today():
+    rows = [tx("2025-11-17", "expense", 100, "Coop")]
+    text = spending_summary(rows, [], today=DEMO_TODAY)
+    weeks = [line[:8] for line in text.splitlines() if line.startswith("2025-W")]
+    assert weeks == ["2025-W42", "2025-W43", "2025-W44", "2025-W45", "2025-W46", "2025-W47"]
+
+
+def test_week_without_spending_says_so():
+    text = spending_summary([tx("2025-11-17", "expense", 100, "Coop")], [], today=DEMO_TODAY)
+    assert "2025-W46 (2025-11-10 to 2025-11-16): spending 0.00; no spending" in text
+
+
+def test_demo_summary_answers_last_week_and_this_week():
+    text = current_summary(DEMO_TODAY)
+    assert "2025-W46 (2025-11-10 to 2025-11-16): spending 807.80;" in text
+    assert "2025-W47 (2025-11-17 to 2025-11-23): spending 469.96;" in text
+    assert "2025-12:" not in text
