@@ -40,8 +40,12 @@ export function merchantInitials(counterparty: string): string {
   return (counterparty.match(/\p{L}/gu) ?? []).slice(0, 2).join('').toUpperCase()
 }
 
-/** Row badge: "Receipt" when attached, "+ Add receipt" when the backend says one is missing. */
-export function receiptBadge(transaction: Transaction): 'receipt' | 'add' | null {
+/**
+ * Row badge: "Receipt" when attached, "+ Add receipt" when the backend says one is missing.
+ * `scanned`: a receipt scanned in this session belongs to the payment (the backend stores no scan).
+ */
+export function receiptBadge(transaction: Transaction, scanned = false): 'receipt' | 'add' | null {
+  if (scanned) return 'receipt'
   const status = transaction.receipt_status ?? (transaction.has_receipt ? 'attached' : 'none')
   if (status === 'attached') return 'receipt'
   if (status === 'missing') return 'add'

@@ -3,7 +3,9 @@ import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import * as transactions from '@/api/transactions'
+import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
 import { TRANSACTION_LIST_FIXTURES } from '@/api/transactions.fixtures'
+import { rememberScan } from '@/features/scan/scannedReceipts'
 import i18n from '@/i18n'
 import { mockApi, renderApp } from '@/test-utils'
 
@@ -70,6 +72,19 @@ describe('AccountPage', () => {
     const appleRow = await row('Apple Online Store 2025-11-21')
     expect(within(appleRow).queryByText('Receipt')).not.toBeInTheDocument()
     expect(within(appleRow).queryByText('Add receipt')).not.toBeInTheDocument()
+  })
+
+  it('shows Receipt on a payment with a receipt scanned in this session', async () => {
+    const [apple, denner, ...rest] = TRANSACTION_LIST_FIXTURES.kk
+    mockApi({ lists: { kk: [apple, { ...denner, has_receipt: false, receipt_status: 'missing' }, ...rest] } })
+    rememberScan('K-0243', LOLA_SCAN_FIXTURE.receipt)
+    rememberScan(denner.id, { ...LOLA_SCAN_FIXTURE.receipt, receipt_id: 'DENNER-scan' })
+    renderApp('/accounts/kk')
+    const row = async (text: string) => (await screen.findByText(text)).closest('a')!
+    expect(within(await row('Apple Online Store 2025-11-21')).getByText('Receipt')).toBeInTheDocument()
+    const dennerRow = await row('Denner Kriens Zentrum 2025-11-20')
+    expect(within(dennerRow).getByText('Receipt')).toBeInTheDocument()
+    expect(within(dennerRow).queryByText('Add receipt')).not.toBeInTheDocument()
   })
 
   it('opens the transaction screen from a row', async () => {
