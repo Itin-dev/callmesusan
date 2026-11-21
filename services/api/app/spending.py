@@ -10,7 +10,7 @@ from functools import lru_cache
 
 from pydantic import BaseModel
 
-from app.transactions import RECEIPTS_DIR, TRANSACTIONS_FILE
+from app.transactions import DATA_DIR, RECEIPTS_DIR, TRANSACTIONS_FILE
 
 # merchants per month line and for the whole year; small numbers keep the system prompt short
 TOP_PER_MONTH = 5
@@ -19,6 +19,8 @@ TOP_PER_YEAR = 10
 MONTHS_PER_YEAR = 12
 # weeks with daily detail in the chat context: enough for "last week", short enough for the prompt
 WEEKS_SHOWN = 6
+# demo "usual month" per item category: receipts exist only for November, so no average exists
+USUAL_FILE = DATA_DIR / "usual_categories.json"
 # own names, because strftime("%A") follows the server locale
 WEEKDAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
@@ -187,6 +189,49 @@ def year_summary(transactions: list[dict], year: int) -> dict:
         "income": totals(sum(tx["amount_rp"] for tx in income), len(income)),
         "expenses": totals(sum(tx["amount_rp"] for tx in expenses) - refunds_rp, len(expenses)),
     }
+
+
+class CategorySpending(BaseModel):
+    category: str
+    total_rp: int
+    average_rp: int
+    ratio: float
+
+
+class SpendingByCategory(BaseModel):
+    month: str
+    categories: list[CategorySpending]
+
+
+def category_comparison(receipts: list[dict], month: str, usual_rp: dict[str, int]) -> list[dict]:
+    """Net item spending per category in one month against the usual month, largest ratio first."""
+    month_receipts = [receipt for receipt in receipts if receipt["date"].startswith(f"{month}-")]
+    totals = receipt_categories(month_receipts).get(month, [])
+    entries = [
+        {
+            "category": category,
+            "total_rp": total,
+            "average_rp": usual_rp[category],
+            "ratio": round(total / usual_rp[category], 2),
+        }
+        for category, total in totals
+        if usual_rp.get(category)
+    ]
+    return sorted(entries, key=lambda entry: (-entry["ratio"], entry["category"]))
+
+
+@lru_cache
+def _usual_month() -> dict[str, int]:
+    return json.loads(USUAL_FILE.read_text(encoding="utf-8"))["usual_rp"]
+
+
+def current_categories(month: str) -> SpendingByCategory:
+    """Category comparison of the demo receipts in app/data for one month ("YYYY-MM")."""
+    receipts = [
+        json.loads(p.read_text(encoding="utf-8")) for p in sorted(RECEIPTS_DIR.glob("*.json"))
+    ]
+    entries = category_comparison(receipts, month, _usual_month())
+    return SpendingByCategory.model_validate({"month": month, "categories": entries})
 
 
 @lru_cache

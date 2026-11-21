@@ -1,0 +1,21 @@
+{
+  "note": "Demo baseline, not computed: the persona's usual month of item spending per category in Rappen. Receipts exist only for November 2025, so GET /api/spending/categories compares with these values (docs/mvp.md).",
+  "usual_rp": {
+    "alcohol": 4500,
+    "bakery": 1800,
+    "beverages": 2500,
+    "chocolate": 2000,
+    "coffee": 800,
+    "dairy": 1800,
+    "eggs": 450,
+    "frozen": 600,
+    "fruit": 1000,
+    "household": 1500,
+    "meat_fish": 3000,
+    "pasta": 500,
+    "personal_care": 1200,
+    "snacks": 1200,
+    "spreads": 600,
+    "vegetables": 900
+  }
+}
