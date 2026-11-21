@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
-import { rememberScan, scannedReceiptFor, scannedReceipts } from './scannedReceipts'
+import { forgetScans, rememberScan, scannedReceiptFor, scannedReceipts } from './scannedReceipts'
 
 const lola = LOLA_SCAN_FIXTURE.receipt
 
@@ -29,6 +29,15 @@ describe('scannedReceipts', () => {
     const again = { ...lola, receipt_id: 'LOLA-20251121-other' }
     rememberScan('P-0236', again)
     expect(scannedReceipts()).toEqual([{ ...again, transaction_id: 'P-0236' }])
+  })
+
+  it('forgets every scan, so the same receipt can be scanned again', () => {
+    rememberScan('P-0236', lola)
+    rememberScan(null, { ...lola, receipt_id: 'R-other' })
+    forgetScans()
+    expect(scannedReceipts()).toEqual([])
+    expect(scannedReceiptFor('P-0236')).toBeNull()
+    expect(sessionStorage.getItem('psst.scannedReceipts')).toBeNull()
   })
 
   it('keeps the last 10 scans, as many as the chat accepts', () => {

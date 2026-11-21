@@ -38,6 +38,16 @@ export function rememberScan(transactionId: string | null, receipt: Receipt) {
   write([...others, { ...receipt, transaction_id: transactionId }].slice(-LIMIT))
 }
 
+/** Forget every scan of this session, so the demo can scan the same receipt again. */
+export function forgetScans() {
+  memory = []
+  try {
+    sessionStorage.removeItem(KEY)
+  } catch {
+    // only the in-memory copy existed
+  }
+}
+
 export function scannedReceipts(): ScannedReceipt[] {
   return read()
 }

@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import { beforeEach, describe, expect, it } from 'vitest'
 import i18n from '@/i18n'
+import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
+import { rememberScan, scannedReceipts } from '@/features/scan/scannedReceipts'
 import { renderApp } from '@/test-utils'
 
 beforeEach(async () => {
@@ -30,6 +32,14 @@ describe('ServicesPage', () => {
     renderApp('/services')
     await userEvent.click(screen.getByRole('button', { name: 'العربية' }))
     expect(document.documentElement).toHaveAttribute('dir', 'rtl')
+  })
+
+  it('clears the scanned receipts so the demo can scan them again', async () => {
+    rememberScan('P-0236', LOLA_SCAN_FIXTURE.receipt)
+    renderApp('/services')
+    await userEvent.click(screen.getByRole('button', { name: 'Clear scanned receipts' }))
+    expect(scannedReceipts()).toEqual([])
+    expect(screen.getByRole('status')).toHaveTextContent('Scanned receipts cleared')
   })
 
   it('shows the build version', () => {
