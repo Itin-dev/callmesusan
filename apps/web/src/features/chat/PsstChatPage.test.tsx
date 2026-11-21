@@ -17,6 +17,13 @@ afterEach(() => {
 
 const log = () => screen.getByRole('log', { name: 'Conversation with Psst' })
 const input = () => screen.getByRole('textbox', { name: 'Message to Psst' })
+const PITCH_KEYS = ['chocolate', 'whatCanYouSee', 'cutCosts', 'statement'] as const
+const PITCH_QUESTIONS = [
+  'Am I spending too much on chocolate?',
+  'What can you see?',
+  'Where can I cut costs this month?',
+  'Make me a statement for November.',
+]
 
 describe('PsstChatPage', () => {
   it('shows the header, a greeting and suggested questions', () => {
@@ -25,8 +32,29 @@ describe('PsstChatPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Psst' })).toBeInTheDocument()
     expect(screen.getByText('Just between us · reads only, never pays')).toBeInTheDocument()
     expect(within(log()).getByText(/Ask me anything about your money/)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Where can I save?' })).toBeInTheDocument()
     expect(screen.getByText('Psst never moves money without your yes.')).toBeInTheDocument()
+  })
+
+  it('offers the four pitch questions as chips, and a tap asks it', async () => {
+    const fetch = mockApi()
+    renderApp('/psst')
+    const first = screen.getByRole('button', { name: PITCH_QUESTIONS[0] })
+    expect(Array.from(first.parentElement?.children ?? [], (chip) => chip.textContent)).toEqual(PITCH_QUESTIONS)
+    await userEvent.click(screen.getByRole('button', { name: 'Where can I cut costs this month?' }))
+    expect(await within(log()).findByText('Reply 1: Where can I cut costs this month?')).toBeInTheDocument()
+    expect(fetch).toHaveBeenCalledTimes(1)
+  })
+
+  it.each(['de', 'ru', 'uk', 'ar'])('translates the pitch chips in %s', async (lng) => {
+    await i18n.changeLanguage(lng)
+    mockApi()
+    renderApp('/psst')
+    for (const key of PITCH_KEYS) {
+      const text = i18n.t(`chat.suggestions.${key}`)
+      expect(text).not.toBe(`chat.suggestions.${key}`)
+      expect(text).not.toBe(i18n.t(`chat.suggestions.${key}`, { lng: 'en' }))
+      expect(screen.getByRole('button', { name: text })).toBeInTheDocument()
+    }
   })
 
   it('holds a conversation of several turns', async () => {
@@ -53,9 +81,9 @@ describe('PsstChatPage', () => {
   it('hides the suggestions once the conversation starts', async () => {
     mockApi()
     renderApp('/psst')
-    await userEvent.click(screen.getByRole('button', { name: 'Where can I save?' }))
-    expect(await within(log()).findByText('Reply 1: Where can I save?')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Can I afford a holiday in April?' })).not.toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: 'What can you see?' }))
+    expect(await within(log()).findByText('Reply 1: What can you see?')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Am I spending too much on chocolate?' })).not.toBeInTheDocument()
   })
 
   it('asks the question from a suggestion chip link (?q=) once', async () => {

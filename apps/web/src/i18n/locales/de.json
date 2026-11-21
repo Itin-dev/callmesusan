@@ -111,9 +111,10 @@
     "log": "Gespräch mit Psst",
     "greeting": "Hallo, ich bin Psst. Frag mich alles zu deinem Geld. Ich lese nur, ich zahle nie.",
     "suggestions": {
-      "save": "Wo kann ich sparen?",
-      "groceries": "Wie viel habe ich im November für Lebensmittel ausgegeben?",
-      "holiday": "Kann ich mir im April Ferien leisten?"
+      "chocolate": "Gebe ich zu viel für Schokolade aus?",
+      "whatCanYouSee": "Was kannst du sehen?",
+      "cutCosts": "Wo kann ich diesen Monat sparen?",
+      "statement": "Erstelle mir einen Kontoauszug für November."
     },
     "inputLabel": "Nachricht an Psst",
     "placeholder": "Frag Psst…",

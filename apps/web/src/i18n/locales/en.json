@@ -111,9 +111,10 @@
     "log": "Conversation with Psst",
     "greeting": "Hi, I'm Psst. Ask me anything about your money. I only read, I never pay.",
     "suggestions": {
-      "save": "Where can I save?",
-      "groceries": "How much did I spend on groceries in November?",
-      "holiday": "Can I afford a holiday in April?"
+      "chocolate": "Am I spending too much on chocolate?",
+      "whatCanYouSee": "What can you see?",
+      "cutCosts": "Where can I cut costs this month?",
+      "statement": "Make me a statement for November."
     },
     "inputLabel": "Message to Psst",
     "placeholder": "Ask Psst…",
