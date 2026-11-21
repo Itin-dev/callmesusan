@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Transaction } from '@/api/types'
-import { formatDay, groupByDay, localIsoDate, merchantInitials, receiptBadge } from './transactionDisplay'
+import { formatDay, groupByDay, localIsoDate, merchantInitials, merchantLogo, receiptBadge } from './transactionDisplay'
 
 const tx = (id: string, date: string, extra: Partial<Transaction> = {}): Transaction => ({
   id,
@@ -77,4 +77,41 @@ describe('receiptBadge', () => {
     expect(receiptBadge(tx('a', '2025-11-20'), true)).toBe('receipt')
     expect(receiptBadge(tx('a', '2025-11-20', { receipt_status: 'missing' }), true)).toBe('receipt')
   })
+})
+
+describe('merchantLogo', () => {
+  it.each([
+    ['Coop Luzern Bahnhof', 'coop'],
+    ['Coop Tankstelle Talgut Zentrum', 'coop'],
+    ['Migros Luzern Schwanenplatz', 'migros'],
+    ['Lidl Ostermundigen', 'lidl'],
+    ['Denner Kriens Zentrum', 'denner'],
+    ['IKEA Lyssach', 'ikea'],
+    ['Apple Online Store', 'apple'],
+    ['iTunes.com', 'apple'],
+    ['Digitec Galaxus', 'digitec'],
+    ['Galaxus AG', 'digitec'],
+    ['SBB CFF FSS Ticket Shop', 'sbb'],
+    ['Schweizerische Bundesbahnen', 'sbb'],
+    ['Swiss Intl. Airlines', 'swiss'],
+    ['SWISS International Airlines', 'swiss'],
+    ['Netflix', 'netflix'],
+    ['Spotify', 'spotify'],
+    ['Orell Füssli', 'orell-fuessli'],
+    ['Orell Fuessli', 'orell-fuessli'],
+    ['Zalando', 'zalando'],
+    ['H&M', 'hm'],
+    ['Amazon.com', 'amazon'],
+    ['Paypal', 'paypal'],
+    ['Abercrombie & Fitch', 'abercrombie'],
+  ])('maps %s to the %s logo', (counterparty, brand) => {
+    expect(merchantLogo(counterparty)).toBe(`/logos/${brand}.png`)
+  })
+
+  it.each(['LOLA Mattenhof', 'Kantine AG', 'Smokee Luzern', 'Rent', 'Swisscom', 'Hügi Optik', ''])(
+    'has no logo for %s',
+    (counterparty) => {
+      expect(merchantLogo(counterparty)).toBeNull()
+    },
+  )
 })
