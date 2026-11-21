@@ -101,16 +101,24 @@ export type TransactionDetail = Transaction & {
 
 /**
  * POST /api/receipts/scan (BE-6, #40): the receipt read from a photo and the id of the payment it
- * matches (total + day + month, matched by the backend), or null when no payment matches.
+ * matches (same total, day and month within one day, shop name to break ties), or null.
  */
 export type ScanResult = {
   transaction_id: string | null
   receipt: Receipt
   /** Items add up to the total within 5 Rappen. */
   check: { items_sum_rp: number; matches_total: boolean }
+  /** The checks that found the payment (BE-11, #78); null when no payment matches. */
+  match: PaymentMatch | null
   /** True only for the prepared LOLA answer (DEMO_SCAN_FALLBACK). */
   fallback: boolean
 }
+
+/** Why the backend chose the payment: the total is always equal for a match. */
+export type PaymentMatch = { amount_matches: boolean; days_apart: number; merchant_matches: boolean }
+
+/** A scanned receipt kept in the session, with the payment it matched (null: none). */
+export type ScannedReceipt = Receipt & { transaction_id: string | null }
 
 export type CategorySpending = {
   category: ItemCategory
@@ -143,8 +151,8 @@ export type SpendingSummary = {
 /** One turn of the Psst chat. */
 export type ChatMessage = { role: 'user' | 'assistant'; content: string }
 
-/** POST /api/chat: stateless, the client sends the whole conversation every turn. */
-export type ChatRequest = { messages: ChatMessage[]; language: string }
+/** POST /api/chat: stateless, the client sends the whole conversation (and its scans) every turn. */
+export type ChatRequest = { messages: ChatMessage[]; language: string; receipts?: ScannedReceipt[] }
 
 export type ChatResponse = { reply: string }
 

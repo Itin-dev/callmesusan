@@ -162,3 +162,40 @@ def test_chat_persona_answers_what_it_can_see_from_the_data_list(client):
     system = fake.calls[0][0]["content"]
     assert "What Psst can see:" in system
     assert "list exactly the data in" in system
+
+
+LOLA_SCANNED = {
+    "transaction_id": "P-0236",
+    "store": "LOLA",
+    "branch": "Mattenhof",
+    "total_rp": 910,
+    "items": [
+        {"name": "Club-Mate, Loscher, 50cl", "category": "beverages", "quantity": 1,
+         "unit": "pcs", "line_total_rp": 200, "discount_rp": 0},
+        {"name": "Cookie Caramel&Sel gf", "category": "snacks", "quantity": 1,
+         "unit": "pcs", "line_total_rp": 320, "discount_rp": 20},
+    ],
+}  # fmt: skip
+
+
+def test_chat_system_prompt_holds_the_scanned_receipts(client):
+    fake = use(FakeLLM())
+    client.post("/api/chat", json={**user("What did I buy at LOLA?"), "receipts": [LOLA_SCANNED]})
+    system = fake.calls[0][0]["content"]
+    assert "LOLA Mattenhof" in system
+    assert "Club-Mate, Loscher, 50cl" in system
+    assert "9.10" in system
+    # the payment's date comes from the bank data, not from the client
+    assert "P-0236 on 2025-11-21" in system
+
+
+def test_chat_without_receipts_has_no_scanned_section(client):
+    fake = use(FakeLLM())
+    client.post("/api/chat", json=user("Hello"))
+    assert "scanned" not in fake.calls[0][0]["content"]
+
+
+def test_chat_rejects_too_many_receipts(client):
+    use(FakeLLM())
+    body = {**user("Hello"), "receipts": [LOLA_SCANNED] * 11}
+    assert client.post("/api/chat", json=body).status_code == 422

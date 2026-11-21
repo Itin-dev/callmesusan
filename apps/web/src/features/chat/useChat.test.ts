@@ -1,6 +1,8 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import i18n from '@/i18n'
+import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
+import { rememberScan } from '@/features/scan/scannedReceipts'
 import { mockApi } from '@/test-utils'
 import { useChat } from './useChat'
 
@@ -54,6 +56,16 @@ describe('useChat', () => {
         language: 'de',
       },
     ])
+  })
+
+  it('sends the receipts scanned in this session with every turn', async () => {
+    rememberScan('P-0236', LOLA_SCAN_FIXTURE.receipt)
+    const fetch = mockApi()
+    const { result } = renderChat()
+    act(() => result.current.send('What did I buy at LOLA?'))
+    await waitFor(() => expect(result.current.status).toBe('idle'))
+
+    expect(sentBodies(fetch)[0].receipts).toEqual([{ ...LOLA_SCAN_FIXTURE.receipt, transaction_id: 'P-0236' }])
   })
 
   it('ignores empty messages and messages sent while Psst is answering', async () => {

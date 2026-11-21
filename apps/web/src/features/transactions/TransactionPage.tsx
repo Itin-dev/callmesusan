@@ -3,9 +3,11 @@ import { Link, useLocation, useParams } from 'react-router'
 import cameraIcon from '@/assets/icons/camera.svg'
 import detailsIcon from '@/assets/icons/details.svg'
 import { isNotFound, useReceiptInsight, useTransaction } from '@/api/queries'
+import type { PaymentMatch } from '@/api/types'
 import BackButton from '@/components/shell/BackButton'
 import { Button } from '@/components/ui/button'
-import { scannedReceiptFrom } from '@/features/scan/scanState'
+import { scannedReceiptFor } from '@/features/scan/scannedReceipts'
+import { scanStateFrom } from '@/features/scan/scanState'
 import { formatDate } from '@/lib/date'
 import { formatChf } from '@/lib/money'
 import PsstInsight from './PsstInsight'
@@ -17,8 +19,10 @@ export default function TransactionPage() {
   const { t } = useTranslation()
   const { id = '' } = useParams()
   const { data: loaded, isPending, isError, error, refetch } = useTransaction(id)
-  // Just scanned (FE-7): the backend stores no scan, so the receipt comes with the navigation.
-  const scanned = scannedReceiptFrom(useLocation().state)
+  // The backend stores no scan: right after a scan the receipt comes with the navigation (FE-7),
+  // later from the session.
+  const justScanned = scanStateFrom(useLocation().state)
+  const scanned = justScanned?.scannedReceipt ?? scannedReceiptFor(id)
   const transaction = loaded && scanned && !loaded.receipt ? { ...loaded, receipt: scanned, has_receipt: true } : loaded
   const { data: insight } = useReceiptInsight(transaction)
 
@@ -50,14 +54,17 @@ export default function TransactionPage() {
 
       {transaction && (
         <>
-          {scanned && (
-            <p role="status" className="rounded-xl bg-card p-4 text-body font-semibold">
-              {t('transaction.receiptAdded', {
-                shop: transaction.counterparty,
-                date: formatDate(transaction.date),
-                amount: formatChf(transaction.amount_rp),
-              })}
-            </p>
+          {justScanned && (
+            <div role="status" className="flex flex-col gap-2 rounded-xl bg-card p-4">
+              <p className="text-body font-semibold">
+                {t('transaction.receiptAdded', {
+                  shop: transaction.counterparty,
+                  date: formatDate(transaction.date),
+                  amount: formatChf(transaction.amount_rp),
+                })}
+              </p>
+              {justScanned.match && <MatchChecks match={justScanned.match} />}
+            </div>
           )}
           <TransactionSummary transaction={transaction} />
           {transaction.receipt && <ReceiptCard receipt={transaction.receipt} highlight={insight?.category} />}
@@ -75,6 +82,25 @@ export default function TransactionPage() {
         </>
       )}
     </div>
+  )
+}
+
+/** The simple checks the backend used to find the payment for a scanned receipt. */
+function MatchChecks({ match }: { match: PaymentMatch }) {
+  const { t } = useTranslation()
+  const checks: [boolean, string][] = [
+    [match.amount_matches, t('transaction.checks.amount')],
+    [true, t(match.days_apart === 0 ? 'transaction.checks.sameDay' : 'transaction.checks.dayApart')],
+    [match.merchant_matches, t(match.merchant_matches ? 'transaction.checks.merchant' : 'transaction.checks.otherMerchant')],
+  ]
+  return (
+    <ul aria-label={t('transaction.checks.title')} className="flex flex-col gap-1 text-small">
+      {checks.map(([passed, label]) => (
+        <li key={label}>
+          {passed ? '✓' : '•'} {label}
+        </li>
+      ))}
+    </ul>
   )
 }
 

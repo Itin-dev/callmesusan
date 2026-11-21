@@ -86,7 +86,15 @@
     "toHome": "На главную",
     "discount": "Скидка",
     "weight": "{{weight}} кг",
-    "receiptAdded": "Добавлено к вашему платежу в {{shop}}, {{date}}, {{amount}}"
+    "receiptAdded": "Добавлено к вашему платежу в {{shop}}, {{date}}, {{amount}}",
+    "checks": {
+      "title": "Psst проверил",
+      "amount": "Сумма совпадает с платежом",
+      "sameDay": "Тот же день",
+      "dayApart": "Разница в один день",
+      "merchant": "Название магазина совпадает",
+      "otherMerchant": "Банк показывает другое название магазина"
+    }
   },
   "categories": {
     "dairy": "молочные продукты",

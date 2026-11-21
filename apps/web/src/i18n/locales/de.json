@@ -86,7 +86,15 @@
     "toHome": "Zurück zu Home",
     "discount": "Rabatt",
     "weight": "{{weight}} kg",
-    "receiptAdded": "Zu deiner Zahlung bei {{shop}} hinzugefügt, {{date}}, {{amount}}"
+    "receiptAdded": "Zu deiner Zahlung bei {{shop}} hinzugefügt, {{date}}, {{amount}}",
+    "checks": {
+      "title": "Psst hat geprüft",
+      "amount": "Der Betrag stimmt mit der Zahlung überein",
+      "sameDay": "Gleicher Tag",
+      "dayApart": "Einen Tag auseinander",
+      "merchant": "Der Geschäftsname stimmt überein",
+      "otherMerchant": "Die Bank zeigt einen anderen Geschäftsnamen"
+    }
   },
   "categories": {
     "dairy": "Milchprodukte",

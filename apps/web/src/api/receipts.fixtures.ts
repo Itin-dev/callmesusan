@@ -24,5 +24,6 @@ export const LOLA_SCAN_FIXTURE: ScanResult = {
     ],
   },
   check: { items_sum_rp: 910, matches_total: true },
+  match: { amount_matches: true, days_apart: 0, merchant_matches: true },
   fallback: false,
 }

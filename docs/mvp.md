@@ -47,8 +47,9 @@ All in `services/api/app/data/`:
   contained in `counterparty`. Coop 19.11 → K-0241, Migros 14.11 → P-0233, Lidl 20.11 → K-0242 and
   Lidl 21.11 → K-0247 and Denner 20.11 → K-0265 match. All five come from partner shops; cash
   purchases are out of scope, because the bank cannot see them.
-- A scanned receipt (`source: photo`) is matched by `total_rp == amount_rp` plus day and month;
-  the year is ignored. The bank data is from 2025, but a receipt photographed now shows 2026: the
+- A scanned receipt (`source: photo`) is matched by `total_rp == amount_rp` (the sum check) plus
+  day and month at most one day apart; when several expenses pass, the one whose bank text names
+  the shop wins, then the closest date. The year is ignored. The bank data is from 2025, but a receipt photographed now shows 2026: the
   LOLA Mattenhof photo (21.11.2026, CHF 9.10) belongs to the 2025-11-21 debit card payment of
   CHF 9.10 on `privat`. `Lidl Plus.pdf` shows 20.11.2026 for the same reason, while its JSON
   uses 2025.
@@ -177,7 +178,7 @@ files get 415, larger files 413. A model failure gets 502. Nothing is stored or 
 
 ```jsonc
 {
-  "transaction_id": "P-0236",               // same amount, day and month (year ignored); null if none
+  "transaction_id": "P-0236",               // same amount, day and month ±1 (year ignored); null if none
   "receipt": {
     "receipt_id": "LOLA-20261121-1a2b3c4d", // store, date on the receipt, short photo hash
     "store": "LOLA", "branch": "Mattenhof", "time": "11:52",
@@ -188,6 +189,7 @@ files get 415, larger files 413. A model failure gets 502. Nothing is stored or 
     "category_totals": [ { "category": "chocolate", "total_rp": 360 } ]
   },
   "check": { "items_sum_rp": 910, "matches_total": true },  // items within 5 Rappen of the total
+  "match": { "amount_matches": true, "days_apart": 0, "merchant_matches": true }, // null if none
   "fallback": false                         // true only for the prepared LOLA answer (pitch flag)
 }
 ```
@@ -210,17 +212,25 @@ given). Nothing is stored or logged.
 Errors: 413 too large, 415 not a known audio container, 422 unknown `language` or no speech in the
 recording, 502 model failure, 503 `OPENROUTER_TRANSCRIBE_MODEL` not set.
 
-### `POST /api/chat` (exists, shape unchanged)
+### `POST /api/chat`
 
 ```jsonc
 // request
-{ "messages": [{ "role": "user", "content": "Where can I save?" }], "language": "en" }
+{
+  "messages": [{ "role": "user", "content": "What did I buy at LOLA?" }],
+  "language": "en",
+  // optional, at most 10: receipts scanned in this session, as the scan returned them
+  "receipts": [{ "transaction_id": "P-0236", "store": "LOLA", "branch": "Mattenhof",
+                 "total_rp": 910, "items": [ { "name": "Depot", "category": "beverages",
+                 "quantity": 1, "unit": "pcs", "line_total_rp": 30, "discount_rp": 0 } ] }]
+}
 // response
 { "reply": "..." }
 ```
 
-The backend adds the user's spending context to the system prompt, so the frontend only sends the
-conversation.
+The backend adds the user's spending context to the system prompt. The backend stores no scan, so
+the web app keeps scanned receipts in `sessionStorage` and sends them with every turn; the backend
+adds them, with the matched payment's date from the bank data, to the system prompt (BE-11).
 
 Item categories (fixed list): `dairy`, `bakery`, `fruit`, `vegetables`, `meat_fish`, `eggs`,
 `pasta`, `frozen`, `spreads`, `snacks`, `chocolate`, `beverages`, `coffee`, `alcohol`, `household`,

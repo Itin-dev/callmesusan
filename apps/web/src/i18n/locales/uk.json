@@ -86,7 +86,15 @@
     "toHome": "На головну",
     "discount": "Знижка",
     "weight": "{{weight}} кг",
-    "receiptAdded": "Додано до вашого платежу в {{shop}}, {{date}}, {{amount}}"
+    "receiptAdded": "Додано до вашого платежу в {{shop}}, {{date}}, {{amount}}",
+    "checks": {
+      "title": "Psst перевірив",
+      "amount": "Сума збігається з платежем",
+      "sameDay": "Той самий день",
+      "dayApart": "Різниця в один день",
+      "merchant": "Назва магазину збігається",
+      "otherMerchant": "Банк показує іншу назву магазину"
+    }
   },
   "categories": {
     "dairy": "молочні продукти",
