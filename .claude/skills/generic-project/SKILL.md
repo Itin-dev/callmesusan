@@ -22,4 +22,5 @@ description: Explains repository layout, separation of responsibilities, librari
 
 ## Stacks
 
-See [docs/stack.md](../../../docs/stack.md).
+See [docs/stack.md](../../../docs/stack.md). AI calls use the model chosen for each task in its
+"AI models" section (voice, receipt OCR + fallback, chat); read model ids from settings, never hardcode them.

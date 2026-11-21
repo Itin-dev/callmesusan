@@ -6,7 +6,7 @@ Inherited from the team template.
 | --- | --- | --- |
 | Backend | `services/api/` | Python 3.12, FastAPI, uv, pytest, ruff |
 | Frontend | `apps/web/` | Vite, React, TypeScript, Tailwind v4, shadcn/ui, lucide-react, React Router, i18next, Vitest, oxlint |
-| AI | `services/api/app/llm.py` | OpenRouter via the `openai` SDK (OpenAI-compatible API) |
+| AI | `services/api/app/llm.py` | OpenRouter via the `openai` SDK (OpenAI-compatible API); models per task in [AI models](#ai-models) |
 
 ## Run locally
 
@@ -15,7 +15,23 @@ make api   # http://localhost:8000  (docs: /docs)
 make web   # http://localhost:5173  (proxies /api → :8000)
 ```
 
-`.env` at the repo root holds `OPENROUTER_API_KEY` (and optionally `OPENROUTER_MODEL`).
+`.env` at the repo root holds `OPENROUTER_API_KEY` and the model settings below (see `.env.example`).
+
+## AI models
+
+Team decision (21 Nov 2026): one model per task, all through OpenRouter. Model ids live in `.env`,
+never in code, so they can change without a deploy of new code.
+
+| Task | Model | Setting |
+| --- | --- | --- |
+| Voice to text (chat mic input) | `google/gemini-3.5-flash-lite` | `OPENROUTER_TRANSCRIBE_MODEL` |
+| Receipt photo (`POST /api/receipts/scan`) | OpenRouter `file-parser` plugin, engine `mistral-ocr`; its text is scaled down and extracted into the receipt JSON schema | `OPENROUTER_OCR_ENGINE` |
+| Receipt photo, fallback | `google/gemini-3.5-flash-lite` reads the photo directly (vision) when the OCR step fails | `OPENROUTER_VISION_MODEL` |
+| Psst chat over the dataset (`POST /api/chat`) | `openai/gpt-6-luna` | `OPENROUTER_MODEL` |
+
+If the fallback fails too, the scan endpoint returns its prepared result for the LOLA test photo, so
+the demo never breaks (BE-6, #40). Tests never call a model: they override `get_llm` with a fake.
+Until the backend reads these settings, `app/config.py` defaults `OPENROUTER_MODEL` to `openrouter/auto`.
 
 ## Deploy
 

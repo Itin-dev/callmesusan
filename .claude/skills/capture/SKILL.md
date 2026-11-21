@@ -42,7 +42,9 @@ Example: "Ticket: one issue per screen in Design-Project".
 1. Drop the trigger word, filler ("um", "so basically", "like") and repetitions.
 2. Write everything in **English** (repo language rule), whatever language was spoken.
 3. Fix misheard terms: "next js" → Next.js, "open router" → OpenRouter, "fig ma" → Figma,
-   "get hub" → GitHub, "tail wind" → Tailwind, "react" stays React.
+   "get hub" → GitHub, "tail wind" → Tailwind, "react" stays React. Model names as in
+   docs/stack.md "AI models": "gemini flash light" → `google/gemini-3.5-flash-lite`,
+   "mistral o c r" → `mistral-ocr`, "g p t six luna" → `openai/gpt-6-luna`.
 4. One utterance may hold several items ("ticket: A, and also B") — create one issue per item.
 5. Keep the speaker's meaning. Do not invent requirements, owners or deadlines.
 
