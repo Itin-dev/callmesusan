@@ -147,3 +147,6 @@ export type ChatMessage = { role: 'user' | 'assistant'; content: string }
 export type ChatRequest = { messages: ChatMessage[]; language: string }
 
 export type ChatResponse = { reply: string }
+
+/** POST /api/transcribe answer. */
+export type TranscribeResponse = { text: string }
