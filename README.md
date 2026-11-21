@@ -6,6 +6,8 @@ Team **Call me Susan** — repository for the [Powercoders Hackathon "AI for Acc
 Challenge: **Beyond the List** (PostFinance AG) — what if your bank could do more than show
 transactions and actually help you make smarter decisions? See [PLAN.md](PLAN.md).
 
+Product name: **Psst** — an AI assistant inside your bank that you can trust with your money questions.
+
 ## Team
 
 | Role | Focus |
