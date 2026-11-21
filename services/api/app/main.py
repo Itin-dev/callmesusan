@@ -2,12 +2,13 @@
 
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, UploadFile
 
 from app.accounts import AccountsOverview, accounts_overview
 from app.chat import ChatReply, ChatRequest, build_messages
 from app.config import Settings, get_settings
 from app.llm import LLM, get_llm
+from app.scan import MAX_UPLOAD_BYTES, ModelAnswerError, ScanResult, UploadError, scan_receipt
 from app.spending import current_summary
 from app.transactions import (
     Account,
@@ -56,3 +57,19 @@ def chat(
         context=current_summary(),
     )
     return ChatReply(reply=llm.complete(messages).strip())
+
+
+@app.post("/api/receipts/scan")
+def receipts_scan(
+    file: UploadFile,
+    llm: Annotated[LLM, Depends(get_llm)],
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> ScanResult:
+    # one byte over the limit is enough to know the photo is too large
+    data = file.file.read(MAX_UPLOAD_BYTES + 1)
+    try:
+        return scan_receipt(data, llm, fallback_allowed=settings.demo_scan_fallback)
+    except UploadError as error:
+        raise HTTPException(error.status, error.detail) from error
+    except ModelAnswerError as error:
+        raise HTTPException(502, str(error)) from error
