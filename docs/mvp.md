@@ -146,9 +146,15 @@ your usual") and the chat.
 
 Income vs expenses of one year for the Analytics donut and its rows. Same spending rules as above:
 `transfer` rows are left out, income is the salary on `privat`, and credit card refunds (`income` on
-`kk`) reduce `expenses.total_rp`. `count` is the number of transactions, `monthly_average_rp` is
-`total_rp` divided by the months in the period. Until it is merged, `apps/web/src/api/spending.ts`
-returns these values (computed once from `transactions.json`).
+`kk`) reduce `expenses.total_rp`. Agreed with the backend (shape matches `app/spending.py` from BE-4):
+
+- `count` is the number of rows of that type: `expenses.count` counts expense rows only; card
+  refunds reduce `total_rp` but are not counted (461 for 2025).
+- `monthly_average_rp` is `total_rp / months`, rounded down; a full year has 12 months.
+- `year` is optional: without it, the latest year in the data. An unknown year answers 404.
+
+Until it is merged, `apps/web/src/api/spending.ts` returns these values (computed once from
+`transactions.json`).
 
 ```jsonc
 {
