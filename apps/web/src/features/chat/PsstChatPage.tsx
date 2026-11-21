@@ -14,7 +14,13 @@ import { cn } from '@/lib/utils'
 import { useChat } from './useChat'
 import { useRecorder } from './useRecorder'
 
-const SUGGESTIONS = ['chat.suggestions.save', 'chat.suggestions.groceries', 'chat.suggestions.holiday'] as const
+// The pitch demo questions (slide 6): each is one tap away, no typing needed.
+const SUGGESTIONS = [
+  'chat.suggestions.chocolate',
+  'chat.suggestions.whatCanYouSee',
+  'chat.suggestions.cutCosts',
+  'chat.suggestions.statement',
+] as const
 
 /** Figma "02 Psst chat": multi-turn conversation with Psst over POST /api/chat. */
 export default function PsstChatPage() {
