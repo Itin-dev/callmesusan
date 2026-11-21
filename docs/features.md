@@ -39,27 +39,50 @@ The demo shows one or two working features end to end. The rest goes on a "What'
 
 ## Where Psst fits in the PostFinance mobile app
 
-Sources: the PostFinance App listing in the App Store and the public
+Sources: team screenshots of the PostFinance App on iOS and Android (November 2026, no personal
+data kept), the App Store listing and the public
 [e-finance demo](https://www.postfinance.ch/demoefinloginen) (test client "Maria Bernasconi").
+iOS and Android share the same layout.
 
-**What the app has today**
+### Screens today
 
-- Five main areas: Home, Payments, Invest, Offers, Services. A quick-access row: Scan, Pay,
-  Transfer, Analysis. Search on the main screens.
-- Analysis: balance donut, incomings and expenses, monthly timeline, "My subscriptions", tags,
-  budgets, CO2 calculator. No explanation of why the balance is negative.
-- A chatbot under Services, next to support. It answers questions about the bank, not about the
-  client's own money.
-- Push notifications for credits, debits, eBills and documents.
+| Screen | What is on it |
+|--------|---------------|
+| Login | "Good morning" greeting, city illustration, yellow Face ID login button, Scan and Contact and support below |
+| Home | Search pill top right. Quick-access row of round icons: **Scan** (yellow, primary), Pay, Transfer, Analysis. "Accounts and Investments" cards (private, salary, savings, asset management, pillar 3a), "Other products" (credit card), "Add product" |
+| Account detail | Balance history as a bar chart. Action row: **Payments** (yellow), Search, Details. "Show pending orders". Transactions grouped by day with merchant logos; the text is raw bank wording in German, e.g. "Kauf/Dienstleistung vom 20.11.2026, <merchant>" |
+| Analytics | Back, filter icon, "Summarised" dropdown. Donut chart: income (outer ring) vs. expenditures (inner ring), period and average per month in the centre. Action row: Search, CO2 footprint. Income and Expenditures rows with transaction counts. "No active budgets", "My subscriptions" (recurring transactions), Transfers |
+| Payments | Action row: Scan, Pay, Transfer, Settings. eBill list with due dates and the eBill portal. Pending individual orders. Standing orders with next execution date |
+| Invest | Total of investments and retirement. Action row: Discover, Market overview, Consultation. Asset management and pillar 3a cards |
+| Offers | "Add products" grid: credit cards, investing, retirement planning, accounts, multibanking, financing. Vouchers to buy and send as gifts |
+| Services | Cards, Notifications, Documents, Profile and settings, Contact and support, Logout. The FAQ chatbot sits behind support, far from the client's money |
 
-**Entry points for Psst**
+Bottom tab bar on every main screen: Home, Payments, Invest, Offers, Services.
 
-1. Fifth button in the quick-access row: Scan · Pay · Transfer · Analysis · Psst.
-2. Card at the top of Home: "Psst… ask me about your money" with 2–3 suggested questions.
-3. Contextual button in Analysis next to the balance: "Ask Psst why". The demo client spent
-   CHF 6'648 more than she earned in 3 months, which makes a ready demo moment.
-4. Transaction detail: the receipt (must-have) and "What is this payment?".
-5. Push after payday: "Psst, your salary is in. Put 300 aside for taxes?" opens the chat.
-6. Search on the main screens accepts plain-language questions.
+### Design patterns to reuse
 
-Demo priority: 1, 2 and 3 live; 5 on a slide.
+- Round icon buttons in a row, one yellow primary action, labels under the icons.
+- Light mint-grey background, white rounded cards, dark petrol text, yellow accent.
+- Search pill in the top right of every main screen.
+
+### Gaps Psst can fill
+
+- The donut shows that money went out, but not why or what to change.
+- Transaction texts are raw German bank wording; there is no receipt and no plain explanation.
+- eBills and standing orders show what is due, but not whether the balance covers it.
+- Budgets exist but are empty for most users ("No active budgets"): setting them up is work.
+
+### Entry points for Psst
+
+1. **Home quick-access row:** Scan · Pay · Transfer · Analysis · **Psst**. Same round-icon pattern,
+   no new tab needed.
+2. **Card at the top of Home:** "Psst… ask me about your money" with 2–3 suggested questions.
+3. **Analytics action row:** Search · CO2 footprint · **Ask Psst** ("Why did I spend more than I
+   earned?"). Psst can also offer to set up budgets from the spending it sees.
+4. **Account detail and transaction row:** the receipt (must-have) and a plain-language
+   explanation of the raw bank text, in the user's language.
+5. **Payments, next to eBills:** "Can I pay all of these before the end of the month?"
+6. **Push after payday:** "Psst, your salary is in. Put some aside for taxes?" opens the chat.
+7. **Search pill:** accepts plain-language questions on every main screen.
+
+Demo priority: 1, 2, 3 and 4 live; 5 and 6 on a slide.
