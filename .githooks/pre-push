@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Git pre-push hook — branch must contain the latest main, then the same checks as CI.
+set -euo pipefail
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+PUSH_REFS_FILE="$(mktemp)"
+trap 'rm -f "$PUSH_REFS_FILE"' EXIT
+cat > "$PUSH_REFS_FILE"
+export PUSH_REFS_FILE
+while read -r _local_ref local_sha _remote_ref _remote_sha; do
+  case "$local_sha" in *[!0]*) bash "$REPO_ROOT/scripts/check-fresh-base.sh" "$local_sha" ;; esac
+done < "$PUSH_REFS_FILE"
+bash "$REPO_ROOT/scripts/pre-push-check.sh"

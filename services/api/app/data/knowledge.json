@@ -1,0 +1,246 @@
+{
+  "organizations": [
+    {
+      "id": "amt-fuer-migration-luzern",
+      "name": "Amt für Migration Kanton Luzern",
+      "helps_with": "Residence and work permits, family reunification, settlement permit C, visas, asylum and return. Send documents by post; use e-mail or phone for questions. Asylum phone line: 041 228 77 81.",
+      "tiles": ["documents", "work"],
+      "subjects": ["residence-permit", "work-permit", "family-reunification", "asylum"],
+      "address": {"street": "Fruttstrasse 15", "postcode": "6002", "city": "Luzern"},
+      "phone": "+41 41 228 77 80",
+      "email": "migration@lu.ch",
+      "hours": "Counter and phone: Mon-Wed and Fri 09:00-12:00 and 14:00-17:00; Thu 14:00-17:00",
+      "official_url": "https://migration.lu.ch",
+      "source_url": "https://migration.lu.ch/kontakt",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "einwohnerdienste-stadt-luzern",
+      "name": "Stadt Luzern Einwohnerdienste",
+      "helps_with": "Residence registration when you move to the city of Lucerne. Register within 14 days. If you move from abroad, you must register in person at the counter. The registration fee is CHF 40.",
+      "tiles": ["documents"],
+      "subjects": ["residence-registration"],
+      "address": {"street": "Obergrundstrasse 1", "postcode": "6003", "city": "Luzern"},
+      "phone": "+41 41 208 83 56",
+      "email": "einwohnerdienste@stadtluzern.ch",
+      "hours": "Mon-Fri 09:00-17:00",
+      "free": false,
+      "what_to_bring": [
+        "Passport or ID card",
+        "Foreigner identity card (Ausländerausweis), if you have one",
+        "Rental contract or housing certificate (Wohnungsausweis)",
+        "Health insurance card or policy",
+        "Employment contract (foreign nationals)"
+      ],
+      "official_url": "https://www.stadtluzern.ch/_rtr/onlinedienst_33601",
+      "source_url": "https://www.stadtluzern.ch/dienstleistungeninformation/28756",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "rav-kriens",
+      "name": "RAV Kriens (Regionales Arbeitsvermittlungszentrum)",
+      "helps_with": "Job placement for job seekers and unemployed people. Responsible for the city of Lucerne. Register online during your notice period, at the latest on the first day of unemployment.",
+      "tiles": ["work"],
+      "subjects": ["job-search", "unemployment"],
+      "address": {"street": "Langsägestrasse 13", "postcode": "6010", "city": "Kriens"},
+      "phone": "+41 41 209 10 90",
+      "hours": "Counter: Mon-Fri 08:00-12:00 and 13:30-16:30",
+      "booking_url": "https://www.job-room.ch/aav",
+      "official_url": "https://www.was-luzern.ch/arbeitsvermittlung-rav",
+      "source_url": "https://www.was-luzern.ch/rav-kriens",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "fabia-luzern",
+      "name": "Fabia Kompetenzzentrum Migration",
+      "helps_with": "Free, confidential advice on migration and daily life in the canton of Lucerne: orientation for newcomers, integration offers and German courses, finances, social insurance, housing, children and family. Interpreters can join under some conditions. For people with permit B, C or L, and for refugees and permit F holders after 10 years in Switzerland. Walk-in consultation every Wednesday 15:00-16:30.",
+      "tiles": ["language", "daily-life", "money", "housing", "children"],
+      "subjects": ["orientation", "german-courses", "integration", "social-insurance"],
+      "address": {"street": "Tribschenstrasse 78", "postcode": "6005", "city": "Luzern"},
+      "phone": "+41 41 360 07 22",
+      "email": "info@fabialuzern.ch",
+      "hours": "Mon 09:00-12:00; Tue 09:00-12:00 and 14:00-17:30; Wed-Thu 09:00-12:00 and 14:00-17:00; Fri 09:00-12:00",
+      "free": true,
+      "appointment_needed": true,
+      "official_url": "https://www.fabialuzern.ch",
+      "source_url": "https://fabialuzern.ch/beraten/privatpersonen",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "fabia-deutschkurse",
+      "name": "Fabia Deutschkurse",
+      "helps_with": "German courses in Lucerne, with a placement test and registration.",
+      "tiles": ["language"],
+      "subjects": ["german-courses"],
+      "address": {"street": "Tribschenstrasse 78", "postcode": "6005", "city": "Luzern"},
+      "phone": "+41 41 361 07 44",
+      "email": "deutschkurse@fabialuzern.ch",
+      "official_url": "https://www.fabialuzern.ch",
+      "source_url": "https://fabialuzern.ch/ueber-uns/kontakt",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "sozial-info-rex",
+      "name": "Sozial Info REX (Stadt Luzern)",
+      "helps_with": "Walk-in desk for social and health questions in the city of Lucerne. It points you to the right service and checks if you can get social assistance (Sozialhilfe). Register for social assistance in person, Mon-Fri 13:00-17:00. Writing help on Thursday 17:00-18:30.",
+      "tiles": ["money"],
+      "subjects": ["social-assistance", "writing-help"],
+      "address": {"street": "Obergrundstrasse 3", "postcode": "6002", "city": "Luzern"},
+      "phone": "+41 41 208 72 72",
+      "hours": "Mon, Tue, Wed, Fri 13:00-17:00; Thu 13:00-18:30",
+      "appointment_needed": false,
+      "official_url": "https://www.stadtluzern.ch/dienstleistungeninformation/145",
+      "source_url": "https://www.stadtluzern.ch/dienstleistungeninformation/145",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "mieterverband-luzern",
+      "name": "Mieterinnen- und Mieterverband Luzern",
+      "helps_with": "Tenancy law advice: rent, defects in the flat, moving out. Advice is free for members. Non-members get advice when they join: CHF 70 per calendar year plus CHF 20 one-time entry fee.",
+      "tiles": ["housing"],
+      "subjects": ["tenancy-law"],
+      "address": {"street": "Industriestrasse 11", "postcode": "6005", "city": "Luzern"},
+      "phone": "+41 41 220 10 22",
+      "email": "luzern@mieterverband.ch",
+      "hours": "Phone: Mon-Fri 09:00-12:30. Short advice without appointment: Tue and Thu 17:00-18:00",
+      "free": false,
+      "appointment_needed": true,
+      "official_url": "https://www.mieterverband.ch/luzern",
+      "source_url": "https://www.mieterverband.ch/mv-lu/hilfe-von-fachleuten/unsere-dienstleistungen/personliche-rechtsberatung/",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "volksschule-stadt-luzern",
+      "name": "Volksschule Stadt Luzern (Rektorat)",
+      "helps_with": "School registration for children of families who move to the city of Lucerne: kindergarten, primary and secondary school. Register with the online forms.",
+      "tiles": ["children"],
+      "subjects": ["school-registration"],
+      "address": {"street": "Winkelriedstrasse 12a", "postcode": "6002", "city": "Luzern"},
+      "phone": "+41 41 208 86 15",
+      "booking_url": "https://www.stadtluzern.ch/_rtr/onlinedienst_102491",
+      "official_url": "https://www.stadtluzern.ch/dienstleistungeninformation/39740",
+      "source_url": "https://www.stadtluzern.ch/dienstleistungeninformation/39740",
+      "verified_on": "2026-11-15"
+    }
+  ],
+  "info": [
+    {
+      "id": "health-insurance",
+      "tiles": ["health"],
+      "subject": "health-insurance",
+      "summary": "Everyone who lives in Switzerland must take out basic health insurance with a Swiss health insurer. You have 3 months after you move here. If you join in time, the insurance starts from the day you moved here.",
+      "official_url": "https://www.was-luzern.ch/kvg",
+      "source_url": "https://www.was-luzern.ch/kvg",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "premium-reduction",
+      "tiles": ["health", "money"],
+      "subject": "premium-reduction",
+      "summary": "In the canton of Lucerne, WAS Ausgleichskasse Luzern can reduce your health insurance premiums. Apply each year, by 31 October of the year before. You cannot apply for past years. If you move here from abroad, you can have a claim during the year.",
+      "official_url": "https://www.was-luzern.ch/praemienverbilligung",
+      "source_url": "https://www.was-luzern.ch/praemienverbilligung",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "public-transport-tickets",
+      "tiles": ["daily-life"],
+      "subject": "public-transport",
+      "summary": "Buy or validate your ticket before you travel: at a ticket machine, at a counter, from the bus driver or with a smartphone app (for example öV Plus or FAIRTIQ). Passepartout tickets are valid for train and bus in the zones you paid for.",
+      "official_url": "https://www.vbl.ch/billette-abos/",
+      "source_url": "https://www.vbl.ch/billette-abos/",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "waste-collection",
+      "tiles": ["daily-life"],
+      "subject": "waste-disposal",
+      "summary": "The collection dates for your street are in the official waste calendar of the city of Lucerne, as the Sammelkalender app or as a PDF. Only the waste calendar is binding. Waste phone: 041 208 78 70.",
+      "official_url": "https://www.stadtluzern.ch/dienstleistungeninformation/54875",
+      "source_url": "https://www.stadtluzern.ch/dienstleistungeninformation/3550",
+      "verified_on": "2026-11-15"
+    }
+  ],
+  "emergency": [
+    {
+      "id": "emergency-112",
+      "name": "Europäischer Notruf",
+      "phone": "112",
+      "description": "European emergency number",
+      "source_url": "https://polizei.lu.ch/Feedback_Kontakt/notrufnummern",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "emergency-117",
+      "name": "Polizei-Notruf",
+      "phone": "117",
+      "description": "Police",
+      "source_url": "https://polizei.lu.ch/Feedback_Kontakt/notrufnummern",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "emergency-118",
+      "name": "Feuerwehr - Notruf",
+      "phone": "118",
+      "description": "Fire brigade",
+      "source_url": "https://polizei.lu.ch/Feedback_Kontakt/notrufnummern",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "emergency-144",
+      "name": "Sanitätsnotruf",
+      "phone": "144",
+      "description": "Ambulance, for life-threatening emergencies",
+      "source_url": "https://polizei.lu.ch/Feedback_Kontakt/notrufnummern",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "emergency-145",
+      "name": "Toxikologisches Informationszentrum",
+      "phone": "145",
+      "description": "Poisoning",
+      "source_url": "https://polizei.lu.ch/Feedback_Kontakt/notrufnummern",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "emergency-142",
+      "name": "Opferhilfe Schweiz",
+      "phone": "142",
+      "description": "Help for victims of violence or crime",
+      "source_url": "https://polizei.lu.ch/Feedback_Kontakt/notrufnummern",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "emergency-143",
+      "name": "Die Dargebotene Hand",
+      "phone": "143",
+      "description": "Talk to someone about a crisis, anonymous and confidential. English: 0800 143 000, 18:00-23:00",
+      "source_url": "https://www.143.ch/",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "emergency-147",
+      "name": "Pro Juventute 147",
+      "phone": "147",
+      "description": "Free, confidential advice for children and young people; the call does not show on the phone bill",
+      "source_url": "https://www.147.ch/",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "health-hotline-luzern",
+      "name": "Kantonale Gesundheitsleitstelle",
+      "phone": "+41 800 041 041",
+      "description": "Medical emergencies that are not life-threatening",
+      "source_url": "https://polizei.lu.ch/Feedback_Kontakt/notrufnummern",
+      "verified_on": "2026-11-15"
+    },
+    {
+      "id": "aerztetelefon",
+      "name": "Ärztetelefon",
+      "phone": "+41 800 33 66 55",
+      "description": "Doctor on call when your own doctor is not available",
+      "source_url": "https://www.stadtluzern.ch/neuinderstadt/83665",
+      "verified_on": "2026-11-15"
+    }
+  ]
+}

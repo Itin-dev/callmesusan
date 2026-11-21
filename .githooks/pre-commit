@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Git pre-commit hook — block commits on main, then full CI-parity validation.
+set -euo pipefail
+if [ "$(git branch --show-current)" = "main" ]; then
+  echo "Do not commit on main. Create a branch: git checkout -b feature/<name>" >&2
+  exit 1
+fi
+exec bash "$(git rev-parse --show-toplevel)/scripts/validate.sh"

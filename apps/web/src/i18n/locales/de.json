@@ -1,0 +1,46 @@
+{
+  "home": {
+    "title": "Hilfe in Luzern finden",
+    "intro": "Wähle deine Sprache und ein Thema.",
+    "language": "Sprache",
+    "topics": "Themen",
+    "badges": {
+      "free": "Kostenlos",
+      "anonymous": "Anonym",
+      "noSignup": "Ohne Registrierung"
+    }
+  },
+  "theme": {
+    "label": "Farbschema",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
+  "topics": {
+    "work": "Arbeit",
+    "housing": "Wohnen",
+    "health": "Gesundheit",
+    "language": "Sprachkurse",
+    "documents": "Dokumente",
+    "money": "Geld",
+    "children": "Kinder",
+    "daily-life": "Alltag",
+    "urgent": "Dringende Hilfe"
+  },
+  "topic": {
+    "back": "Zurück zu den Themen",
+    "comingSoon": "Informationen zu diesem Thema folgen bald.",
+    "notFound": "Thema nicht gefunden"
+  },
+  "topicHints": {
+    "work": "Stellen, Arbeitsbewilligung und Arbeitslosigkeit",
+    "housing": "Wohnung finden, Miete und Nachbarschaft",
+    "health": "Ärzte, Krankenkasse und Schwangerschaft",
+    "language": "Deutschkurse und Dolmetschen",
+    "documents": "Bewilligungen, Briefe und Formulare",
+    "money": "Sozialhilfe, Schulden und Steuern",
+    "children": "Schule, Kinderbetreuung und Familie",
+    "daily-life": "Verkehr, Einkaufen und Freizeit",
+    "urgent": "Gewalt, Krise oder Notfall: jetzt Hilfe holen"
+  }
+}

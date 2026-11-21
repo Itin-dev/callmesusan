@@ -1,0 +1,46 @@
+{
+  "home": {
+    "title": "Find help in Lucerne",
+    "intro": "Choose your language and a topic.",
+    "language": "Language",
+    "topics": "Topics",
+    "badges": {
+      "free": "Free",
+      "anonymous": "Anonymous",
+      "noSignup": "No registration"
+    }
+  },
+  "theme": {
+    "label": "Color theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "topics": {
+    "work": "Work",
+    "housing": "Housing",
+    "health": "Health",
+    "language": "Language courses",
+    "documents": "Documents",
+    "money": "Money",
+    "children": "Children",
+    "daily-life": "Daily life",
+    "urgent": "Urgent help"
+  },
+  "topic": {
+    "back": "Back to topics",
+    "comingSoon": "Information about this topic is coming soon.",
+    "notFound": "Topic not found"
+  },
+  "topicHints": {
+    "work": "Jobs, work permits and unemployment",
+    "housing": "Find a flat, rent and neighbours",
+    "health": "Doctors, health insurance and pregnancy",
+    "language": "German courses and interpreters",
+    "documents": "Permits, letters and official forms",
+    "money": "Social help, debts and taxes",
+    "children": "School, childcare and family",
+    "daily-life": "Transport, shopping and free time",
+    "urgent": "Violence, crisis or emergency: get help now"
+  }
+}

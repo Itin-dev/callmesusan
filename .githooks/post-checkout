@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Git post-checkout hook — warn right away when a new branch starts from an old main.
+# Git cannot block branch creation; pre-push enforces the same check.
+set -euo pipefail
+is_branch="$3"
+branch="$(git branch --show-current)"
+[ "$is_branch" = "1" ] && [ -n "$branch" ] && [ "$branch" != "main" ] || exit 0
+# A just-created branch has exactly one reflog entry.
+[ "$(git reflog show -n 2 --format=%H "refs/heads/$branch" 2>/dev/null | wc -l | tr -d ' ')" = "1" ] || exit 0
+bash "$(git rev-parse --show-toplevel)/scripts/check-fresh-base.sh" --warn || true

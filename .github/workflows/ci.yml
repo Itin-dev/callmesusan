@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install pre-commit uv
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Install app dependencies
+        run: |
+          (cd services/api && uv sync --frozen)
+          npm --prefix apps/web ci --no-audit --no-fund
+
+      - name: Conventional PR title (becomes the squash commit)
+        if: github.event_name == 'pull_request'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [[ ! "$TITLE" =~ ^(feat|fix|docs|chore|refactor|test|ci|perf|build|style|revert)(\(.+\))?!?:\ .+ ]]; then
+            echo "::error::PR title must be a Conventional Commit, e.g. 'feat: add login screen'. Got: $TITLE"
+            exit 1
+          fi
+
+      - name: Validate (same as local hooks)
+        run: bash scripts/validate.sh

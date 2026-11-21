@@ -1,0 +1,33 @@
+# Allowed top-level names for validate.sh root-layout check.
+# Lines starting with # are comments. Exact names only.
+
+.git
+.claude
+.devcontainer
+.githooks
+.github
+.editorconfig
+.env.example
+.gitignore
+.mcp.json
+vercel.json
+requirements.txt
+api
+.pre-commit-config.yaml
+CLAUDE.md
+CONTRIBUTING.md
+LICENSE
+Makefile
+PLAN.md
+PROGRESS.md
+README.md
+SECURITY.md
+apps
+design
+docker
+docs
+packages
+scripts
+services
+skills-lock.json
+tests

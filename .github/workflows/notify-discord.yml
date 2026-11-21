@@ -1,0 +1,43 @@
+name: notify-discord
+
+# Announce PRs in Discord: one message when a PR is opened (or leaves draft), one when it is
+# merged. Requires the DISCORD_WEBHOOK_URL repo secret; skips silently when it is not set.
+on:
+  pull_request:
+    types: [opened, ready_for_review, closed]
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  notify:
+    # Opened (not draft) or ready for review → "opened"; closed and merged → "merged".
+    if: >-
+      (github.event.action != 'closed' && github.event.pull_request.draft == false) ||
+      (github.event.action == 'closed' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Post to Discord
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          ACTION: ${{ github.event.action }}
+          TITLE: ${{ github.event.pull_request.title }}
+          URL: ${{ github.event.pull_request.html_url }}
+          NUMBER: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+          MERGER: ${{ github.event.pull_request.merged_by.login }}
+        run: |
+          if [ -z "$WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK_URL not set; skipping."
+            exit 0
+          fi
+          if [ "$ACTION" = "closed" ]; then
+            title="Merged #$NUMBER: $TITLE"; desc="by $AUTHOR, merged by $MERGER"; color=5763719  # green
+          else
+            title="PR opened #$NUMBER: $TITLE"; desc="by $AUTHOR — preview link follows on the PR"; color=3447003  # blue
+          fi
+          payload="$(jq -n --arg title "$title" --arg url "$URL" --arg desc "$desc" --argjson color "$color" \
+            '{username: "GitHub", allowed_mentions: {parse: []},
+              embeds: [{title: $title, url: $url, description: $desc, color: $color}]}')"
+          curl -fsS -H "Content-Type: application/json" -d "$payload" "$WEBHOOK"
