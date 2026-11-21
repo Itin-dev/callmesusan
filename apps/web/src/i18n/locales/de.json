@@ -85,7 +85,8 @@
     "notFound": "Wir konnten diese Transaktion nicht finden.",
     "toHome": "Zurück zu Home",
     "discount": "Rabatt",
-    "weight": "{{weight}} kg"
+    "weight": "{{weight}} kg",
+    "receiptAdded": "Zu deiner Zahlung bei {{shop}} hinzugefügt, {{date}}, {{amount}}"
   },
   "categories": {
     "dairy": "Milchprodukte",
@@ -122,5 +123,13 @@
     "disclaimer": "Psst bewegt nie Geld ohne dein Ja.",
     "fromUser": "Du:",
     "fromPsst": "Psst:"
+  },
+  "scan": {
+    "title": "Beleg scannen",
+    "intro": "Fotografiere einen Kassenbeleg. Psst fügt die Artikel deiner Zahlung hinzu.",
+    "choose": "Foto aufnehmen oder wählen",
+    "reading": "Psst liest deinen Beleg…",
+    "noMatch": "Psst hat den Beleg gelesen, aber keine Zahlung passt dazu.",
+    "error": "Der Beleg konnte nicht gelesen werden. Bitte versuche es erneut."
   }
 }

@@ -1,10 +1,13 @@
 import { useTranslation } from 'react-i18next'
-import { Link, useParams } from 'react-router'
+import { Link, useLocation, useParams } from 'react-router'
 import cameraIcon from '@/assets/icons/camera.svg'
 import detailsIcon from '@/assets/icons/details.svg'
 import { isNotFound, useReceiptInsight, useTransaction } from '@/api/queries'
 import BackButton from '@/components/shell/BackButton'
 import { Button } from '@/components/ui/button'
+import { scannedReceiptFrom } from '@/features/scan/scanState'
+import { formatDate } from '@/lib/date'
+import { formatChf } from '@/lib/money'
 import PsstInsight from './PsstInsight'
 import ReceiptCard from './ReceiptCard'
 import TransactionSummary from './TransactionSummary'
@@ -13,7 +16,10 @@ import TransactionSummary from './TransactionSummary'
 export default function TransactionPage() {
   const { t } = useTranslation()
   const { id = '' } = useParams()
-  const { data: transaction, isPending, isError, error, refetch } = useTransaction(id)
+  const { data: loaded, isPending, isError, error, refetch } = useTransaction(id)
+  // Just scanned (FE-7): the backend stores no scan, so the receipt comes with the navigation.
+  const scanned = scannedReceiptFrom(useLocation().state)
+  const transaction = loaded && scanned && !loaded.receipt ? { ...loaded, receipt: scanned, has_receipt: true } : loaded
   const { data: insight } = useReceiptInsight(transaction)
 
   return (
@@ -44,6 +50,15 @@ export default function TransactionPage() {
 
       {transaction && (
         <>
+          {scanned && (
+            <p role="status" className="rounded-xl bg-card p-4 text-body font-semibold">
+              {t('transaction.receiptAdded', {
+                shop: transaction.counterparty,
+                date: formatDate(transaction.date),
+                amount: formatChf(transaction.amount_rp),
+              })}
+            </p>
+          )}
           <TransactionSummary transaction={transaction} />
           {transaction.receipt && <ReceiptCard receipt={transaction.receipt} highlight={insight?.category} />}
           {insight && <PsstInsight insight={insight} />}

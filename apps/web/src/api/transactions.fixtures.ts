@@ -3,6 +3,21 @@ import type { Transaction, TransactionAccount, TransactionDetail } from './types
 // Test data: real GET /api/transactions/{id} responses (services/api, BE-1). K-0241 Coop and
 // K-0242 Lidl (weighed items, discounts) have receipts; K-0240 has none. Used by mockApi() in tests.
 export const TRANSACTION_FIXTURES: Record<string, TransactionDetail> = {
+  // The LOLA payment the scanned test photo matches (FE-7). The backend stores no scan: receipt stays null.
+  'P-0236': {
+    id: 'P-0236',
+    account: 'privat',
+    date: '2025-11-21',
+    type: 'expense',
+    description: 'LOLA Mattenhof Bern 2025-11-21',
+    counterparty: 'LOLA Mattenhof',
+    amount_rp: 910,
+    currency: 'CHF',
+    original_amount: null,
+    original_currency: null,
+    has_receipt: false,
+    receipt: null,
+  },
   'K-0241': {
     id: 'K-0241',
     account: 'kk',

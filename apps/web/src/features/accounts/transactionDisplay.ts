@@ -1,4 +1,5 @@
 import type { Transaction } from '@/api/types'
+import { formatDate, utc } from '@/lib/date'
 
 // Display formatting for the account transaction list. No business logic: receipt status,
 // totals and matching come from the backend; this only groups, labels and abbreviates.
@@ -18,16 +19,14 @@ export function groupByDay(transactions: Transaction[]): DayGroup[] {
     .map(([date, items]) => ({ date, transactions: items }))
 }
 
-const dateFormat = new Intl.DateTimeFormat('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
 const DAY_MS = 24 * 60 * 60 * 1000
-const utc = (isoDate: string) => Date.parse(`${isoDate}T00:00:00Z`)
 
 /** Day heading: "today", "yesterday" (translated by the caller) or the date as dd.mm.yyyy. */
 export function formatDay(date: string, today: string): 'today' | 'yesterday' | string {
   const daysAgo = Math.round((utc(today) - utc(date)) / DAY_MS)
   if (daysAgo === 0) return 'today'
   if (daysAgo === 1) return 'yesterday'
-  return dateFormat.format(utc(date))
+  return formatDate(date)
 }
 
 /** The device's local date as YYYY-MM-DD, to compare with transaction dates. */
