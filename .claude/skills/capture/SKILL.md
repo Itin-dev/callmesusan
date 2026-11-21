@@ -116,7 +116,7 @@ Title: imperative, ≤ 70 chars ("Add login screen", not "Login screen should be
 ```
 
 ```bash
-gh issue create --title "..." --label "area:<x>" --body-file "$BODY" --project "Hackathon"
+gh issue create --title "..." --label "area:<x>" --body-file "$BODY" --project "psst"
 ```
 
 - If `--project` fails (no board yet, or missing `project` token scope), retry without it and
