@@ -1,7 +1,8 @@
 {
   "common": {
     "loading": "Завантаження…",
-    "loadError": "Не вдалося завантажити дані. Спробуй ще раз."
+    "loadError": "Не вдалося завантажити дані. Спробуй ще раз.",
+    "retry": "Спробувати ще раз"
   },
   "psst": {
     "name": "Psst",
@@ -46,5 +47,41 @@
   "services": {
     "title": "Сервіси",
     "language": "Мова"
+  },
+  "transaction": {
+    "title": "Транзакція",
+    "back": "Назад",
+    "details": "Деталі",
+    "explains": "Psst пояснює",
+    "receipt": "Чек",
+    "source": {
+      "store_app": "з додатку магазину",
+      "photo": "з фото"
+    },
+    "total": "Разом",
+    "quantity": "× {{count}}",
+    "insight": "Psst: цього місяця {{category}} — {{amount}}, приблизно в {{ratio}}× більше, ніж зазвичай.",
+    "ask": "Як витрачати менше на {{category}}?",
+    "addPhoto": "Додати фото чека",
+    "notFound": "Ми не знайшли цю транзакцію.",
+    "toHome": "На головну"
+  },
+  "categories": {
+    "dairy": "молочні продукти",
+    "bakery": "випічка",
+    "fruit": "фрукти",
+    "vegetables": "овочі",
+    "meat_fish": "м'ясо і риба",
+    "eggs": "яйця",
+    "pasta": "макарони",
+    "frozen": "заморожені продукти",
+    "spreads": "намазки",
+    "snacks": "снеки",
+    "chocolate": "шоколад",
+    "beverages": "напої",
+    "coffee": "кава",
+    "alcohol": "алкоголь",
+    "household": "побутові товари",
+    "personal_care": "особиста гігієна"
   }
 }

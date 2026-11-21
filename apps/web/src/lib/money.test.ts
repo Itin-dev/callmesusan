@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatChf } from './money'
+import { formatAmount, formatChf } from './money'
 
 const NBSP = ' '
 
@@ -23,5 +23,16 @@ describe('formatChf', () => {
   it('formats zero and small amounts', () => {
     expect(formatChf(0)).toBe(`CHF${NBSP}0.00`)
     expect(formatChf(5)).toBe(`CHF${NBSP}0.05`)
+  })
+})
+
+describe('formatAmount', () => {
+  it('formats Rappen without the currency, as on a receipt line', () => {
+    expect(formatAmount(1295)).toBe('12.95')
+    expect(formatAmount(180)).toBe('1.80')
+  })
+
+  it('uses an ASCII apostrophe as thousands separator', () => {
+    expect(formatAmount(123450)).toBe("1'234.50")
   })
 })
