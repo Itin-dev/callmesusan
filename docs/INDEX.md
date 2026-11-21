@@ -14,6 +14,12 @@ Entrypoint for humans and agents. Prefer linking here instead of duplicating gui
 | [security.md](security.md) | Local scanners + CI |
 | [tdd-and-quality.md](tdd-and-quality.md) | TDD, readable code, SoC |
 
+## Product
+
+| Doc | Purpose |
+|-----|---------|
+| [features.md](features.md) | Psst feature ideas, must-have, where Psst fits in the PostFinance app |
+
 ## Stack
 
 | Doc | Purpose |
