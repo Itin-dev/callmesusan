@@ -61,5 +61,3 @@ visibility and support well-informed decisions.
 - Which insights are "genuinely useful" — pick a few strong ones over many weak ones.
 - Financial advice must stay explanatory, not regulated investment advice.
 - The Figma files may still hold content from the previous topic and need checking.
-- The Vercel project URL (`aihackatontest.vercel.app`) still comes from the template; confirm
-  the production URL for this repo.

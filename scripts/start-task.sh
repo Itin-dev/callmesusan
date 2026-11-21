@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2016  # $vars inside GraphQL queries are GraphQL variables
 # Start work on a GitHub issue: assign it to you, create its branch from main,
-# and move its card on the "Hackathon" board to "In progress".
+# and move its card on the "psst" board to "In progress".
 #
 # Usage: bash scripts/start-task.sh [--parallel] <issue-number>
 # One task at a time: refuses while another issue assigned to you has a branch (local or
@@ -10,7 +10,7 @@
 # Board steps are best-effort: a failure there warns but never blocks the branch.
 set -euo pipefail
 
-BOARD_TITLE="Hackathon"
+BOARD_TITLE="psst"
 STATUS="In progress"
 
 # branch_name <number> <title> [labels-csv] -> feature/<n>-<slug> (fix/ for bugs)

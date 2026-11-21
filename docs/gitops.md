@@ -48,7 +48,7 @@ Never put secrets, tokens or personal data in a question.
 
 ## Project board
 
-Board: <https://github.com/orgs/Itin-dev/projects/1> — created and kept in sync by
+Board: <https://github.com/orgs/Itin-dev/projects/2> — created and kept in sync by
 `bash scripts/setup-project.sh` (idempotent; edit `TEAM` there to change editors).
 
 Columns: Backlog → Todo → In progress → Review → Done. Areas are issue labels (`area:*`),

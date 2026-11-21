@@ -1,6 +1,6 @@
 # Deploy (Vercel)
 
-Production: <https://aihackatontest.vercel.app> (health: `/api/health`).
+Production: <https://callmesusan.vercel.app> (health: `/api/health`).
 
 One Vercel project serves the whole app:
 

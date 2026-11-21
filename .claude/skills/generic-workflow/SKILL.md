@@ -1,6 +1,6 @@
 ---
 name: generic-workflow
-description: Ticket lifecycle on the Hackathon project board (Backlog → Todo → In progress → Review → Done), its rules and restrictions, branch-first git flow, hooks validation and PR rules. Use when the user asks to take, work on, pick up, start or implement an issue/ticket/task ("take #50", "next ticket"), asks about ticket status or the board, and when committing, pushing, opening PRs, or setting up a new clone.
+description: Ticket lifecycle on the psst project board (Backlog → Todo → In progress → Review → Done), its rules and restrictions, branch-first git flow, hooks validation and PR rules. Use when the user asks to take, work on, pick up, start or implement an issue/ticket/task ("take #50", "next ticket"), asks about ticket status or the board, and when committing, pushing, opening PRs, or setting up a new clone.
 ---
 
 # generic-workflow
@@ -9,7 +9,7 @@ Do every step yourself. Never ask the user to run commands.
 
 ## The board
 
-Project **Hackathon** (<https://github.com/orgs/Itin-dev/projects/1>), field **Status**:
+Project **psst** (<https://github.com/orgs/Itin-dev/projects/2>), field **Status**:
 
 | Status | Meaning | Who moves the card there |
 |--------|---------|--------------------------|

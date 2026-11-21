@@ -5,12 +5,12 @@
 # Usage: bash scripts/setup-project.sh
 # Needs: gh with the `project` scope (gh auth refresh -s project).
 #
-# Result: project "Hackathon" linked to this repo, Status columns
+# Result: project "psst" linked to this repo, Status columns
 # Backlog → Todo → In progress → Review → Done, TEAM members as writers.
 # Built-in workflow "auto-add" cannot be enabled through the API — see docs/gitops.md.
 set -euo pipefail
 
-TITLE="Hackathon"
+TITLE="psst"
 # Board editors (GitHub logins). Logins removed here lose their project role on the next run.
 TEAM=(mystique4u lumbri 3Nplus1)
 REMOVED=(makovstanislav ShkrSltn)
@@ -29,7 +29,7 @@ fi
 project_id="$(gh project view "$number" --owner "$OWNER" --format json --jq .id)"
 gh project link "$number" --owner "$OWNER" --repo "$REPO" >/dev/null 2>&1 || true
 gh project edit "$number" --owner "$OWNER" \
-  --description "Hackathon board for $REPO" >/dev/null
+  --description "psst board for $REPO" >/dev/null
 
 # Status columns (replaces the default Todo / In Progress / Done options).
 # Rewriting options changes their IDs and clears every card's status, so only

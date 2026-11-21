@@ -40,7 +40,7 @@ make web   # terminal 2 → http://localhost:5173
 ```
 
 Stack: FastAPI + React — see [docs/stack.md](docs/stack.md).
-Live: <https://aihackatontest.vercel.app>. Deploy: Vercel — every PR gets a preview URL, `main` goes to production — see [docs/deploy.md](docs/deploy.md).
+Live: <https://callmesusan.vercel.app>. Deploy: Vercel — every PR gets a preview URL, `main` goes to production — see [docs/deploy.md](docs/deploy.md).
 
 Claude Code runs the doctor quietly at every session start and tells you what is missing.
 
