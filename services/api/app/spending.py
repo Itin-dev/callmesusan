@@ -5,6 +5,7 @@ credit card account (kk) is a merchant refund and reduces spending, income on pr
 """
 
 import json
+from datetime import date, timedelta
 from functools import lru_cache
 
 from pydantic import BaseModel
@@ -16,6 +17,10 @@ TOP_PER_MONTH = 5
 TOP_PER_YEAR = 10
 # the period of GET /api/spending/summary is one calendar year
 MONTHS_PER_YEAR = 12
+# weeks with daily detail in the chat context: enough for "last week", short enough for the prompt
+WEEKS_SHOWN = 6
+# own names, because strftime("%A") follows the server locale
+WEEKDAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
 
 def _is_refund(tx: dict) -> bool:
@@ -74,8 +79,54 @@ def _amounts(entries: list[tuple[str, int]]) -> str:
     return ", ".join(f"{name} {_chf(amount)}" for name, amount in entries)
 
 
-def spending_summary(transactions: list[dict], receipts: list[dict]) -> str:
-    lines = [
+def daily_spending(transactions: list[dict]) -> dict[str, int]:
+    """Net spending per day ("YYYY-MM-DD"): expenses minus card refunds, transfers left out."""
+    days: dict[str, int] = {}
+    for tx in transactions:
+        if tx["type"] == "expense":
+            days[tx["date"]] = days.get(tx["date"], 0) + tx["amount_rp"]
+        elif _is_refund(tx):
+            days[tx["date"]] = days.get(tx["date"], 0) - tx["amount_rp"]
+    return days
+
+
+def week_lines(transactions: list[dict], today: date) -> list[str]:
+    """One line per ISO week (Monday to Sunday), the last WEEKS_SHOWN weeks up to today."""
+    days = daily_spending(transactions)
+    this_monday = today - timedelta(days=today.weekday())
+    lines = []
+    for weeks_back in range(WEEKS_SHOWN - 1, -1, -1):
+        monday = this_monday - timedelta(weeks=weeks_back)
+        sunday = monday + timedelta(days=6)
+        week_days = [monday + timedelta(days=offset) for offset in range(7)]
+        spent = [(day, days[day.isoformat()]) for day in week_days if day.isoformat() in days]
+        detail = ", ".join(
+            f"{WEEKDAYS[day.weekday()][:3]} {day.isoformat()} {_chf(amount)}"
+            for day, amount in spent
+        )
+        year, week, _ = monday.isocalendar()
+        lines.append(
+            f"{year}-W{week:02d} ({monday.isoformat()} to {sunday.isoformat()}):"
+            f" spending {_chf(sum(amount for _, amount in spent))}; {detail or 'no spending'}"
+        )
+    return lines
+
+
+def spending_summary(
+    transactions: list[dict], receipts: list[dict], today: date | None = None
+) -> str:
+    """Text context for the chat. With today, rows and receipts after that day stay hidden."""
+    lines = []
+    if today is not None:
+        cutoff = today.isoformat()
+        transactions = [tx for tx in transactions if tx["date"] <= cutoff]
+        receipts = [receipt for receipt in receipts if receipt["date"] <= cutoff]
+        first = min((tx["date"] for tx in transactions), default=cutoff)
+        lines.append(
+            f"Today is {WEEKDAYS[today.weekday()]}, {cutoff}. The data covers {first} to {cutoff};"
+            f" there is no data before {first}."
+        )
+    lines += [
         "Spending data of the user in CHF. Transfers between the user's own accounts are not"
         " spending; refunds are already subtracted.",
         "Per month:",
@@ -88,6 +139,9 @@ def spending_summary(transactions: list[dict], receipts: list[dict]) -> str:
         )
     if transactions:
         lines.append(f"Top merchants of the year: {_amounts(top_merchants(transactions))}")
+    if today is not None:
+        lines.append(f"Last {WEEKS_SHOWN} weeks (Monday to Sunday), spending per day:")
+        lines.extend(week_lines(transactions, today))
     categories = receipt_categories(receipts)
     if categories:
         lines.append("Shop receipt items by category (only partner shops send receipts):")
@@ -136,10 +190,10 @@ def year_summary(transactions: list[dict], year: int) -> dict:
 
 
 @lru_cache
-def current_summary() -> str:
+def current_summary(today: date | None = None) -> str:
     """Summary of the demo data in app/data, built once per process."""
     transactions = json.loads(TRANSACTIONS_FILE.read_text(encoding="utf-8"))
     receipts = [
         json.loads(p.read_text(encoding="utf-8")) for p in sorted(RECEIPTS_DIR.glob("*.json"))
     ]
-    return spending_summary(transactions, receipts)
+    return spending_summary(transactions, receipts, today)

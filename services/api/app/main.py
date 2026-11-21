@@ -66,7 +66,7 @@ def chat(
         [m.model_dump() for m in request.messages],
         language=request.language,
         persona=settings.system_prompt,
-        context=current_summary(),
+        context=current_summary(settings.demo_today),
     )
     return ChatReply(reply=llm.complete(messages).strip())
 
