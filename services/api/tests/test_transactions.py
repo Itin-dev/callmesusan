@@ -35,7 +35,7 @@ def client():
 
 def test_list_returns_all_transactions_with_contract_fields(client):
     rows = client.get("/api/transactions").json()
-    assert len(rows) == 531
+    assert len(rows) == 533
     assert all(set(row) == LIST_FIELDS for row in rows)
 
 
@@ -52,7 +52,7 @@ def test_list_keeps_row_order_reversed_within_one_day(client):
 
 def test_list_filters_by_account(client):
     rows = client.get("/api/transactions", params={"account": "kk"}).json()
-    assert len(rows) == 265
+    assert len(rows) == 266
     assert {row["account"] for row in rows} == {"kk"}
 
 

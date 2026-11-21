@@ -27,7 +27,7 @@ in the frame is mock data. Export: [design/screens/08-account-detail.png](../des
 
 All in `services/api/app/data/`:
 
-- `transactions.json` holds 531 transactions for 2025, `account` `privat` or `kk`, `type` `expense`,
+- `transactions.json` holds 533 transactions for 2025, `account` `privat` or `kk`, `type` `expense`,
   `income` or `transfer`, amounts as integer Rappen (`amount_rp`).
 - `receipts/*.json` holds 5 supermarket receipts from November 2025. Each item has `category`,
   `quantity`, `unit_price_rp`, `line_total_rp` and `vat_rate_pct`.

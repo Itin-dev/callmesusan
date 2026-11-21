@@ -265,6 +265,7 @@
 {"id": "P-0264", "account": "privat", "date": "2025-12-26", "type": "expense", "description": "Mittagessen Kantine Employer AG", "counterparty": "Kantine AG", "amount_rp": 1175, "currency": "CHF"},
 {"id": "P-0265", "account": "privat", "date": "2025-12-29", "type": "expense", "description": "Krankenkasse", "counterparty": "Krankenkasse", "amount_rp": 98200, "currency": "CHF"},
 {"id": "P-0266", "account": "privat", "date": "2025-12-29", "type": "expense", "description": "Mittagessen Kantine Employer AG", "counterparty": "Kantine AG", "amount_rp": 1530, "currency": "CHF"},
+{"id": "P-0267", "account": "privat", "date": "2025-10-05", "type": "expense", "description": "Smokee Luzern 2025-10-05", "counterparty": "Smokee Luzern", "amount_rp": 2780, "currency": "CHF"},
 {"id": "K-0001", "account": "kk", "date": "2025-01-01", "type": "expense", "description": "Paypal 2025-01-01", "counterparty": "Paypal", "amount_rp": 11790, "currency": "CHF"},
 {"id": "K-0002", "account": "kk", "date": "2025-01-01", "type": "expense", "description": "Amazon.com 2025-01-01", "counterparty": "Amazon.com", "amount_rp": 8245, "currency": "CHF"},
 {"id": "K-0003", "account": "kk", "date": "2025-01-04", "type": "expense", "description": "Paypal 2025-01-04", "counterparty": "Paypal", "amount_rp": 26350, "currency": "CHF"},
@@ -529,5 +530,6 @@
 {"id": "K-0262", "account": "kk", "date": "2025-12-20", "type": "expense", "description": "Amazon.com 2025-12-20", "counterparty": "Amazon.com", "amount_rp": 4090, "currency": "CHF"},
 {"id": "K-0263", "account": "kk", "date": "2025-12-21", "type": "expense", "description": "petcenter.ch 2025-12-21", "counterparty": "petcenter.ch", "amount_rp": 4610, "currency": "CHF"},
 {"id": "K-0264", "account": "kk", "date": "2025-12-23", "type": "transfer", "description": "Kreditkarten-Zahlung 2025-12-23", "counterparty": "Privatkonto", "amount_rp": 28795, "currency": "CHF"},
-{"id": "K-0265", "account": "kk", "date": "2025-11-20", "type": "expense", "description": "Denner Kriens Zentrum 2025-11-20", "counterparty": "Denner Kriens Zentrum", "amount_rp": 5805, "currency": "CHF"}
+{"id": "K-0265", "account": "kk", "date": "2025-11-20", "type": "expense", "description": "Denner Kriens Zentrum 2025-11-20", "counterparty": "Denner Kriens Zentrum", "amount_rp": 5805, "currency": "CHF"},
+{"id": "K-0266", "account": "kk", "date": "2025-10-10", "type": "expense", "description": "IKEA Lyssach 2025-10-10", "counterparty": "IKEA Lyssach", "amount_rp": 23095, "currency": "CHF"}
 ]
