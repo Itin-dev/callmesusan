@@ -6,7 +6,7 @@ from fastapi import Depends, FastAPI, Form, HTTPException, Query, UploadFile
 from pydantic import BaseModel
 
 from app.accounts import AccountsOverview, accounts_overview
-from app.chat import ChatReply, ChatRequest, Language, build_messages
+from app.chat import ChatReply, ChatRequest, Language, build_messages, scanned_receipts_context
 from app.config import Settings, get_settings
 from app.llm import LLM, get_llm
 from app.scan import MAX_UPLOAD_BYTES, ModelAnswerError, ScanResult, UploadError, scan_receipt
@@ -82,7 +82,14 @@ def chat(
         [m.model_dump() for m in request.messages],
         language=request.language,
         persona=settings.system_prompt,
-        context=current_summary(settings.demo_today),
+        context="\n\n".join(
+            part
+            for part in (
+                current_summary(settings.demo_today),
+                scanned_receipts_context(request.receipts, all_transactions()),
+            )
+            if part
+        ),
     )
     return ChatReply(reply=llm.complete(messages).strip())
 

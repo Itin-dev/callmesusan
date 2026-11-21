@@ -2,13 +2,16 @@
 
 A photo of a paper receipt goes to a vision model, which answers in a fixed JSON schema. Python
 validates the answer, computes the category totals and the total check, and finds the payment:
-same amount, same day and month. The year is ignored, because the bank data is from 2025 and a
-receipt photographed now shows 2026. Nothing is stored or logged: the photo can show card data.
+the same amount, day and month within one day, the shop name to break ties. The year is ignored,
+because the bank data is from 2025 and a receipt photographed now shows 2026. Nothing is stored or
+logged: the photo can show card data.
 """
 
 import base64
 import hashlib
 import json
+import re
+from datetime import date
 from typing import Annotated, Any, Literal, get_args
 
 from pydantic import BaseModel, Field, NonNegativeInt, PositiveFloat, ValidationError
@@ -26,6 +29,8 @@ from app.transactions import (
 MAX_UPLOAD_BYTES = 4 * 1024 * 1024
 # a receipt is consistent when its items add up to the total within this many Rappen
 TOTAL_TOLERANCE_RP = 5
+# a card payment can be booked a day after the purchase, and OCR can misread the day by one
+MAX_DAYS_APART = 1
 # the prepared answer for the LOLA test photo, used only with DEMO_SCAN_FALLBACK=1
 FALLBACK_FILE = DATA_DIR / "scans" / "receipt-lola-20251121.json"
 
@@ -112,10 +117,20 @@ class ScanCheck(BaseModel):
     matches_total: bool
 
 
+class PaymentMatch(BaseModel):
+    """Why the payment was chosen: the simple checks the user can see."""
+
+    amount_matches: bool
+    days_apart: int
+    merchant_matches: bool
+
+
 class ScanResult(BaseModel):
     transaction_id: str | None
     receipt: Receipt
     check: ScanCheck
+    # null when no payment passes the checks
+    match: PaymentMatch | None = None
     # true only for the prepared LOLA answer after a model failure (DEMO_SCAN_FALLBACK=1)
     fallback: bool = False
 
@@ -143,17 +158,49 @@ def image_type(data: bytes) -> str:
     raise UploadError(415, "send a JPEG or PNG photo")
 
 
-def match_payment(transactions: list[dict], scanned: ScannedReceipt) -> str | None:
-    """Id of the expense with the same amount, day and month, or None."""
-    month_day = scanned.date[5:]
+def _merchant_matches(store: str, tx: dict) -> bool:
+    """The shop name, without spaces and case, appears in the bank text."""
+    name = re.sub(r"\W", "", store.casefold())
+    text = re.sub(r"\W", "", f"{tx['counterparty']} {tx['description']}".casefold())
+    return bool(name) and name in text
+
+
+def _days_apart(scanned_date: str, tx_date: str) -> int | None:
+    """Days between receipt and payment, in the payment's year; None for an impossible date."""
+    paid = date.fromisoformat(tx_date)
+    try:
+        bought = date(paid.year, int(scanned_date[5:7]), int(scanned_date[8:10]))
+    except ValueError:
+        return None
+    return abs((paid - bought).days)
+
+
+def match_payment(
+    transactions: list[dict], scanned: ScannedReceipt
+) -> tuple[str, PaymentMatch] | None:
+    """The expense that paid this receipt, with the checks that found it, or None.
+
+    The amount must equal the receipt total and the payment must be booked within MAX_DAYS_APART
+    days (day and month; the year is ignored). Among several candidates the one whose bank text
+    names the shop wins, then the closest date.
+    """
+    candidates = []
     for tx in transactions:
-        if (
-            tx["type"] == "expense"
-            and tx["amount_rp"] == scanned.total_rp
-            and tx["date"][5:] == month_day
-        ):
-            return tx["id"]
-    return None
+        if tx["type"] != "expense" or tx["amount_rp"] != scanned.total_rp:
+            continue
+        days = _days_apart(scanned.date, tx["date"])
+        if days is None or days > MAX_DAYS_APART:
+            continue
+        match = PaymentMatch(
+            amount_matches=True,
+            days_apart=days,
+            merchant_matches=_merchant_matches(scanned.store, tx),
+        )
+        candidates.append((not match.merchant_matches, days, tx["id"], match))
+    if not candidates:
+        return None
+    _, _, transaction_id, match = min(candidates, key=lambda c: c[:2])
+    return transaction_id, match
 
 
 def _whole_quantity(item: dict) -> dict:
@@ -181,8 +228,10 @@ def _result(scanned: ScannedReceipt, data: bytes, fallback: bool) -> ScanResult:
         items=items,
         category_totals=category_totals(items),
     )
+    found = match_payment(all_transactions(), scanned)
     return ScanResult(
-        transaction_id=match_payment(all_transactions(), scanned),
+        transaction_id=found[0] if found else None,
+        match=found[1] if found else None,
         receipt=receipt,
         check=ScanCheck(
             items_sum_rp=items_sum,

@@ -86,7 +86,15 @@
     "toHome": "Back to Home",
     "discount": "Discount",
     "weight": "{{weight}} kg",
-    "receiptAdded": "Added to your payment at {{shop}}, {{date}}, {{amount}}"
+    "receiptAdded": "Added to your payment at {{shop}}, {{date}}, {{amount}}",
+    "checks": {
+      "title": "Psst checked",
+      "amount": "The total matches the payment",
+      "sameDay": "Same day",
+      "dayApart": "One day apart",
+      "merchant": "The shop name matches",
+      "otherMerchant": "The bank shows another shop name"
+    }
   },
   "categories": {
     "dairy": "dairy",

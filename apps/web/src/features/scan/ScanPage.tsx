@@ -8,6 +8,7 @@ import BackButton from '@/components/shell/BackButton'
 import { Button } from '@/components/ui/button'
 import ReceiptCard from '@/features/transactions/ReceiptCard'
 import { cn } from '@/lib/utils'
+import { rememberScan } from './scannedReceipts'
 import type { ScanState } from './scanState'
 
 /** Home "Scan": photo of a shop receipt → Psst attaches it to the matching payment. */
@@ -22,12 +23,13 @@ export default function ScanPage() {
 
   const send = (file: File) =>
     scan.mutate(file, {
-      onSuccess: ({ transaction_id, receipt }) => {
+      onSuccess: ({ transaction_id, receipt, match }) => {
+        rememberScan(transaction_id, receipt)
         if (!transaction_id) return
         // Replace: Back from the payment goes to where Scan was opened, not to this page.
         navigate(`/transactions/${encodeURIComponent(transaction_id)}`, {
           replace: true,
-          state: { scannedReceipt: receipt } satisfies ScanState,
+          state: { scannedReceipt: receipt, match } satisfies ScanState,
         })
       },
     })

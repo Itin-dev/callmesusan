@@ -1,11 +1,12 @@
-import type { Receipt } from '@/api/types'
+import type { PaymentMatch, Receipt } from '@/api/types'
 
 /**
- * Router state for the transaction screen after a scan. The backend stores no scanned receipt
- * (GET /api/transactions/{id} still answers receipt: null), so the scan page hands it over.
+ * Router state for the transaction screen right after a scan: the receipt and the checks that
+ * found the payment. Later visits get the receipt from the session (scannedReceipts.ts).
  */
-export type ScanState = { scannedReceipt: Receipt }
+export type ScanState = { scannedReceipt: Receipt; match: PaymentMatch | null }
 
-export function scannedReceiptFrom(state: unknown): Receipt | null {
-  return (state as Partial<ScanState> | null)?.scannedReceipt ?? null
+export function scanStateFrom(state: unknown): ScanState | null {
+  const scan = state as Partial<ScanState> | null
+  return scan?.scannedReceipt ? { scannedReceipt: scan.scannedReceipt, match: scan.match ?? null } : null
 }

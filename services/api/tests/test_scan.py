@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 from app.config import Settings, get_settings
 from app.llm import get_llm
 from app.main import app
-from app.scan import MAX_UPLOAD_BYTES
+from app.scan import MAX_UPLOAD_BYTES, ScannedReceipt, match_payment
 from app.transactions import DATA_DIR
 
 LOLA_PHOTO = (DATA_DIR / "scans" / "receipt-lola-20251121.png").read_bytes()
@@ -98,8 +98,68 @@ def test_scan_matches_a_credit_card_payment(client):
 
 
 def test_scan_without_a_matching_payment_has_no_transaction(client):
+    use(FakeVisionLLM(read(date="2026-11-25")))
+    body = scan(client).json()
+    assert body["transaction_id"] is None
+    assert body["match"] is None
+
+
+def test_scan_reports_the_checks_of_the_match(client):
+    use(FakeVisionLLM(LOLA_READ))
+    assert scan(client).json()["match"] == {
+        "amount_matches": True,
+        "days_apart": 0,
+        "merchant_matches": True,
+    }
+
+
+def test_scan_matches_a_payment_booked_one_day_apart(client):
     use(FakeVisionLLM(read(date="2026-11-22")))
+    body = scan(client).json()
+    assert body["transaction_id"] == "P-0236"
+    assert body["match"]["days_apart"] == 1
+
+
+def test_scan_does_not_match_when_the_sum_differs(client):
+    use(FakeVisionLLM(read(total_rp=911)))
     assert scan(client).json()["transaction_id"] is None
+
+
+def test_scan_matches_another_shop_name_on_amount_and_date(client):
+    use(FakeVisionLLM(read(store="Kiosk Mattenhof")))
+    body = scan(client).json()
+    assert body["transaction_id"] == "P-0236"
+    assert body["match"]["merchant_matches"] is False
+
+
+def expense(id_: str, date: str, counterparty: str, amount_rp: int = 910) -> dict:
+    return {"id": id_, "type": "expense", "date": date, "amount_rp": amount_rp,
+            "counterparty": counterparty, "description": counterparty}  # fmt: skip
+
+
+def test_match_prefers_the_shop_name_over_the_closer_date():
+    transactions = [
+        expense("A", "2025-11-21", "Migros Bern"),
+        expense("B", "2025-11-22", "LOLA Mattenhof"),
+    ]
+    found = match_payment(transactions, ScannedReceipt.model_validate(LOLA_READ))
+    assert found is not None
+    assert found[0] == "B"
+
+
+def test_match_prefers_the_same_day_when_names_tie():
+    transactions = [
+        expense("A", "2025-11-20", "Twint"),
+        expense("B", "2025-11-21", "Twint"),
+    ]
+    found = match_payment(transactions, ScannedReceipt.model_validate(LOLA_READ))
+    assert found is not None
+    assert found[0] == "B"
+
+
+def test_match_ignores_income_with_the_same_amount():
+    transactions = [{**expense("A", "2025-11-21", "LOLA"), "type": "income"}]
+    assert match_payment(transactions, ScannedReceipt.model_validate(LOLA_READ)) is None
 
 
 def test_scan_category_totals_are_net_and_largest_first(client):

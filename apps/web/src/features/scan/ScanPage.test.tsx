@@ -12,7 +12,7 @@ import { mockApi, renderApp } from '@/test-utils'
 const NBSP = ' '
 const photo = () => new File(['raw photo'], 'receipt.png', { type: 'image/png' })
 const small = new Blob(['small'], { type: 'image/jpeg' })
-const noMatch: ScanResult = { ...LOLA_SCAN_FIXTURE, transaction_id: null }
+const noMatch: ScanResult = { ...LOLA_SCAN_FIXTURE, transaction_id: null, match: null }
 
 beforeEach(async () => {
   await i18n.changeLanguage('en')
@@ -58,6 +58,41 @@ describe('ScanPage', () => {
     expect(within(receipt).getByText('Club-Mate, Loscher, 50cl')).toBeInTheDocument()
     expect(within(receipt).getByText(`CHF${NBSP}9.10`)).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Add receipt photo' })).not.toBeInTheDocument()
+  })
+
+  it('shows the checks that found the payment', async () => {
+    renderApp('/scan')
+    await choosePhoto()
+    const checks = await screen.findByRole('list', { name: 'Psst checked' })
+    expect(within(checks).getAllByRole('listitem').map((li) => li.textContent)).toEqual([
+      '✓ The total matches the payment',
+      '✓ Same day',
+      '✓ The shop name matches',
+    ])
+  })
+
+  it('says when the payment is a day apart and has another name', async () => {
+    mockApi({ scan: { ...LOLA_SCAN_FIXTURE, match: { amount_matches: true, days_apart: 1, merchant_matches: false } } })
+    renderApp('/scan')
+    await choosePhoto()
+    const checks = await screen.findByRole('list', { name: 'Psst checked' })
+    expect(within(checks).getAllByRole('listitem').map((li) => li.textContent)).toEqual([
+      '✓ The total matches the payment',
+      '✓ One day apart',
+      '• The bank shows another shop name',
+    ])
+  })
+
+  it('keeps the scanned receipt on the payment for the session', async () => {
+    const view = renderApp('/scan')
+    await choosePhoto()
+    await screen.findByText(/Added to your payment/)
+    view.unmount()
+
+    renderApp('/transactions/P-0236')
+    const receipt = await screen.findByRole('region', { name: 'Receipt' })
+    expect(within(receipt).getByText('from photo')).toBeInTheDocument()
+    expect(screen.queryByText(/Added to your payment/)).not.toBeInTheDocument()
   })
 
   it('goes back to Home from the matched payment', async () => {

@@ -2,12 +2,13 @@ import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { postChat } from '@/api/chat'
 import type { ChatMessage } from '@/api/types'
+import { scannedReceipts } from '@/features/scan/scannedReceipts'
 
 export type ChatStatus = 'idle' | 'sending' | 'error'
 
 /**
  * Psst conversation state. The backend is stateless, so every turn sends the whole conversation
- * plus the UI language. On an error the question stays and `retry` sends the same conversation again.
+ * plus the UI language and the receipts scanned in this session. On an error the question stays and `retry` sends the same conversation again.
  */
 export function useChat() {
   const { i18n } = useTranslation()
@@ -22,7 +23,7 @@ export function useChat() {
       sending.current = true
       setStatus('sending')
       try {
-        const reply = await postChat(turns, i18n.resolvedLanguage ?? 'en')
+        const reply = await postChat(turns, i18n.resolvedLanguage ?? 'en', scannedReceipts())
         conversation.current = [...turns, { role: 'assistant', content: reply }]
         setMessages(conversation.current)
         setStatus('idle')

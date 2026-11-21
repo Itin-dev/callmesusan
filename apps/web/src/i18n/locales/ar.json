@@ -86,7 +86,15 @@
     "toHome": "العودة إلى الرئيسية",
     "discount": "خصم",
     "weight": "{{weight}} كغ",
-    "receiptAdded": "أُضيف إلى دفعتك في {{shop}}، {{date}}، {{amount}}"
+    "receiptAdded": "أُضيف إلى دفعتك في {{shop}}، {{date}}، {{amount}}",
+    "checks": {
+      "title": "تحقّق Psst",
+      "amount": "المبلغ يطابق الدفعة",
+      "sameDay": "اليوم نفسه",
+      "dayApart": "فرق يوم واحد",
+      "merchant": "اسم المتجر مطابق",
+      "otherMerchant": "يُظهر البنك اسم متجر آخر"
+    }
   },
   "categories": {
     "dairy": "منتجات الألبان",
