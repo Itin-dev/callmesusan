@@ -103,10 +103,20 @@ describe('ScanPage', () => {
 
     renderApp('/scan')
     await choosePhoto()
-    expect(
-      await screen.findByText(`This receipt is already on your payment at LOLA Mattenhof, 21.11.2025, CHF${NBSP}9.10`),
-    ).toBeInTheDocument()
+    const already = await screen.findByText(
+      `This receipt is already on your payment at LOLA Mattenhof, 21.11.2025, CHF${NBSP}9.10`,
+    )
     expect(screen.queryByText(/Added to your payment/)).not.toBeInTheDocument()
+    // red, so the user sees at once that nothing new was added
+    expect(screen.getByRole('status')).toHaveClass('border-destructive', 'text-destructive')
+    expect(already).toBeInTheDocument()
+  })
+
+  it('keeps the added message in the normal style', async () => {
+    renderApp('/scan')
+    await choosePhoto()
+    await screen.findByText(/Added to your payment/)
+    expect(screen.getByRole('status')).not.toHaveClass('text-destructive')
   })
 
   it('says the receipt is already there when the shop sent it digitally', async () => {
