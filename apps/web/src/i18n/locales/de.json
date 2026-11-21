@@ -122,7 +122,14 @@
     "error": "Psst konnte nicht antworten. Bitte versuch es nochmals.",
     "disclaimer": "Psst bewegt nie Geld ohne dein Ja.",
     "fromUser": "Du:",
-    "fromPsst": "Psst:"
+    "fromPsst": "Psst:",
+    "mic": {
+      "start": "Frage aufnehmen",
+      "stop": "Aufnahme beenden",
+      "listening": "Psst hört zu…",
+      "denied": "Erlaube das Mikrofon, um per Sprache zu fragen.",
+      "error": "Psst hat die Aufnahme nicht verstanden."
+    }
   },
   "scan": {
     "title": "Beleg scannen",

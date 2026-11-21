@@ -4,6 +4,7 @@ import { ApiError } from './client'
 import { pickInsight } from './insight'
 import { scanReceipt } from './receipts'
 import { getSpendingByCategory, getSpendingSummary } from './spending'
+import { transcribeAudio } from './transcribe'
 import { getAccountTransactions, getTransaction } from './transactions'
 import { downscaleImage } from '@/lib/image'
 import type { TransactionDetail } from './types'
@@ -49,4 +50,11 @@ export function useSpendingSummary(year?: number) {
 /** Scan a receipt photo: scaled down in the browser, then read and matched by the backend. */
 export function useScanReceipt() {
   return useMutation({ mutationFn: async (photo: Blob) => scanReceipt(await downscaleImage(photo)) })
+}
+
+/** Turn a recorded chat question into text in the UI language. */
+export function useTranscribe() {
+  return useMutation({
+    mutationFn: ({ audio, language }: { audio: Blob; language: string }) => transcribeAudio(audio, language),
+  })
 }

@@ -122,7 +122,14 @@
     "error": "Psst could not answer. Please try again.",
     "disclaimer": "Psst never moves money without your yes.",
     "fromUser": "You:",
-    "fromPsst": "Psst:"
+    "fromPsst": "Psst:",
+    "mic": {
+      "start": "Record your question",
+      "stop": "Stop recording",
+      "listening": "Psst is listening…",
+      "denied": "Allow the microphone to ask by voice.",
+      "error": "Psst could not understand the recording."
+    }
   },
   "scan": {
     "title": "Scan a receipt",

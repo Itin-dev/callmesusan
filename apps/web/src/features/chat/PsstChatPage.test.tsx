@@ -2,6 +2,7 @@ import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import * as transcribe from '@/api/transcribe'
 import i18n from '@/i18n'
 import { mockApi, renderApp } from '@/test-utils'
 
@@ -9,7 +10,10 @@ beforeEach(async () => {
   await i18n.changeLanguage('en')
 })
 
-afterEach(() => vi.unstubAllGlobals())
+afterEach(() => {
+  vi.restoreAllMocks()
+  vi.unstubAllGlobals()
+})
 
 const log = () => screen.getByRole('log', { name: 'Conversation with Psst' })
 const input = () => screen.getByRole('textbox', { name: 'Message to Psst' })
@@ -112,6 +116,100 @@ describe('PsstChatPage', () => {
     const { container } = renderApp('/psst')
     await userEvent.type(input(), 'Where can I save?{Enter}')
     await within(log()).findByText(/Reply 1/)
+    const results = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } })
+    expect(results.violations.map((v) => v.id)).toEqual([])
+  })
+})
+
+/** Browser recorder stand-in: stop() hands over one chunk of "audio", like a real MediaRecorder. */
+class FakeRecorder {
+  mimeType = 'audio/webm'
+  ondataavailable: ((event: { data: Blob }) => void) | null = null
+  onstop: (() => void) | null = null
+  start() {}
+  stop() {
+    this.ondataavailable?.({ data: new Blob(['voice'], { type: 'audio/webm' }) })
+    this.onstop?.()
+  }
+}
+
+const stopTrack = vi.fn()
+function stubMicrophone(getUserMedia = vi.fn(async () => ({ getTracks: () => [{ stop: stopTrack }] }))) {
+  vi.stubGlobal('MediaRecorder', FakeRecorder)
+  vi.stubGlobal('navigator', { ...navigator, mediaDevices: { getUserMedia } })
+  return getUserMedia
+}
+
+describe('PsstChatPage voice', () => {
+  beforeEach(() => mockApi())
+
+  it('records a question and puts the text in the input without sending it', async () => {
+    stubMicrophone()
+    const scan = vi.spyOn(transcribe, 'transcribeAudio').mockResolvedValue('Where can I save?')
+    renderApp('/psst')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Record your question' }))
+    const stop = screen.getByRole('button', { name: 'Stop recording' })
+    expect(stop).toHaveAttribute('aria-pressed', 'true')
+    await userEvent.click(stop)
+
+    await vi.waitFor(() => expect(input()).toHaveValue('Where can I save?'))
+    expect(scan).toHaveBeenCalledWith(expect.any(Blob), 'en')
+    expect((scan.mock.calls[0][0] as Blob).type).toBe('audio/webm')
+    expect(stopTrack).toHaveBeenCalled()
+    expect(within(log()).queryAllByRole('listitem')).toHaveLength(0)
+    expect(input()).toHaveFocus()
+  })
+
+  it('shows that Psst is listening while the recording is read', async () => {
+    stubMicrophone()
+    vi.spyOn(transcribe, 'transcribeAudio').mockReturnValue(new Promise(() => {}))
+    renderApp('/psst')
+    await userEvent.click(screen.getByRole('button', { name: 'Record your question' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Stop recording' }))
+    expect(await screen.findByRole('status')).toHaveTextContent('Psst is listening…')
+    expect(screen.getByRole('button', { name: 'Record your question' })).toBeDisabled()
+  })
+
+  it('asks for the microphone when access is denied', async () => {
+    stubMicrophone(vi.fn().mockRejectedValue(new DOMException('denied', 'NotAllowedError')))
+    renderApp('/psst')
+    await userEvent.click(screen.getByRole('button', { name: 'Record your question' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Allow the microphone to ask by voice.')
+  })
+
+  it('shows an error and sends the same recording again on retry', async () => {
+    stubMicrophone()
+    const scan = vi
+      .spyOn(transcribe, 'transcribeAudio')
+      .mockRejectedValueOnce(new Error('model down'))
+      .mockResolvedValueOnce('And on coffee?')
+    renderApp('/psst')
+    await userEvent.click(screen.getByRole('button', { name: 'Record your question' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Stop recording' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Psst could not understand the recording.')
+    await userEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    await vi.waitFor(() => expect(input()).toHaveValue('And on coffee?'))
+    expect(scan).toHaveBeenCalledTimes(2)
+    expect(scan.mock.calls[1][0]).toBe(scan.mock.calls[0][0])
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('hides the mic when the browser cannot record', () => {
+    renderApp('/psst')
+    expect(screen.queryByRole('button', { name: 'Record your question' })).not.toBeInTheDocument()
+  })
+
+  it('sends the UI language and has no accessibility violations', async () => {
+    await i18n.changeLanguage('ar')
+    stubMicrophone()
+    const scan = vi.spyOn(transcribe, 'transcribeAudio').mockResolvedValue('مرحبا')
+    const { container } = renderApp('/psst')
+    await userEvent.click(screen.getByRole('button', { name: i18n.t('chat.mic.start') }))
+    await userEvent.click(screen.getByRole('button', { name: i18n.t('chat.mic.stop') }))
+    await vi.waitFor(() => expect(screen.getByRole('textbox')).toHaveValue('مرحبا'))
+    expect(scan).toHaveBeenCalledWith(expect.any(Blob), 'ar')
+    expect(i18n.t('chat.mic.start')).not.toBe('Record your question')
     const results = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } })
     expect(results.violations.map((v) => v.id)).toEqual([])
   })
