@@ -47,6 +47,7 @@ The system prompt comes from `SYSTEM_PROMPT` in `.env` (default in `app/config.p
 
 - Components come from [shadcn/ui](https://ui.shadcn.com) (`npx shadcn add <name>` in `apps/web`,
   RTL mode on); icons from `lucide-react`. Do not hand-roll a component shadcn already has.
+- Styling uses the Figma design tokens only — see [design-tokens.md](design-tokens.md).
 - Accessibility is required: semantic HTML, 44px+ touch targets, logical CSS (`ms-`/`me-`, not
   `ml-`/`mr-`) so Arabic RTL works. Page tests run `axe-core` and must report no violations.
 - Languages: EN, DE, UK, RU, AR in `src/i18n/locales/*.json`; switching language updates `<html lang dir>`.
