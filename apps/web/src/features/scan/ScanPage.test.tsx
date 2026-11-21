@@ -109,8 +109,8 @@ describe('ScanPage', () => {
     renderApp('/scan')
     await choosePhoto()
     await screen.findByText(/Added to your payment/)
-    const call = fetch.mock.calls.find(([url]) => url === '/api/receipts/scan')
-    expect(((call?.[1]?.body as FormData).get('file') as File).type).toBe('image/jpeg')
+    const [, init] = fetch.mock.calls.find(([url]) => url === '/api/receipts/scan') ?? []
+    expect(((init?.body as FormData).get('file') as File).type).toBe('image/jpeg')
   })
 
   it.each([
