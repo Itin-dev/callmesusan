@@ -1,7 +1,8 @@
 {
   "common": {
     "loading": "جارٍ التحميل…",
-    "loadError": "تعذّر تحميل البيانات. حاول مرة أخرى."
+    "loadError": "تعذّر تحميل البيانات. حاول مرة أخرى.",
+    "retry": "حاول مرة أخرى"
   },
   "psst": {
     "name": "Psst",
@@ -46,5 +47,43 @@
   "services": {
     "title": "الخدمات",
     "language": "اللغة"
+  },
+  "transaction": {
+    "title": "المعاملة",
+    "back": "رجوع",
+    "details": "التفاصيل",
+    "explains": "Psst يشرح",
+    "receipt": "الإيصال",
+    "source": {
+      "store_app": "من تطبيق المتجر",
+      "photo": "من صورة"
+    },
+    "total": "المجموع",
+    "quantity": "× {{count}}",
+    "insight": "Psst: إنفاقك على {{category}} هذا الشهر {{amount}}، أي حوالي {{ratio}}× من المعتاد.",
+    "ask": "كيف أنفق أقل على {{category}}؟",
+    "addPhoto": "إضافة صورة الإيصال",
+    "notFound": "لم نتمكن من العثور على هذه المعاملة.",
+    "toHome": "العودة إلى الرئيسية",
+    "discount": "خصم",
+    "weight": "{{weight}} كغ"
+  },
+  "categories": {
+    "dairy": "منتجات الألبان",
+    "bakery": "المخبوزات",
+    "fruit": "الفواكه",
+    "vegetables": "الخضروات",
+    "meat_fish": "اللحوم والأسماك",
+    "eggs": "البيض",
+    "pasta": "المعكرونة",
+    "frozen": "الأطعمة المجمدة",
+    "spreads": "الأطعمة القابلة للدهن",
+    "snacks": "الوجبات الخفيفة",
+    "chocolate": "الشوكولاتة",
+    "beverages": "المشروبات",
+    "coffee": "القهوة",
+    "alcohol": "الكحول",
+    "household": "المنزل",
+    "personal_care": "العناية الشخصية"
   }
 }

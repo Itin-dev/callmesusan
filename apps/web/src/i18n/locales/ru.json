@@ -1,7 +1,8 @@
 {
   "common": {
     "loading": "Загрузка…",
-    "loadError": "Не удалось загрузить данные. Попробуй ещё раз."
+    "loadError": "Не удалось загрузить данные. Попробуй ещё раз.",
+    "retry": "Попробовать снова"
   },
   "psst": {
     "name": "Psst",
@@ -46,5 +47,43 @@
   "services": {
     "title": "Сервисы",
     "language": "Язык"
+  },
+  "transaction": {
+    "title": "Транзакция",
+    "back": "Назад",
+    "details": "Детали",
+    "explains": "Psst объясняет",
+    "receipt": "Чек",
+    "source": {
+      "store_app": "из приложения магазина",
+      "photo": "с фото"
+    },
+    "total": "Итого",
+    "quantity": "× {{count}}",
+    "insight": "Psst: в этом месяце {{category}} — {{amount}}, примерно в {{ratio}}× больше обычного.",
+    "ask": "Как тратить меньше на {{category}}?",
+    "addPhoto": "Добавить фото чека",
+    "notFound": "Мы не нашли эту транзакцию.",
+    "toHome": "На главную",
+    "discount": "Скидка",
+    "weight": "{{weight}} кг"
+  },
+  "categories": {
+    "dairy": "молочные продукты",
+    "bakery": "выпечка",
+    "fruit": "фрукты",
+    "vegetables": "овощи",
+    "meat_fish": "мясо и рыба",
+    "eggs": "яйца",
+    "pasta": "макароны",
+    "frozen": "замороженные продукты",
+    "spreads": "намазки",
+    "snacks": "снеки",
+    "chocolate": "шоколад",
+    "beverages": "напитки",
+    "coffee": "кофе",
+    "alcohol": "алкоголь",
+    "household": "хозтовары",
+    "personal_care": "личная гигиена"
   }
 }

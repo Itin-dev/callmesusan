@@ -1,7 +1,8 @@
 {
   "common": {
     "loading": "Loading…",
-    "loadError": "Could not load the data. Please try again."
+    "loadError": "Could not load the data. Please try again.",
+    "retry": "Try again"
   },
   "psst": {
     "name": "Psst",
@@ -46,5 +47,43 @@
   "services": {
     "title": "Services",
     "language": "Language"
+  },
+  "transaction": {
+    "title": "Transaction",
+    "back": "Back",
+    "details": "Details",
+    "explains": "Psst explains",
+    "receipt": "Receipt",
+    "source": {
+      "store_app": "from store app",
+      "photo": "from photo"
+    },
+    "total": "Total",
+    "quantity": "× {{count}}",
+    "insight": "Psst: {{category}} this month is {{amount}}, about {{ratio}}× your usual.",
+    "ask": "How can I spend less on {{category}}?",
+    "addPhoto": "Add receipt photo",
+    "notFound": "We could not find this transaction.",
+    "toHome": "Back to Home",
+    "discount": "Discount",
+    "weight": "{{weight}} kg"
+  },
+  "categories": {
+    "dairy": "dairy",
+    "bakery": "bakery",
+    "fruit": "fruit",
+    "vegetables": "vegetables",
+    "meat_fish": "meat and fish",
+    "eggs": "eggs",
+    "pasta": "pasta",
+    "frozen": "frozen food",
+    "spreads": "spreads",
+    "snacks": "snacks",
+    "chocolate": "chocolate",
+    "beverages": "drinks",
+    "coffee": "coffee",
+    "alcohol": "alcohol",
+    "household": "household",
+    "personal_care": "personal care"
   }
 }

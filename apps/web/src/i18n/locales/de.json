@@ -1,7 +1,8 @@
 {
   "common": {
     "loading": "Wird geladen…",
-    "loadError": "Die Daten konnten nicht geladen werden. Bitte versuche es erneut."
+    "loadError": "Die Daten konnten nicht geladen werden. Bitte versuche es erneut.",
+    "retry": "Erneut versuchen"
   },
   "psst": {
     "name": "Psst",
@@ -46,5 +47,43 @@
   "services": {
     "title": "Services",
     "language": "Sprache"
+  },
+  "transaction": {
+    "title": "Transaktion",
+    "back": "Zurück",
+    "details": "Details",
+    "explains": "Psst erklärt",
+    "receipt": "Quittung",
+    "source": {
+      "store_app": "aus der Händler-App",
+      "photo": "aus Foto"
+    },
+    "total": "Total",
+    "quantity": "× {{count}}",
+    "insight": "Psst: {{category}} kostet dich diesen Monat {{amount}}, etwa {{ratio}}× so viel wie sonst.",
+    "ask": "Wie kann ich bei {{category}} sparen?",
+    "addPhoto": "Quittungsfoto hinzufügen",
+    "notFound": "Wir konnten diese Transaktion nicht finden.",
+    "toHome": "Zurück zu Home",
+    "discount": "Rabatt",
+    "weight": "{{weight}} kg"
+  },
+  "categories": {
+    "dairy": "Milchprodukte",
+    "bakery": "Backwaren",
+    "fruit": "Obst",
+    "vegetables": "Gemüse",
+    "meat_fish": "Fleisch und Fisch",
+    "eggs": "Eier",
+    "pasta": "Teigwaren",
+    "frozen": "Tiefkühlprodukte",
+    "spreads": "Brotaufstriche",
+    "snacks": "Snacks",
+    "chocolate": "Schokolade",
+    "beverages": "Getränke",
+    "coffee": "Kaffee",
+    "alcohol": "Alkohol",
+    "household": "Haushalt",
+    "personal_care": "Körperpflege"
   }
 }
