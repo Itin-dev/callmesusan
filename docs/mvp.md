@@ -224,7 +224,8 @@ Rules:
 Read CLAUDE.md, docs/mvp.md and docs/stack.md first.
 We are team Call me Susan building Psst, an AI assistant inside the PostFinance banking app,
 for the "Beyond the List" hackathon challenge. I work on the backend (services/api: Python 3.12,
-FastAPI, uv, pytest, ruff; LLM via OpenRouter through app/llm.py and the get_llm dependency).
+FastAPI, uv, pytest, ruff; LLM via OpenRouter through app/llm.py and the get_llm dependency; model
+per task in docs/stack.md "AI models").
 A teammate builds the frontend in parallel against the API contract in docs/mvp.md.
 
 Task: <task> from the backend table in docs/mvp.md.

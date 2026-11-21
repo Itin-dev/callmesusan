@@ -11,7 +11,7 @@ Rows marked "Vision" are ideas we present but do not build for the demo.
 
 | Feature | Example | Effort | Notes |
 |---------|---------|--------|-------|
-| Detailed receipt per transaction | Tap a transaction and see the full receipt: every item and its price. Pulled from a retailer app (Lidl Plus type) or from a photo of the paper receipt | M | Demo: mock retailer-app receipts linked to CSV transactions by date, amount and merchant, plus photo upload read by a vision model. Unlocks #1 and item-level advice |
+| Detailed receipt per transaction | Tap a transaction and see the full receipt: every item and its price. Pulled from a retailer app (Lidl Plus type) or from a photo of the paper receipt | M | Demo: mock retailer-app receipts linked to CSV transactions by date, amount and merchant, plus photo upload read by `mistral-ocr` with a vision-model fallback ([AI models](stack.md#ai-models)). Unlocks #1 and item-level advice |
 
 ## Candidates
 
@@ -32,7 +32,7 @@ Rows marked "Vision" are ideas we present but do not build for the demo.
 | 13 | Explain a transaction | "What is this TWINT payment of CHF 47.80?" | S | Merchant text from the transaction |
 | 14 | Monthly recap | "Sum up my November in five sentences." | S | Transactions of one month |
 | 15 | Any language + plain language | Ask in German, English, French, Ukrainian, Arabic… and get answers in simple words | S | The LLM handles it; strong "AI for Access" angle |
-| 16 | Voice input | Ask by voice instead of typing | M | Browser speech-to-text |
+| 16 | Voice input | Ask by voice instead of typing | M | Speech to text with `google/gemini-3.5-flash-lite` ([AI models](stack.md#ai-models)) |
 | 17 | Trust panel | "What can you see, and what can you do?" | S | Read-only by default; every action needs confirmation. Supports the main pitch argument |
 | 18 | Utility bills import | Add utility payments from a contract or the flat address | L | Not in the hackathon data; vision slide |
 | 19 | Vision: scan a document, Psst helps fill it | Scan a form or letter (tax declaration, unemployment fund ALK): Psst explains it in plain words and pre-fills what the bank knows (yearly salary, monthly income, interest, 3rd pillar) | L | Vision only: on the "What's next" slide, not working in the demo. Psst prepares and explains; the user checks and submits |

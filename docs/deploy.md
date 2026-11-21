@@ -25,8 +25,8 @@ Branch protection only lets green PRs into `main`, so production always gets val
 
 1. [vercel.com/new](https://vercel.com/new) → import the GitHub repo. Keep **Root Directory** as
    the repo root; `vercel.json` sets build, output and functions.
-2. Project → Settings → Environment Variables: `OPENROUTER_API_KEY` (and optionally
-   `OPENROUTER_MODEL`) for Production and Preview.
+2. Project → Settings → Environment Variables: `OPENROUTER_API_KEY` and the model settings from
+   [stack.md → AI models](stack.md#ai-models) for Production and Preview.
 3. Deploy, then check `https://<project>.vercel.app/api/health` → `{"status":"ok"}`.
 
 ## Preview access
