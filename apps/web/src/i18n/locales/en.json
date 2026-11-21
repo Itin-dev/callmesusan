@@ -1,13 +1,50 @@
 {
-  "home": {
-    "title": "Beyond the List",
-    "intro": "More than a list of transactions: understand your money and make smarter decisions.",
-    "language": "Language"
+  "common": {
+    "loading": "Loading…",
+    "loadError": "Could not load the data. Please try again."
   },
-  "theme": {
-    "label": "Color theme",
-    "light": "Light",
-    "dark": "Dark",
-    "system": "System"
+  "psst": {
+    "name": "Psst",
+    "teaser": "Psst…"
+  },
+  "tabs": {
+    "label": "Main navigation",
+    "home": "Home",
+    "payments": "Payments",
+    "invest": "Invest",
+    "offers": "Offers",
+    "services": "Services"
+  },
+  "home": {
+    "title": "Home",
+    "search": "Search",
+    "actions": {
+      "scan": "Scan",
+      "pay": "Pay",
+      "transfer": "Transfer",
+      "analysis": "Analysis"
+    },
+    "psstCard": {
+      "title": "Ask me anything about your money. It stays between us.",
+      "ask": "Type or speak…"
+    },
+    "suggestions": {
+      "holiday": "Can I afford a holiday in April?",
+      "cutCosts": "Where can I cut costs?",
+      "tax": "How much tax will I pay?"
+    }
+  },
+  "accounts": {
+    "title": "Accounts and Investments",
+    "retirement": "Retirement savings",
+    "kind": {
+      "private": "Private account",
+      "savings": "Savings",
+      "pillar3": "3rd pillar"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "language": "Language"
   }
 }

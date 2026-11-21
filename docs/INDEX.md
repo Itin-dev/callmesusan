@@ -26,6 +26,7 @@ Entrypoint for humans and agents. Prefer linking here instead of duplicating gui
 | Doc | Purpose |
 |-----|---------|
 | [stack.md](stack.md) | FastAPI + React: run, conventions, tests |
+| [design-tokens.md](design-tokens.md) | Figma tokens → shadcn/Tailwind classes (colours, type, radius) |
 | [deploy.md](deploy.md) | Vercel deploy, CI/CD pipeline, one-time setup |
 
 ## Root entrypoints

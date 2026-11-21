@@ -1,50 +1,114 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import "@fontsource-variable/figtree";
 
-@custom-variant dark (&:is(.dark *));
-
+/*
+ * Design tokens — source of truth: Figma "Design-Project", variable collection "Psst tokens".
+ * Hex values mirror the Figma variables 1:1 (names in comments). Light mode only (Figma has one mode).
+ * Usage and mapping: docs/design-tokens.md.
+ */
 :root {
   color-scheme: light;
-  /* Brand: shadcn neutral base with a blue primary (trust, good contrast with white text). */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.488 0.243 264.376);
-  --primary-foreground: oklch(0.97 0.014 254.604);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.623 0.214 259.815);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Raw Figma tokens */
+  --psst-bg: #e6f0f0; /* color/bg */
+  --psst-surface: #ffffff; /* color/surface */
+  --psst-surface-muted: #f2f7f7; /* color/surface-muted */
+  --psst-text: #0b3c49; /* color/text */
+  --psst-text-muted: #5b7a82; /* color/text-muted */
+  --psst-accent: #ffcc00; /* color/accent */
+  --psst-brand: #0b3c49; /* color/psst */
+  --psst-on-brand: #ffffff; /* color/on-psst */
+  --psst-income: #0097b2; /* color/income */
+  --psst-expense: #0b4f5c; /* color/expense */
+  --psst-negative: #c0392b; /* color/negative */
+  --psst-border: #d5e3e4; /* color/border */
+  --psst-camera: #0e1416; /* color/camera */
+  --psst-paper-line: #c7cccf; /* color/paper-line */
+
+  /* shadcn semantic tokens */
+  --background: var(--psst-bg);
+  --foreground: var(--psst-text);
+  --card: var(--psst-surface);
+  --card-foreground: var(--psst-text);
+  --popover: var(--psst-surface);
+  --popover-foreground: var(--psst-text);
+  --primary: var(--psst-accent); /* yellow CTA ("Attach receipt", "Show me a plan") */
+  --primary-foreground: var(--psst-text);
+  --secondary: var(--psst-surface); /* white outlined pill ("Not now") */
+  --secondary-foreground: var(--psst-text);
+  --muted: var(--psst-surface-muted);
+  --muted-foreground: var(--psst-text-muted);
+  --accent: var(--psst-surface-muted); /* hover / selected tab pill */
+  --accent-foreground: var(--psst-text);
+  --destructive: var(--psst-negative);
+  --border: var(--psst-border);
+  --input: var(--psst-border);
+  --ring: var(--psst-brand);
+
+  /* Psst-specific tokens */
+  --psst: var(--psst-brand); /* dark petrol Psst card, chat bubble, Psst button */
+  --psst-foreground: var(--psst-on-brand);
+  --income: var(--psst-income);
+  --expense: var(--psst-expense);
+  --negative: var(--psst-negative);
+  --camera: var(--psst-camera); /* scan screens */
+  --camera-foreground: var(--psst-on-brand);
+  --paper-line: var(--psst-paper-line); /* receipt skeleton lines */
+
+  --chart-1: var(--psst-income);
+  --chart-2: var(--psst-accent);
+  --chart-3: var(--psst-expense);
+  --chart-4: var(--psst-text-muted);
+  --chart-5: var(--psst-border);
+
+  --sidebar: var(--psst-surface);
+  --sidebar-foreground: var(--psst-text);
+  --sidebar-primary: var(--psst-brand);
+  --sidebar-primary-foreground: var(--psst-on-brand);
+  --sidebar-accent: var(--psst-surface-muted);
+  --sidebar-accent-foreground: var(--psst-text);
+  --sidebar-border: var(--psst-border);
+  --sidebar-ring: var(--psst-brand);
+
+  /* Cards use 16 px in Figma; the scale below matches the other Figma radii. */
+  --radius: 1rem;
 }
 
 @theme inline {
+  --font-sans: 'Figtree Variable', sans-serif;
   --font-heading: var(--font-sans);
-  --font-sans: 'Geist Variable', sans-serif;
+
+  /* Type scale from Figma text layers (Figtree). Use text-title, text-body, ... */
+  --text-hero: 1.625rem; /* 26 — Home title */
+  --text-hero--line-height: 1.2;
+  --text-hero--font-weight: 600;
+  --text-display: 1.75rem; /* 28 — big amounts */
+  --text-display--line-height: 1.2;
+  --text-display--font-weight: 700;
+  --text-title: 1.25rem; /* 20 — screen titles */
+  --text-title--line-height: 1.3;
+  --text-title--font-weight: 600;
+  --text-heading: 1rem; /* 16 — card headings, row titles */
+  --text-heading--line-height: 1.35;
+  --text-heading--font-weight: 600;
+  --text-body: 0.9375rem; /* 15 — body, buttons */
+  --text-body--line-height: 1.4;
+  --text-small: 0.8125rem; /* 13 — secondary text, chips */
+  --text-small--line-height: 1.4;
+  --text-caption: 0.6875rem; /* 11 — tab labels, meta, IBAN */
+  --text-caption--line-height: 1.35;
+
+  --color-psst: var(--psst);
+  --color-psst-foreground: var(--psst-foreground);
+  --color-income: var(--income);
+  --color-expense: var(--expense);
+  --color-negative: var(--negative);
+  --color-camera: var(--camera);
+  --color-camera-foreground: var(--camera-foreground);
+  --color-paper-line: var(--paper-line);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -76,48 +140,15 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
 
-.dark {
-  color-scheme: dark;
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.546 0.245 262.881);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.623 0.214 259.815);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.546 0.245 262.881);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Figma radii: 8 · 12 · 16 (cards) · 20 · 24 · 28 · 38; pills use rounded-full. */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 1.75);
+  --radius-4xl: calc(var(--radius) * 2.375);
 }
 
 @layer base {
@@ -132,7 +163,7 @@
   }
 }
 
-/* Geist has no Arabic glyphs; the system fallback renders small, so scale Arabic up. */
+/* Figtree has no Arabic glyphs; the system fallback renders small, so scale Arabic up. */
 html:lang(ar) {
   font-size: 112.5%;
 }

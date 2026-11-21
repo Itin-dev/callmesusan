@@ -1,13 +1,50 @@
 {
-  "home": {
-    "title": "Mehr als eine Liste",
-    "intro": "Mehr als eine Liste von Buchungen: Verstehe dein Geld und entscheide klüger.",
-    "language": "Sprache"
+  "common": {
+    "loading": "Wird geladen…",
+    "loadError": "Die Daten konnten nicht geladen werden. Bitte versuche es erneut."
   },
-  "theme": {
-    "label": "Farbschema",
-    "light": "Hell",
-    "dark": "Dunkel",
-    "system": "System"
+  "psst": {
+    "name": "Psst",
+    "teaser": "Psst…"
+  },
+  "tabs": {
+    "label": "Hauptnavigation",
+    "home": "Home",
+    "payments": "Zahlungen",
+    "invest": "Anlegen",
+    "offers": "Angebote",
+    "services": "Services"
+  },
+  "home": {
+    "title": "Home",
+    "search": "Suchen",
+    "actions": {
+      "scan": "Scannen",
+      "pay": "Zahlen",
+      "transfer": "Übertrag",
+      "analysis": "Analyse"
+    },
+    "psstCard": {
+      "title": "Frag mich alles über dein Geld. Es bleibt unter uns.",
+      "ask": "Schreiben oder sprechen…"
+    },
+    "suggestions": {
+      "holiday": "Kann ich mir im April Ferien leisten?",
+      "cutCosts": "Wo kann ich Kosten sparen?",
+      "tax": "Wie viel Steuern zahle ich?"
+    }
+  },
+  "accounts": {
+    "title": "Konten und Anlagen",
+    "retirement": "Altersvorsorge",
+    "kind": {
+      "private": "Privatkonto",
+      "savings": "Sparkonto",
+      "pillar3": "Säule 3a"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "language": "Sprache"
   }
 }
