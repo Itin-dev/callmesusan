@@ -47,14 +47,16 @@ export default function TransactionPage() {
           <TransactionSummary transaction={transaction} />
           {transaction.receipt && <ReceiptCard receipt={transaction.receipt} highlight={insight?.category} />}
           {insight && <PsstInsight insight={insight} />}
-          {/* No function in the MVP: photo upload comes later. */}
-          <button
-            type="button"
-            className="flex h-12 items-center justify-center gap-2 rounded-full border-[1.5px] border-foreground text-body font-semibold outline-none hover:bg-card focus-visible:ring-3 focus-visible:ring-ring/50"
-          >
-            <img src={cameraIcon} alt="" width={24} height={24} />
-            {t('transaction.addPhoto')}
-          </button>
+          {/* Only without a receipt. No function in the MVP: photo upload comes later. */}
+          {!transaction.receipt && (
+            <button
+              type="button"
+              className="flex h-12 items-center justify-center gap-2 rounded-full border-[1.5px] border-foreground text-body font-semibold outline-none hover:bg-card focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              <img src={cameraIcon} alt="" width={24} height={24} />
+              {t('transaction.addPhoto')}
+            </button>
+          )}
         </>
       )}
     </div>

@@ -36,6 +36,12 @@ describe('TransactionPage', () => {
     expect(within(receipt).getByText(`CHF${NBSP}119.70`)).toBeInTheDocument()
   })
 
+  it('does not offer a receipt photo when the receipt already exists', async () => {
+    renderApp('/transactions/K-0241')
+    await screen.findByRole('region', { name: 'Receipt' })
+    expect(screen.queryByRole('button', { name: 'Add receipt photo' })).not.toBeInTheDocument()
+  })
+
   it('shows the Psst insight with a chip that opens the chat', async () => {
     renderApp('/transactions/K-0241')
     expect(
