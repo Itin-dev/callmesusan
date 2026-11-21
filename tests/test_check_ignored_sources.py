@@ -4,6 +4,7 @@ A git-ignored source file works locally but is missing from the commit, so CI an
 deploy break while local hooks stay green.
 """
 
+import os
 import subprocess
 import tempfile
 import unittest
@@ -11,12 +12,16 @@ from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "check-ignored-sources.sh"
 
+# Git hooks export GIT_INDEX_FILE, GIT_DIR, ... (e.g. `git commit -a`); drop them so the
+# temporary repo is used instead of the real one.
+ENV = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+
 
 class CheckIgnoredSourcesTest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)
-        subprocess.run(["git", "init", "-q"], cwd=self.root, check=True)
+        subprocess.run(["git", "init", "-q"], cwd=self.root, check=True, env=ENV)
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -27,13 +32,15 @@ class CheckIgnoredSourcesTest(unittest.TestCase):
         file.write_text(content)
 
     def run_check(self) -> subprocess.CompletedProcess:
-        return subprocess.run(["bash", str(SCRIPT)], cwd=self.root, capture_output=True, text=True)
+        return subprocess.run(
+            ["bash", str(SCRIPT)], cwd=self.root, capture_output=True, text=True, env=ENV
+        )
 
     def test_passes_when_only_build_artifacts_are_ignored(self):
         self.write(".gitignore", "node_modules/\ndist/\n.venv/\n__pycache__/\n.pytest_cache/\n")
         self.write("apps/web/src/main.ts")
         self.write("services/api/app/main.py")
-        subprocess.run(["git", "add", "-A"], cwd=self.root, check=True)  # real repos track sources
+        subprocess.run(["git", "add", "-A"], cwd=self.root, check=True, env=ENV)  # real repos track sources
         self.write("apps/web/node_modules/react/index.js")
         self.write("apps/web/dist/index.html")
         self.write("services/api/.venv/bin/python")

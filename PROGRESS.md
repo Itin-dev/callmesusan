@@ -5,7 +5,7 @@ Track multi-session work here. Update at the end of each meaningful session.
 ## Current status
 
 - Status: fresh skeleton for "Beyond the List" (previous topic removed)
-- Branch: `docs/beyond-the-list-plan`
+- Branch: `feature/beyond-the-list-skeleton`
 - Last updated: 2026-11-21
 
 ## Done
