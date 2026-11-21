@@ -46,12 +46,20 @@ The system prompt comes from `SYSTEM_PROMPT` in `.env` (default in `app/config.p
 ## Frontend UI
 
 - Components come from [shadcn/ui](https://ui.shadcn.com) (`npx shadcn add <name>` in `apps/web`,
-  RTL mode on); icons from `lucide-react`. Do not hand-roll a component shadcn already has.
+  RTL mode on); icons from `lucide-react`, except the PostFinance icons exported from Figma in
+  `src/assets/icons/`. Do not hand-roll a component shadcn already has.
 - Styling uses the Figma design tokens only — see [design-tokens.md](design-tokens.md).
 - Accessibility is required: semantic HTML, 44px+ touch targets, logical CSS (`ms-`/`me-`, not
   `ml-`/`mr-`) so Arabic RTL works. Page tests run `axe-core` and must report no violations.
 - Languages: EN, DE, UK, RU, AR in `src/i18n/locales/*.json`; switching language updates `<html lang dir>`.
-- Theme: light / dark / system (`src/features/theme`), stored on the device only.
+- Light theme only for the MVP (the Figma file has one mode).
+- Mobile first: design width 390 px (works from 320 px, fills phones up to iPhone Pro Max). From
+  `sm` up, `AppShell` shows the 390 × 844 Figma phone frame centred on the page.
+- No business logic in the UI. Screens read data through React Query hooks in `src/api/queries.ts`;
+  `src/api/*` holds the fetch calls and contract types (`docs/mvp.md`). Totals, matching, insights
+  come from the backend. The UI only formats (`src/lib/money.ts`) and lays out. Until an endpoint
+  exists, its function in `src/api/` returns a typed fixture with the contract shape.
+- Use `cn` from `@/lib/utils`: it knows the custom type scale (`text-caption`, ...).
 
 ## Tests (TDD)
 

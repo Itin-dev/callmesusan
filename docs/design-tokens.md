@@ -32,7 +32,8 @@ Font: **Figtree** (`@fontsource-variable/figtree`). Figma has no text styles, so
 | Class | Size / weight | Used for |
 |-------|---------------|----------|
 | `text-display` | 28 / 700 | Big amounts (`CHF 47.80`) |
-| `text-title` | 20 / 600 | Screen titles (`Home`, `Analytics`) |
+| `text-hero` | 26 / 600 | Home page title |
+| `text-title` | 20 / 600 | Sheet and card titles |
 | `text-heading` | 16 / 600 | Card headings, account names |
 | `text-body` | 15 / 400 | Body text, buttons (add `font-semibold` for buttons) |
 | `text-small` | 13 / 400 | Secondary text, chips, chat |

@@ -81,6 +81,9 @@
   --font-heading: var(--font-sans);
 
   /* Type scale from Figma text layers (Figtree). Use text-title, text-body, ... */
+  --text-hero: 1.625rem; /* 26 — Home title */
+  --text-hero--line-height: 1.2;
+  --text-hero--font-weight: 600;
   --text-display: 1.75rem; /* 28 — big amounts */
   --text-display--line-height: 1.2;
   --text-display--font-weight: 700;
