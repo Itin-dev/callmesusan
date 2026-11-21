@@ -7,6 +7,32 @@ shared sheet [Psst — feature ideas to rate](https://claude.ai/artifact/QVdXSqa
 The demo shows one or two working features end to end. The rest goes on a "What's next" slide.
 Rows marked "Vision" are ideas we present but do not build for the demo.
 
+## Status at code freeze (21 Nov 2026, 18:00)
+
+**Built — works in the live demo (callmesusan.vercel.app)**
+
+- Detailed receipt per transaction: imported from a partner shop app (Lidl Plus, Denner) or scanned
+  with the camera (Scan on Home); the receipt is matched to its payment by amount, date and store.
+- Receipt insight: "Psst: chocolate this month is CHF 49.75, about 2.5× your usual" (#1, item level).
+- Psst chat grounded in the user's data, including last week, last month and last year (#5, #6, #14
+  in their basic form: the chat answers, nothing is saved or scheduled).
+- Analytics with "Ask Psst" and the yearly income and expense summary.
+- Voice input in the chat (#16) and answers in the user's language (#15).
+
+**Roadmap — "Next" on the pitch slide**
+
+- Monthly spending per item category (#1 full version, BE-3) and a plain explanation of each
+  transaction (#13, BE-5).
+- Tax savings plan with memory (#4), payday reminder (#7), upcoming bills (#11), end-of-month
+  forecast (#12), unusual spending alert (#10), year-end tax estimate (#3).
+- One reminder per purchase to attach a missing receipt.
+- Trust panel: "What can you see?" (#17, BE-10) and more app languages (FE-13), if not merged
+  before the freeze.
+
+**Vision — "Later" on the pitch slide**
+
+- Scan any document and Psst helps fill it in (#19); utility bills import (#18).
+
 ## Must-have
 
 | Feature | Example | Effort | Notes |
