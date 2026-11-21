@@ -24,23 +24,18 @@ If no trigger word is present but the user clearly asks for one of these, pick t
 
 ## Team resources
 
-Three Figma files, one role each. Figma is where the team thinks and designs; the GitHub board
+One Figma file: [Design-Project](https://www.figma.com/design/oOu7PPG4eIaWZPFVOELCCI/Design-Project?node-id=0-1) (Figma Design) holds the final app flows, screens
+and components — the source of truth for the UI. Figma is where the team designs; the GitHub board
 is where work is tracked. Content flows **Figma → GitHub issues**, never the other way.
+Design work becomes `area:fe` / `area:design` tickets, one per screen.
 
-| Role | File | Contents | Becomes on GitHub |
-|---|---|---|---|
-| Project guide | [Core project info](https://www.figma.com/board/u8YyBh0deFEbRGSNhzfKJB/Core-project-info) (FigJam) | Project description, challenge partner (PostFinance), key problems, personas, product description, feature list | `idea` issues and feature tickets; personas referenced as "Target user" |
-| Pitch deck | [Presentation](https://www.figma.com/slides/cb3hUbajEGqza7XUGuQfCj) (Figma Slides) | Project presentation (structure to be defined) | `area:pitch` tickets |
-| Final app design | [Design-Project](https://www.figma.com/design/oOu7PPG4eIaWZPFVOELCCI/Design-Project) (Figma Design) | Screens and components — source of truth for the UI | `area:fe` / `area:design` tickets, one per screen |
-
-When an issue refers to a Figma file ("on the board", "the sticky about …", "our persona …",
-"the result screen", "the slides"), add a `**Figma:** <link>` line to the body. Pick the file by
-role (screens / UI → Design-Project, slides / pitch → Presentation, everything else including
-personas and features → Core project info) unless the speaker gives a more specific frame link.
+When an issue refers to the design ("the result screen", "the flow for …"), add a
+`**Figma:** <link>` line to the body: the Design-Project link above, or a more specific frame link
+if the speaker gives one.
 
 To transfer Figma content, read it in the chat session through the `figma` MCP server
 (`.mcp.json`; each teammate signs in once via `/mcp`), then create the issues with this skill.
-Example: "Ticket: one issue per screen in Design-Project" or "Idea: the stickies in section X".
+Example: "Ticket: one issue per screen in Design-Project".
 
 ## Normalize the input first
 

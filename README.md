@@ -20,9 +20,7 @@ Product name: **Psst** — an AI assistant inside your bank that you can trust w
 Tools: Claude Code (agentic coding), Figma (design), Discord (communication),
 OpenRouter (AI backend), `gh` CLI (GitHub).
 
-Figma: [Core project info](https://www.figma.com/board/u8YyBh0deFEbRGSNhzfKJB/Core-project-info) (project guide, personas, features)
-· [Presentation](https://www.figma.com/slides/cb3hUbajEGqza7XUGuQfCj) (pitch deck)
-· [Design-Project](https://www.figma.com/design/oOu7PPG4eIaWZPFVOELCCI/Design-Project) (final app design)
+Figma: [Design-Project](https://www.figma.com/design/oOu7PPG4eIaWZPFVOELCCI/Design-Project?node-id=0-1) — final app flows (the only Figma file we use)
 
 ## Quick start
 
