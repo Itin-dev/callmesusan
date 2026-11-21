@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import chevronIcon from '@/assets/icons/chevron.svg'
 import detailsIcon from '@/assets/icons/details.svg'
 import searchIcon from '@/assets/icons/search.svg'
 import transferIcon from '@/assets/icons/transfer.svg'
@@ -11,20 +10,15 @@ import { formatChf } from '@/lib/money'
 // Decorative balance history, bar heights in px as in Figma "08 Account detail" (no data behind it).
 const BARS = [14, 16, 15, 14, 92, 88, 86, 72, 72, 70, 69, 66, 64, 62, 60, 56, 55, 50, 48, 46, 42, 40, 38, 34, 30, 28, 26, 24, 22, 20, 18, 16]
 
-/** Mint header: back, account switch (visual only), name and balance, balance chart, actions. */
+/** Mint header: back, name and balance, balance chart, actions. */
 export default function AccountHeader({ account }: { account: Account | undefined }) {
   const { t } = useTranslation()
 
   return (
     <>
       <header className="flex flex-col bg-background pt-3">
-        <div className="flex items-center justify-between px-4">
+        <div className="flex items-center px-4">
           <BackButton />
-          {/* Account switch: visual only in the MVP. */}
-          <span className="flex size-11 items-center justify-center" aria-hidden="true">
-            <img src={chevronIcon} alt="" width={24} height={24} className="rotate-90" />
-          </span>
-          <span className="size-11 -me-2.5" />
         </div>
         <div className="mt-2 flex min-h-10 items-center justify-between gap-3 px-4">
           {account && (
