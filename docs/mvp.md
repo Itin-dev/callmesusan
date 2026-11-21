@@ -142,6 +142,33 @@ your usual") and the chat.
 }
 ```
 
+### `POST /api/receipts/scan`
+
+Reads a photo of a paper receipt from a non-partner shop (Home → Scan). Multipart upload, field
+`file`: a JPEG or PNG of at most 4 MB. The API checks the file signature, not the name: other
+files get 415, larger files 413. A model failure gets 502. Nothing is stored or logged.
+
+```jsonc
+{
+  "transaction_id": "P-0236",               // same amount, day and month (year ignored); null if none
+  "receipt": {
+    "receipt_id": "LOLA-20261121-1a2b3c4d", // store, date on the receipt, short photo hash
+    "store": "LOLA", "branch": "Mattenhof", "time": "11:52",
+    "source": "photo",
+    "total_rp": 910,
+    "items": [ { "name": "Depot", "category": "beverages", "quantity": 1, "unit": "pcs",
+                 "unit_price_rp": 30, "line_total_rp": 30, "discount_rp": 0 } ],
+    "category_totals": [ { "category": "chocolate", "total_rp": 360 } ]
+  },
+  "check": { "items_sum_rp": 910, "matches_total": true },  // items within 5 Rappen of the total
+  "fallback": false                         // true only for the prepared LOLA answer (pitch flag)
+}
+```
+
+Item categories are limited to the fixed list below, so the model puts items without their own
+category (for example vape products) into the closest one. `DEMO_SCAN_FALLBACK=1` (pitch only)
+answers with the prepared LOLA result when the model fails.
+
 ### `POST /api/chat` (exists, shape unchanged)
 
 ```jsonc
