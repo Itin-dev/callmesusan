@@ -5,6 +5,7 @@ shared sheet [Psst — feature ideas to rate](https://claude.ai/artifact/QVdXSqa
 (one 1–5 vote per role); this file is the snapshot of the list. Effort is a first estimate.
 
 The demo shows one or two working features end to end. The rest goes on a "What's next" slide.
+Rows marked "Vision" are ideas we present but do not build for the demo.
 
 ## Must-have
 
@@ -34,7 +35,7 @@ The demo shows one or two working features end to end. The rest goes on a "What'
 | 16 | Voice input | Ask by voice instead of typing | M | Browser speech-to-text |
 | 17 | Trust panel | "What can you see, and what can you do?" | S | Read-only by default; every action needs confirmation. Supports the main pitch argument |
 | 18 | Utility bills import | Add utility payments from a contract or the flat address | L | Not in the hackathon data; vision slide |
-| 19 | Tax declaration help | Pre-fill the tax declaration from my data | L | Legal limits for a bank; vision slide |
+| 19 | Vision: scan a document, Psst helps fill it | Scan a form or letter (tax declaration, unemployment fund ALK): Psst explains it in plain words and pre-fills what the bank knows (yearly salary, monthly income, interest, 3rd pillar) | L | Vision only: on the "What's next" slide, not working in the demo. Psst prepares and explains; the user checks and submits |
 | 20 | Business: VAT reserve | "How much VAT should I set aside this quarter?" | M | The challenge also mentions businesses |
 
 ## Where Psst fits in the PostFinance mobile app
