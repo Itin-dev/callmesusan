@@ -13,7 +13,7 @@ Design: [Figma Design-Project, page "Psst MVP"](https://www.figma.com/design/oOu
 |-------------|------|--------|
 | 01 Home | `16:5` | Entry points only (Psst quick action, Psst card, account rows) |
 | 02 Psst chat | `16:214` | **Yes** |
-| 03 Analytics + Ask Psst | `16:118` | No (stretch) |
+| 03 Analytics + Ask Psst | `16:118` | Stretch (FE-8 #50, BE-7 #51) |
 | 04 Transaction + receipt | `16:266` | **Yes** |
 | 08 Account detail | `50:325` | **Yes** (FE-2 account transaction list) |
 | Components (QuickAction, Chip, TabBar, Icons) | `15:15` | Reuse |
@@ -142,6 +142,30 @@ your usual") and the chat.
 }
 ```
 
+### `GET /api/spending/summary?year=2025` (agreed, BE-7)
+
+Income vs expenses of one year for the Analytics donut and its rows. Same spending rules as above:
+`transfer` rows are left out, income is the salary on `privat`, and credit card refunds (`income` on
+`kk`) reduce `expenses.total_rp`. Agreed with the backend (shape matches `app/spending.py` from BE-4):
+
+- `count` is the number of rows of that type: `expenses.count` counts expense rows only; card
+  refunds reduce `total_rp` but are not counted (461 for 2025).
+- `monthly_average_rp` is `total_rp / months`, rounded down; a full year has 12 months.
+- `year` is optional: without it, the latest year in the data. An unknown year answers 404.
+
+The Analytics screen calls it without `year`, so it always shows the latest year. Until it is
+merged, `apps/web/src/api/spending.ts` returns these values (computed once from
+`transactions.json`).
+
+```jsonc
+{
+  "period_start": "2025-01-01",
+  "period_end": "2025-12-31",
+  "income":   { "total_rp": 9703200, "count": 13,  "monthly_average_rp": 808600 },
+  "expenses": { "total_rp": 8897751, "count": 461, "monthly_average_rp": 741479 }
+}
+```
+
 ### `POST /api/receipts/scan`
 
 Reads a photo of a paper receipt from a non-partner shop (Home → Scan). Multipart upload, field
@@ -198,6 +222,7 @@ fixtures that follow the contract above until the real endpoint is merged.
 | BE-2 | Fake receipts: a deterministic generator script that writes a receipt for every 2025 supermarket transaction (Coop, Migros, Lidl, Denner; add a few more grocery transactions if a month has none) and for some of the Kantine lunches, with items from the fixed categories whose `line_total_rp` sum equals `amount_rp`. Fix Denner 20.11 (add its transaction or drop it). Build in a believable story: chocolate and alcohol rise in November | Every supermarket transaction has a receipt; a test checks that every receipt total equals its transaction amount |
 | BE-3 | `GET /api/spending/categories?month=YYYY-MM` | Totals, average and ratio per category; tests with a small fixture |
 | BE-4 | Grounded chat: `chat.py` adds a compact spending summary (monthly income and expenses, category totals per month, top merchants) and the Psst persona to the system prompt. Psst only reads, never moves money, speaks plainly, and talks about alcohol only when asked or with an opt-in question, never judging | Tests with the fake LLM check that the summary is in the system prompt; a manual question "Where can I save?" gives an answer with real numbers |
+| BE-7 (stretch, #51) | `GET /api/spending/summary?year=YYYY` for Analytics | Contract shape above; tests with a small fixture cover transfers and refunds |
 | BE-5 (stretch) | `explanation` field on `GET /api/transactions/{id}`: one plain-language sentence ("Groceries at a supermarket in Bern, paid with your card") | Field present; LLM call cached per id or rule-based |
 
 ### Frontend
@@ -208,6 +233,7 @@ fixtures that follow the contract above until the real endpoint is merged.
 | FE-2 | Account transaction list `/accounts/:account` (Figma 08): grouped by day, merchant, amount, receipt icon when `has_receipt` | Tapping a row opens the transaction screen |
 | FE-3 | Transaction + receipt screen `/transactions/:id` (Figma 04): amount, raw bank text, "Psst explains", receipt items with prices and total, Psst insight with a chip that opens the chat, "Add receipt photo" button (no function in MVP) | Matches Figma; works with and without a receipt |
 | FE-4 | Psst chat screen `/psst` (Figma 02): header "Just between us · reads only, never pays", message bubbles, suggestion chips, input with send button, multi-turn conversation over `POST /api/chat` | A conversation of several turns works; loading and error states; RTL for Arabic |
+| FE-8 (stretch, #50) | Analytics `/analytics` (Figma 03): income vs expenditures donut, period and monthly average, rows with counts, action row with Ask Psst opening `/psst?q=...`; Home "Analysis" opens it | Numbers from the API layer; Ask Psst starts a chat |
 | FE-5 | Home entry points (Figma 01): Psst quick action and Psst card with chips open the chat; account rows open the list | All entry points navigate correctly |
 
 Suggested order: backend BE-1 → BE-2 → BE-4 → BE-3; frontend FE-1 → FE-3 → FE-4 → FE-2 → FE-5.

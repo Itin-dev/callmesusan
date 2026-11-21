@@ -121,6 +121,21 @@ export type SpendingByCategory = {
   categories: CategorySpending[]
 }
 
+/** Income or expenses of a period (BE-7, #51): total, number of transactions, average per month. */
+export type SummaryTotals = {
+  total_rp: number
+  count: number
+  monthly_average_rp: number
+}
+
+/** GET /api/spending/summary?year=YYYY (proposed, BE-7): income vs expenses for Analytics. */
+export type SpendingSummary = {
+  period_start: string
+  period_end: string
+  income: SummaryTotals
+  expenses: SummaryTotals
+}
+
 /** One turn of the Psst chat. */
 export type ChatMessage = { role: 'user' | 'assistant'; content: string }
 

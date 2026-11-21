@@ -131,5 +131,26 @@
     "reading": "Psst liest deinen Beleg…",
     "noMatch": "Psst hat den Beleg gelesen, aber keine Zahlung passt dazu.",
     "error": "Der Beleg konnte nicht gelesen werden. Bitte versuche es erneut."
+  },
+  "analytics": {
+    "title": "Analyse",
+    "summarised": "Zusammengefasst",
+    "actions": {
+      "search": "Suche",
+      "co2": "CO2-Fussabdruck",
+      "askPsst": "Psst fragen"
+    },
+    "askQuestion": "Wofür gebe ich mein Geld jeden Monat aus?",
+    "income": "Geld rein",
+    "expenses": "Geld raus",
+    "perMonth": "pro Monat im Schnitt",
+    "story": "{{period}}: Du hast {{income}} verdient und {{expenses}} ausgegeben.",
+    "count_one": "{{count}} Zahlung",
+    "count_other": "{{count}} Zahlungen",
+    "psstCard": {
+      "title": "Psst… willst du wissen, wohin dein Geld geht?",
+      "lastMonth": "Wofür habe ich letzten Monat am meisten ausgegeben?",
+      "spendLess": "Wie kann ich jeden Monat weniger ausgeben?"
+    }
   }
 }

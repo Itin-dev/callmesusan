@@ -1,8 +1,10 @@
+import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 import { cn } from '@/lib/utils'
 
 type Props = {
-  icon: string
+  /** SVG asset URL from src/assets/icons, or a lucide icon element. */
+  icon: string | ReactNode
   label: string
   /** Figma QuickAction variants: primary = yellow, psst = assistant entry point, default = white. */
   variant?: 'default' | 'primary' | 'psst'
@@ -21,7 +23,7 @@ export default function QuickAction({ icon, label, variant = 'default', to }: Pr
   const content = (
     <>
       <span className={cn('flex size-14 items-center justify-center rounded-full max-[359px]:size-12', circle[variant])}>
-        <img src={icon} alt="" width={24} height={24} />
+        {typeof icon === 'string' ? <img src={icon} alt="" width={24} height={24} /> : icon}
       </span>
       <span className="text-small">{label}</span>
     </>

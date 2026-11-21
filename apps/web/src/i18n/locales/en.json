@@ -131,5 +131,26 @@
     "reading": "Psst is reading your receipt…",
     "noMatch": "Psst read the receipt, but no payment matches it.",
     "error": "Could not read the receipt. Please try again."
+  },
+  "analytics": {
+    "title": "Analytics",
+    "summarised": "Summarised",
+    "actions": {
+      "search": "Search",
+      "co2": "CO2 footprint",
+      "askPsst": "Ask Psst"
+    },
+    "askQuestion": "Where does my money go each month?",
+    "income": "Money in",
+    "expenses": "Money out",
+    "perMonth": "per month on average",
+    "story": "In {{period}} you earned {{income}} and spent {{expenses}}.",
+    "count_one": "{{count}} payment",
+    "count_other": "{{count}} payments",
+    "psstCard": {
+      "title": "Psst… curious where your money goes?",
+      "lastMonth": "What did I spend most on last month?",
+      "spendLess": "How can I spend less each month?"
+    }
   }
 }

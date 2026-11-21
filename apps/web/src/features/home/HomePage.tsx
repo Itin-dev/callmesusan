@@ -32,7 +32,7 @@ export default function HomePage() {
         <QuickAction icon={scanIcon} label={t('home.actions.scan')} variant="primary" to="/scan" />
         <QuickAction icon={payIcon} label={t('home.actions.pay')} />
         <QuickAction icon={transferIcon} label={t('home.actions.transfer')} />
-        <QuickAction icon={analysisIcon} label={t('home.actions.analysis')} />
+        <QuickAction icon={analysisIcon} label={t('home.actions.analysis')} to="/analytics" />
         <QuickAction icon={psstIcon} label={t('psst.name')} variant="psst" to="/psst" />
       </div>
 
