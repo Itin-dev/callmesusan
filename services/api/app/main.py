@@ -8,6 +8,7 @@ from app.accounts import AccountsOverview, accounts_overview
 from app.chat import ChatReply, ChatRequest, build_messages
 from app.config import Settings, get_settings
 from app.llm import LLM, get_llm
+from app.spending import current_summary
 from app.transactions import (
     Account,
     TransactionDetail,
@@ -52,5 +53,6 @@ def chat(
         [m.model_dump() for m in request.messages],
         language=request.language,
         persona=settings.system_prompt,
+        context=current_summary(),
     )
     return ChatReply(reply=llm.complete(messages).strip())
