@@ -191,6 +191,20 @@ Item categories are limited to the fixed list below, so the model puts items wit
 category (for example vape products) into the closest one. `DEMO_SCAN_FALLBACK=1` (pitch only)
 answers with the prepared LOLA result when the model fails.
 
+### `POST /api/transcribe`
+
+Turns a chat mic recording into text (BE-8). Multipart upload: field `file` with the browser's
+recording (WebM, MP4, Ogg or WAV, checked by the file signature, at most 4 MB), and an optional
+form field `language` (`en`, `de`, `uk`, `ru`, `ar`; default `en`, an empty value counts as not
+given). Nothing is stored or logged.
+
+```jsonc
+{ "text": "How much did I spend last week?" }
+```
+
+Errors: 413 too large, 415 not a known audio container, 422 unknown `language` or no speech in the
+recording, 502 model failure, 503 `OPENROUTER_TRANSCRIBE_MODEL` not set.
+
 ### `POST /api/chat` (exists, shape unchanged)
 
 ```jsonc
