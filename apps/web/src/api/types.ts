@@ -106,6 +106,10 @@ export type TransactionDetail = Transaction & {
 export type ScanResult = {
   transaction_id: string | null
   receipt: Receipt
+  /** Items add up to the total within 5 Rappen. */
+  check: { items_sum_rp: number; matches_total: boolean }
+  /** True only for the prepared LOLA answer (DEMO_SCAN_FALLBACK). */
+  fallback: boolean
 }
 
 export type CategorySpending = {

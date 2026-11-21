@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
+import { ApiError } from '@/api/client'
 import { useScanReceipt } from '@/api/queries'
 import cameraIcon from '@/assets/icons/camera.svg'
 import BackButton from '@/components/shell/BackButton'
@@ -15,6 +16,9 @@ export default function ScanPage() {
   const navigate = useNavigate()
   const [photo, setPhoto] = useState<File | null>(null)
   const scan = useScanReceipt()
+  // 413 / 415: the same photo would fail again, so no retry; the user picks another one.
+  const status = scan.error instanceof ApiError ? scan.error.status : 0
+  const rejected = status === 413 || status === 415
 
   const send = (file: File) =>
     scan.mutate(file, {
@@ -73,9 +77,9 @@ export default function ScanPage() {
       {scan.isError && (
         <div className="flex flex-col items-center gap-3 rounded-xl bg-card p-4 text-center">
           <p role="alert" className="text-body text-destructive">
-            {t('scan.error')}
+            {t(status === 413 ? 'scan.tooBig' : status === 415 ? 'scan.wrongType' : 'scan.error')}
           </p>
-          {photo && (
+          {photo && !rejected && (
             <Button variant="outline" className="h-11 rounded-full px-5 text-body font-semibold" onClick={() => send(photo)}>
               {t('common.retry')}
             </Button>

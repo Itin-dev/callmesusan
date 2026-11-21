@@ -130,7 +130,9 @@
     "choose": "Foto aufnehmen oder wählen",
     "reading": "Psst liest deinen Beleg…",
     "noMatch": "Psst hat den Beleg gelesen, aber keine Zahlung passt dazu.",
-    "error": "Der Beleg konnte nicht gelesen werden. Bitte versuche es erneut."
+    "error": "Der Beleg konnte nicht gelesen werden. Bitte versuche es erneut.",
+    "tooBig": "Das Foto ist zu gross. Bitte mach ein neues.",
+    "wrongType": "Bitte verwende ein JPEG- oder PNG-Foto."
   },
   "analytics": {
     "title": "Analyse",

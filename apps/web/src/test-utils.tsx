@@ -3,8 +3,16 @@ import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { vi } from 'vitest'
 import { ACCOUNTS_FIXTURE } from '@/api/accounts.fixtures'
+import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
 import { TRANSACTION_FIXTURES, TRANSACTION_LIST_FIXTURES } from '@/api/transactions.fixtures'
-import type { AccountsOverview, ChatRequest, Transaction, TransactionAccount, TransactionDetail } from '@/api/types'
+import type {
+  AccountsOverview,
+  ChatRequest,
+  ScanResult,
+  Transaction,
+  TransactionAccount,
+  TransactionDetail,
+} from '@/api/types'
 import App from '@/App'
 
 /** Render the whole app at a route with fresh providers (no retries, no shared cache). */
@@ -29,17 +37,20 @@ const echoChat = ({ messages }: ChatRequest) =>
  * - GET /api/transactions?account= from the list fixtures; `lists` overrides an account's rows.
  * - GET /api/transactions/{id} from the fixtures (404 otherwise); `transactions` overrides or adds some.
  * - POST /api/chat answers with `chat(request)`: a reply string, or a Response (e.g. an error).
+ * - POST /api/receipts/scan answers `scan` (default: the LOLA photo), or a Response (e.g. 413).
  */
 export function mockApi({
   accounts = ACCOUNTS_FIXTURE,
   lists = {},
   transactions = {},
   chat = echoChat,
+  scan = LOLA_SCAN_FIXTURE,
 }: {
   accounts?: AccountsOverview
   lists?: Partial<Record<TransactionAccount, Transaction[]>>
   transactions?: Record<string, TransactionDetail>
   chat?: (request: ChatRequest) => string | Response | Promise<string | Response>
+  scan?: ScanResult | Response
 } = {}) {
   const data = { ...TRANSACTION_FIXTURES, ...transactions }
   const listData: Record<string, Transaction[]> = { ...TRANSACTION_LIST_FIXTURES, ...lists }
@@ -48,6 +59,9 @@ export function mockApi({
     if (url === '/api/chat' && init?.method === 'POST') {
       const answer = await chat(JSON.parse(String(init.body)) as ChatRequest)
       return typeof answer === 'string' ? Response.json({ reply: answer }) : answer
+    }
+    if (url === '/api/receipts/scan' && init?.method === 'POST') {
+      return scan instanceof Response ? scan : Response.json(scan)
     }
     if (url === '/api/accounts') return Response.json(accounts)
     const list = url.match(/^\/api\/transactions\?account=([^&]+)$/)

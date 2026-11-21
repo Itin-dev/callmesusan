@@ -26,3 +26,8 @@ export async function postJson<T>(path: string, body: unknown): Promise<T> {
   })
   return parse<T>(response)
 }
+
+/** Multipart POST (file uploads); the browser sets the Content-Type with its boundary. */
+export async function postForm<T>(path: string, body: FormData): Promise<T> {
+  return parse<T>(await fetch(path, { method: 'POST', headers: { Accept: 'application/json' }, body }))
+}
