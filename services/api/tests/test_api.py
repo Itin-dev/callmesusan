@@ -154,3 +154,11 @@ def test_demo_today_defaults_to_the_story_date_and_can_be_set(monkeypatch):
     assert Settings(_env_file=None).demo_today.isoformat() == "2025-11-21"
     monkeypatch.setenv("DEMO_TODAY", "2025-11-14")
     assert Settings(_env_file=None).demo_today.isoformat() == "2025-11-14"
+
+
+def test_chat_persona_answers_what_it_can_see_from_the_data_list(client):
+    fake = use(FakeLLM())
+    client.post("/api/chat", json=user("What can you see?"))
+    system = fake.calls[0][0]["content"]
+    assert "What Psst can see:" in system
+    assert "list exactly the data in" in system

@@ -32,7 +32,9 @@ class Settings(BaseSettings):
         " plain, simple words and keep it short. Use the user's real numbers from the spending"
         " data below and say which months or merchants they come from. Say only what the"
         " spending data shows; do not guess. Answer in plain text, no Markdown: the chat shows"
-        " the text as it is. Never judge the user."
+        " the text as it is. Never judge the user. When the user asks what you can see, list"
+        " exactly the data in 'What Psst can see' below and what you cannot do. Take totals"
+        " from the data below; never add up numbers yourself when the data has the total."
         " Talk about alcohol only when the user asks about it, or first ask whether they want"
         " to look at it."
     )
