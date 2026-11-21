@@ -72,4 +72,9 @@ describe('receiptBadge', () => {
     expect(receiptBadge(tx('a', '2025-11-20', { has_receipt: true }))).toBe('receipt')
     expect(receiptBadge(tx('a', '2025-11-20'))).toBeNull()
   })
+
+  it('shows Receipt for a payment with a scanned receipt, whatever the backend says', () => {
+    expect(receiptBadge(tx('a', '2025-11-20'), true)).toBe('receipt')
+    expect(receiptBadge(tx('a', '2025-11-20', { receipt_status: 'missing' }), true)).toBe('receipt')
+  })
 })

@@ -6,6 +6,7 @@ import receiptIcon from '@/assets/icons/receipt.svg'
 import type { Transaction } from '@/api/types'
 import { Badge } from '@/components/ui/badge'
 import { formatSignedAmount } from '@/lib/money'
+import { scannedReceiptFor } from '@/features/scan/scannedReceipts'
 import { cn } from '@/lib/utils'
 import { formatDay, groupByDay, localIsoDate, merchantInitials, receiptBadge } from './transactionDisplay'
 
@@ -65,10 +66,10 @@ function TransactionRow({ transaction }: { transaction: Transaction }) {
   )
 }
 
-/** "Receipt" (attached) or "+ Add receipt" (missing). Add receipt is visual only in the MVP. */
+/** "Receipt" (attached or scanned) or "+ Add receipt" (missing). Add receipt is visual only in the MVP. */
 function ReceiptBadge({ transaction }: { transaction: Transaction }) {
   const { t } = useTranslation()
-  const badge = receiptBadge(transaction)
+  const badge = receiptBadge(transaction, scannedReceiptFor(transaction.id) !== null)
   if (!badge) return null
   return (
     <Badge
