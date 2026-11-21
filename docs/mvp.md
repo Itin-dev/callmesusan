@@ -15,10 +15,13 @@ Design: [Figma Design-Project, page "Psst MVP"](https://www.figma.com/design/oOu
 | 02 Psst chat | `16:214` | **Yes** |
 | 03 Analytics + Ask Psst | `16:118` | No (stretch) |
 | 04 Transaction + receipt | `16:266` | **Yes** |
+| 08 Account detail | `50:325` | **Yes** (FE-2 account transaction list) |
 | Components (QuickAction, Chip, TabBar, Icons) | `15:15` | Reuse |
 
-The Figma file has no account transaction list. The list follows the "Account detail" pattern in
-[features.md](features.md#screens-today): transactions grouped by day.
+Frame 08 Account detail is the account transaction list: account header with balance chart,
+Payments / Search / Details actions, pending orders, and transactions grouped by day. Each row shows
+a "Receipt" tag when a receipt is linked, or a yellow "Add receipt" tag when it is missing. All data
+in the frame is mock data. Export: [design/screens/08-account-detail.png](../design/screens/08-account-detail.png).
 
 ## Data we have
 
@@ -174,7 +177,7 @@ fixtures that follow the contract above until the real endpoint is merged.
 | # | Task | Done when |
 |---|------|-----------|
 | FE-1 | Mobile app shell in the PostFinance look: light mint-grey background, white rounded cards, dark petrol text, yellow accent, bottom tab bar (Home, Payments, Invest, Offers, Services), content max 390 px wide and centred. Rename the UI from "Beyond the List" to Psst | Home renders in the shell; axe passes |
-| FE-2 | Account transaction list `/accounts/:account`: grouped by day, merchant, amount, receipt icon when `has_receipt` | Tapping a row opens the transaction screen |
+| FE-2 | Account transaction list `/accounts/:account` (Figma 08): grouped by day, merchant, amount, receipt icon when `has_receipt` | Tapping a row opens the transaction screen |
 | FE-3 | Transaction + receipt screen `/transactions/:id` (Figma 04): amount, raw bank text, "Psst explains", receipt items with prices and total, Psst insight with a chip that opens the chat, "Add receipt photo" button (no function in MVP) | Matches Figma; works with and without a receipt |
 | FE-4 | Psst chat screen `/psst` (Figma 02): header "Just between us · reads only, never pays", message bubbles, suggestion chips, input with send button, multi-turn conversation over `POST /api/chat` | A conversation of several turns works; loading and error states; RTL for Arabic |
 | FE-5 | Home entry points (Figma 01): Psst quick action and Psst card with chips open the chat; account rows open the list | All entry points navigate correctly |
