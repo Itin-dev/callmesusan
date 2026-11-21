@@ -1,6 +1,6 @@
 # Tech stack
 
-Inherited from the team template.
+Psst is one FastAPI backend and one React mobile web app, deployed together on Vercel.
 
 | Part | Path | Tech |
 | --- | --- | --- |

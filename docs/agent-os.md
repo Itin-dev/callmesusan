@@ -1,6 +1,6 @@
 # Agent OS
 
-Claude Code setup for this template: skills, hooks, and plugins. Claude Code is the only supported agent.
+Claude Code setup for this repo: skills, hooks, and plugins. Claude Code is the only supported agent.
 
 ## Entrypoints
 
@@ -16,7 +16,6 @@ Project skills (always present):
 | `generic-project` | Layout, SoC, libraries-first |
 | `generic-workflow` | Branch / hooks / GitOps |
 | `generic-language` | English-only |
-| `generic-docker` | Microservices + Compose |
 | `generic-cleanliness` | Tidy repo checklist |
 | `capture` | Voice/typed input → GitHub issues (decisions, tickets, ideas, recap) |
 | `ask-team` | Questions the user can't answer → team Discord channel (`scripts/ask-team.sh`) |

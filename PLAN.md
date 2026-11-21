@@ -37,14 +37,16 @@ visibility and support well-informed decisions.
 ### Resources
 
 - Two CSV files with about 500 transactions over one year (two accounts, sample data), provided
-  as a zip by the organizers. Location in this repo: _TBD_.
+  as a zip by the organizers. Location in this repo: `services/api/app/data/` (raw CSVs plus
+  `transactions.json` and the demo receipts).
 
 ## Scope
 
 - In: a demo that reads the sample transactions (two accounts, one year) and turns them into
   clear insights, trends and suggestions (AI at the core, not decoration).
 - Out: business accounts, real bank integration, authentication, real customer data — the demo uses the sample CSVs.
-- Exact features: to be decided by the team (capture as `Idea` / `Ticket`).
+- Built: receipt for every purchase (store-app receipts and photo scan), Home, account detail,
+  Analytics with Ask Psst, and the Psst chat with voice input — see [docs/mvp.md](docs/mvp.md).
 
 ## Approach
 
@@ -53,11 +55,12 @@ visibility and support well-informed decisions.
 3. Build the demo on the existing stack (FastAPI + React + OpenRouter, see `docs/stack.md`).
 4. Update `PROGRESS.md` at the end of each work block.
 
-## Risks / open questions
+## Decisions and limits
 
-- Target user: individuals ([#3](https://github.com/Itin-dev/callmesusan/issues/3)); the exact
-  persona is open (newcomers, low financial literacy, language barriers?).
-- Demo moment for the jury: to be clarified.
-- Which insights are "genuinely useful" — pick a few strong ones over many weak ones.
-- Financial advice must stay explanatory, not regulated investment advice.
-- The Figma files may still hold content from the previous topic and need checking.
+- Target user: individuals ([#3](https://github.com/Itin-dev/callmesusan/issues/3)) — people who
+  find bank apps hard to read: newcomers, older users, anyone with language barriers.
+- Demo moment: scan a paper receipt, Psst matches it to the bank payment, then ask Psst
+  "Am I spending too much on chocolate?" by text or voice.
+- A few strong insights over many weak ones; the rest is on the roadmap slide
+  ([docs/features.md](docs/features.md)).
+- Psst explains and suggests; it never moves money and gives no investment advice.

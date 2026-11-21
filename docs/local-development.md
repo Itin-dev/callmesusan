@@ -2,7 +2,7 @@
 
 ## Prefer host tools
 
-Use local Python, Node, Bash, and Docker CLI already on the machine. Prefer editing and running tests on the host; use Compose for dependent services (Mongo, MySQL).
+Use local Python (via `uv`), Node and Bash on the machine. The app has no database or other services to run: the demo data ships as JSON in `services/api/app/data/`.
 
 ## Required tools (CI parity)
 
@@ -27,8 +27,8 @@ bash scripts/ensure-shellcheck.sh
 
 `bash scripts/doctor.sh` verifies git identity, git hooks, `gh` login + `project` scope,
 python3, pre-commit, shellcheck and the Claude CLI, and prints a fix for each problem.
-Claude Code runs it (quiet mode) on every session start. When the stack is chosen, add its
-tools to the `STACK` section so every machine stays in sync.
+Claude Code runs it (quiet mode) on every session start. Stack tools go in its `STACK` section
+so every machine stays in sync.
 
 ## Bootstrap (once)
 
@@ -44,15 +44,6 @@ Installs git hooks (`core.hooksPath=.githooks`), pre-commit environments, and sh
 cp .env.example .env
 # edit .env — never commit it
 ```
-
-## Compose (dependencies)
-
-```bash
-cp docker/compose.example.yml docker-compose.yml   # or symlink / adapt
-docker compose up -d mongo mysql
-```
-
-See [docker-microservices.md](docker-microservices.md).
 
 ## Dev Container / Codespaces
 

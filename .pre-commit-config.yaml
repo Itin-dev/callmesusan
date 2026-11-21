@@ -7,7 +7,6 @@ repos:
       - id: check-added-large-files
         args: [--maxkb=5120]
       - id: check-yaml
-        exclude: ^docker/compose\.example\.yml$
       - id: check-toml
       - id: check-merge-conflict
       - id: end-of-file-fixer

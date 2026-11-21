@@ -17,7 +17,8 @@ Mandatory contract for humans and agents. Also enforced via `.claude/skills/gene
 |------|------|
 | `services/` | Backend microservices (preferred for multi-service projects) |
 | `apps/` | Frontends, CLIs, BFF |
-| `packages/` | Shared libraries used by multiple services/apps |
+| `api/` | Vercel serverless entrypoint (thin wrapper around `services/api`) |
+| `design/` | Figma exports used in docs |
 | `tests/` | Integration / cross-service tests |
 | `scripts/` | Automation invoked by hooks/CI (not ad-hoc tools) |
 | `docs/` | Modular documentation with [INDEX.md](INDEX.md) |

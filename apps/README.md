@@ -1,19 +1,11 @@
 # apps/
 
-Frontends, CLIs, and BFF processes that are not backend microservices.
+Frontends. One app per subdirectory.
 
-## Rules
+| App | Purpose |
+| --- | --- |
+| [`web/`](web/) | Psst mobile web app (Vite, React, TypeScript, Tailwind, shadcn/ui): Home, account detail, transaction with receipt, receipt scan, Analytics and the Psst chat |
 
-- One app per subdirectory with its own README
-- Talk to backends via documented APIs; do not import service internals
-- Shared UI/utils that multiple apps need → `../packages/`
-
-## Example
-
-```text
-apps/
-  web/
-    README.md
-  cli/
-    README.md
-```
+Run it with `make web` (<http://localhost:5173>, proxies `/api` to the backend). Tests:
+`npm --prefix apps/web test`. The app talks to the backend only through `/api/...`; see
+[docs/stack.md](../docs/stack.md#frontend-ui).

@@ -1,22 +1,11 @@
 # services/
 
-One subdirectory per **microservice**. Prefer this layout for Dockerized multi-service projects.
+Backend services. One subdirectory per service, one responsibility each.
 
-## Rules
+| Service | Purpose |
+| --- | --- |
+| [`api/`](api/) | Psst API (FastAPI): accounts, transactions with receipts, spending summaries, receipt scan, voice to text and the Psst chat |
 
-- One responsibility per service
-- Each service has its own `README.md` (purpose, ports, deps, how to run)
-- Shared code goes in `../packages/`, not copy-pasted
-- Add Compose entries when the service needs to run with dependencies
-
-## Example
-
-```text
-services/
-  api/
-    README.md
-  worker/
-    README.md
-```
-
-If the project is a single process, use `../src/` instead and leave this directory empty (or delete it after bootstrap).
+Run it with `make api` (<http://localhost:8000>, OpenAPI docs at `/docs`). Tests:
+`cd services/api && uv run pytest`. Conventions: [docs/stack.md](../docs/stack.md).
+On Vercel the app runs as a serverless function through [`api/index.py`](../api/index.py).
