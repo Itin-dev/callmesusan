@@ -19,3 +19,8 @@ export function formatChf(amountRp: number, direction?: AmountDirection): string
 export function formatAmount(amountRp: number): string {
   return asciiApostrophe(plain.format(amountRp / 100))
 }
+
+/** List amount without the currency and with a trailing sign, as in the account list ("64.35–"). */
+export function formatSignedAmount(amountRp: number, direction: AmountDirection): string {
+  return `${formatAmount(amountRp)}${direction === 'credit' ? '+' : '–'}`
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatAmount, formatChf } from './money'
+import { formatAmount, formatChf, formatSignedAmount } from './money'
 
 const NBSP = ' '
 
@@ -34,5 +34,12 @@ describe('formatAmount', () => {
 
   it('uses an ASCII apostrophe as thousands separator', () => {
     expect(formatAmount(123450)).toBe("1'234.50")
+  })
+})
+
+describe('formatSignedAmount', () => {
+  it('formats a list amount without the currency and with a trailing sign', () => {
+    expect(formatSignedAmount(6435, 'debit')).toBe('64.35–')
+    expect(formatSignedAmount(123450, 'credit')).toBe("1'234.50+")
   })
 })

@@ -42,8 +42,27 @@
     "kind": {
       "private": "Privatkonto",
       "savings": "Sparkonto",
-      "pillar3": "Säule 3a"
-    }
+      "pillar3": "Säule 3a",
+      "credit_card": "Kreditkarte"
+    },
+    "card": "Kartenkonto"
+  },
+  "account": {
+    "switch": "Konto wechseln",
+    "actions": {
+      "payments": "Zahlungen",
+      "search": "Suchen",
+      "details": "Details"
+    },
+    "pendingOrders": "Pendente Aufträge anzeigen",
+    "transactions": "Transaktionen",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "receipt": "Beleg",
+    "addReceipt": "Beleg hinzufügen",
+    "empty": "Auf diesem Konto gibt es noch keine Transaktionen.",
+    "notFound": "Wir konnten dieses Konto nicht finden.",
+    "toHome": "Zurück zur Startseite"
   },
   "services": {
     "title": "Services",

@@ -1,4 +1,4 @@
-import type { TransactionDetail } from './types'
+import type { Transaction, TransactionAccount, TransactionDetail } from './types'
 
 // Test data: real GET /api/transactions/{id} responses (services/api, BE-1). K-0241 Coop and
 // K-0242 Lidl (weighed items, discounts) have receipts; K-0240 has none. Used by mockApi() in tests.
@@ -126,4 +126,22 @@ export const TRANSACTION_FIXTURES: Record<string, TransactionDetail> = {
     has_receipt: false,
     receipt: null,
   },
+}
+
+// Test data: real GET /api/transactions?account= rows (services/api, BE-1), a few per account.
+// kk: Coop K-0241, Lidl K-0242 and Denner K-0265 have receipts. Used by mockApi() in tests.
+export const TRANSACTION_LIST_FIXTURES: Record<TransactionAccount, Transaction[]> = {
+  kk: [
+    { id: 'K-0243', account: 'kk', date: '2025-11-21', type: 'expense', description: 'Apple Online Store 2025-11-21', counterparty: 'Apple Online Store', amount_rp: 22075, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: false },
+    { id: 'K-0265', account: 'kk', date: '2025-11-20', type: 'expense', description: 'Denner Kriens Zentrum 2025-11-20', counterparty: 'Denner Kriens Zentrum', amount_rp: 5805, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: true },
+    { id: 'K-0242', account: 'kk', date: '2025-11-20', type: 'expense', description: 'Lidl Ostermundigen 2025-11-20', counterparty: 'Lidl Ostermundigen', amount_rp: 8444, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: true },
+    { id: 'K-0241', account: 'kk', date: '2025-11-19', type: 'expense', description: 'Coop Luzern Bahnhof 2025-11-19', counterparty: 'Coop Luzern Bahnhof', amount_rp: 11970, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: true },
+    { id: 'K-0240', account: 'kk', date: '2025-11-16', type: 'expense', description: 'Paypal 2025-11-16', counterparty: 'Paypal', amount_rp: 3925, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: false },
+  ],
+  privat: [
+    { id: 'P-0266', account: 'privat', date: '2025-12-29', type: 'expense', description: 'Mittagessen Kantine Employer AG', counterparty: 'Kantine AG', amount_rp: 1530, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: false },
+    { id: 'P-0265', account: 'privat', date: '2025-12-29', type: 'expense', description: 'Krankenkasse', counterparty: 'Krankenkasse', amount_rp: 98200, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: false },
+    { id: 'P-0263', account: 'privat', date: '2025-12-23', type: 'income', description: 'Salärzahlung 13. Monatslohn Employer AG', counterparty: 'Employer AG', amount_rp: 746400, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: false },
+    { id: 'P-0233', account: 'privat', date: '2025-11-14', type: 'expense', description: 'TWINT Migros Luzern Schwanenplatz 2025-11-14', counterparty: 'Migros Luzern Schwanenplatz', amount_rp: 4725, currency: 'CHF', original_amount: null, original_currency: null, has_receipt: true },
+  ],
 }

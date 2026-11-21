@@ -3,12 +3,17 @@ import { getAccounts } from './accounts'
 import { ApiError } from './client'
 import { pickInsight } from './insight'
 import { getSpendingByCategory } from './spending'
-import { getTransaction } from './transactions'
+import { getAccountTransactions, getTransaction } from './transactions'
 import type { TransactionDetail } from './types'
 
 /** React Query hooks: screens read server data only through these. */
 export function useAccounts() {
   return useQuery({ queryKey: ['accounts'], queryFn: getAccounts })
+}
+
+/** Transactions of one account, newest first (empty for accounts without transactions). */
+export function useAccountTransactions(account: string) {
+  return useQuery({ queryKey: ['transactions', account], queryFn: () => getAccountTransactions(account) })
 }
 
 export const isNotFound = (error: unknown) => error instanceof ApiError && error.status === 404

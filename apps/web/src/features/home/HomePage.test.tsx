@@ -1,12 +1,15 @@
 import { screen, within } from '@testing-library/react'
 import axe from 'axe-core'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import i18n from '@/i18n'
-import { renderApp } from '@/test-utils'
+import { mockApi, renderApp } from '@/test-utils'
 
 beforeEach(async () => {
   await i18n.changeLanguage('en')
+  mockApi()
 })
+
+afterEach(() => vi.unstubAllGlobals())
 
 describe('HomePage', () => {
   it('renders inside the app shell with the tab bar', () => {
@@ -39,6 +42,20 @@ describe('HomePage', () => {
     expect(screen.getByText('CHF 4\'812.35+')).toBeInTheDocument()
     expect(screen.getByText('CHF 23\'480.00+')).toBeInTheDocument()
     expect(screen.getByText('Retirement savings')).toBeInTheDocument()
+  })
+
+  it('opens the account detail from every account row, including the credit card', async () => {
+    renderApp()
+    await screen.findByText('Credit card')
+    const accounts = screen.getByRole('region', { name: 'Accounts and Investments' })
+    const links = within(accounts).getAllByRole('link')
+    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/accounts/privat',
+      '/accounts/savings',
+      '/accounts/pillar3',
+      '/accounts/kk',
+    ])
+    expect(within(links[3]).getByText('Credit card')).toBeInTheDocument()
   })
 
   it('has no detectable accessibility violations', async () => {
