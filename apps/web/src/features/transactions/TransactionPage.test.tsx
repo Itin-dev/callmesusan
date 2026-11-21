@@ -36,6 +36,17 @@ describe('TransactionPage', () => {
     expect(within(receipt).getByText(`CHF${NBSP}119.70`)).toBeInTheDocument()
   })
 
+  it('shows weighed items and discounts', async () => {
+    renderApp('/transactions/K-0242')
+    const receipt = await screen.findByRole('region', { name: 'Receipt' })
+    const apples = within(receipt).getByText('Apfel rot lose').closest('li')!
+    expect(within(apples).getByText('0.714 kg')).toBeInTheDocument()
+    expect(within(apples).getByText('1.56')).toBeInTheDocument()
+    expect(within(apples).getByText('Discount')).toBeInTheDocument()
+    expect(within(apples).getByText('−0.17')).toBeInTheDocument()
+    expect(within(receipt).getByText(`CHF${NBSP}84.44`)).toBeInTheDocument()
+  })
+
   it('does not offer a receipt photo when the receipt already exists', async () => {
     renderApp('/transactions/K-0241')
     await screen.findByRole('region', { name: 'Receipt' })

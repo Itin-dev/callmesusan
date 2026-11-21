@@ -64,7 +64,9 @@
     "ask": "How can I spend less on {{category}}?",
     "addPhoto": "Add receipt photo",
     "notFound": "We could not find this transaction.",
-    "toHome": "Back to Home"
+    "toHome": "Back to Home",
+    "discount": "Discount",
+    "weight": "{{weight}} kg"
   },
   "categories": {
     "dairy": "dairy",

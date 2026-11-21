@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import receiptIcon from '@/assets/icons/receipt.svg'
-import type { ItemCategory, Receipt } from '@/api/types'
+import type { ItemCategory, Receipt, ReceiptItem } from '@/api/types'
 import { Badge } from '@/components/ui/badge'
 import { formatAmount, formatChf } from '@/lib/money'
 import { cn } from '@/lib/utils'
@@ -32,22 +32,25 @@ export default function ReceiptCard({ receipt, highlight }: Props) {
           <li
             key={`${item.name}-${index}`}
             className={cn(
-              'flex items-start justify-between gap-3 py-[7px] text-sm',
+              'flex flex-col py-[7px] text-sm',
               item.category === highlight && '-mx-2 rounded-sm bg-primary px-2 font-semibold text-primary-foreground',
             )}
           >
-            <span className="min-w-0">
-              {item.name}
-              {item.quantity > 1 && (
-                <>
-                  {' '}
-                  <span className="whitespace-nowrap">{t('transaction.quantity', { count: item.quantity })}</span>
-                </>
-              )}
+            <span className="flex items-start justify-between gap-3">
+              <span className="min-w-0">
+                {item.name}
+                <Quantity item={item} />
+              </span>
+              <span className="shrink-0" dir="ltr">
+                {formatAmount(item.line_total_rp)}
+              </span>
             </span>
-            <span className="shrink-0" dir="ltr">
-              {formatAmount(item.line_total_rp)}
-            </span>
+            {item.discount_rp ? (
+              <span className={cn('flex justify-between gap-3 text-small', item.category !== highlight && 'text-muted-foreground')}>
+                <span>{t('transaction.discount')}</span>
+                <span dir="ltr">−{formatAmount(item.discount_rp)}</span>
+              </span>
+            ) : null}
           </li>
         ))}
       </ul>
@@ -57,5 +60,23 @@ export default function ReceiptCard({ receipt, highlight }: Props) {
         <span dir="ltr">{formatChf(receipt.total_rp)}</span>
       </p>
     </section>
+  )
+}
+
+/** "0.714 kg" for weighed items, "× 2" for several pieces, nothing for one piece. */
+function Quantity({ item }: { item: ReceiptItem }) {
+  const { t, i18n } = useTranslation()
+  if (item.unit !== 'kg' && item.quantity <= 1) return null
+  const text =
+    item.unit === 'kg'
+      ? t('transaction.weight', {
+          weight: new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 3 }).format(item.quantity),
+        })
+      : t('transaction.quantity', { count: item.quantity })
+  return (
+    <>
+      {' '}
+      <span className="whitespace-nowrap">{text}</span>
+    </>
   )
 }

@@ -10,13 +10,19 @@ describe('getTransaction', () => {
     expect(tx.receipt?.items).toHaveLength(8)
   })
 
-  it('has a receipt whose items and category totals add up to the amount', async () => {
-    const tx = await getTransaction('K-0241')
+  it.each(['K-0241', 'K-0242'])('%s has a receipt whose net items and category totals add up to the amount', async (id) => {
+    const tx = await getTransaction(id)
     const receipt = tx.receipt!
     const sum = (values: number[]) => values.reduce((a, b) => a + b, 0)
     expect(receipt.total_rp).toBe(tx.amount_rp)
-    expect(sum(receipt.items.map((i) => i.line_total_rp))).toBe(receipt.total_rp)
+    expect(sum(receipt.items.map((i) => i.line_total_rp - (i.discount_rp ?? 0)))).toBe(receipt.total_rp)
     expect(sum(receipt.category_totals.map((c) => c.total_rp))).toBe(receipt.total_rp)
+  })
+
+  it('returns the Lidl receipt with weighed items and discounts', async () => {
+    const tx = await getTransaction('K-0242')
+    const apples = tx.receipt?.items.find((i) => i.name === 'Apfel rot lose')
+    expect(apples).toMatchObject({ quantity: 0.714, unit: 'kg', line_total_rp: 156, discount_rp: 17 })
   })
 
   it('returns a transaction without a receipt', async () => {

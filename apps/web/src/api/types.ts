@@ -56,11 +56,17 @@ export type Transaction = {
 export type ReceiptItem = {
   name: string
   category: ItemCategory
+  /** Pieces, or kilograms (decimal) when unit is "kg". */
   quantity: number
+  /** Only for weighed items. */
+  unit?: 'kg'
   unit_price_rp: number
   line_total_rp: number
+  /** Discount on this line, subtracted from line_total_rp. */
+  discount_rp?: number
 }
 
+/** Net per category: sum of line_total_rp − discount_rp. */
 export type CategoryTotal = { category: ItemCategory; total_rp: number }
 
 export type Receipt = {

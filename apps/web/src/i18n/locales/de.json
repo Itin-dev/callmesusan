@@ -64,7 +64,9 @@
     "ask": "Wie kann ich bei {{category}} sparen?",
     "addPhoto": "Quittungsfoto hinzufügen",
     "notFound": "Wir konnten diese Transaktion nicht finden.",
-    "toHome": "Zurück zu Home"
+    "toHome": "Zurück zu Home",
+    "discount": "Rabatt",
+    "weight": "{{weight}} kg"
   },
   "categories": {
     "dairy": "Milchprodukte",
