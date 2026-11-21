@@ -99,6 +99,15 @@ export type TransactionDetail = Transaction & {
   explanation?: string | null
 }
 
+/**
+ * POST /api/receipts/scan (BE-6, #40): the receipt read from a photo and the id of the payment it
+ * matches (total + day + month, matched by the backend), or null when no payment matches.
+ */
+export type ScanResult = {
+  transaction_id: string | null
+  receipt: Receipt
+}
+
 export type CategorySpending = {
   category: ItemCategory
   total_rp: number

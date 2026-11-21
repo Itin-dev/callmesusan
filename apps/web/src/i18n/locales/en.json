@@ -85,7 +85,8 @@
     "notFound": "We could not find this transaction.",
     "toHome": "Back to Home",
     "discount": "Discount",
-    "weight": "{{weight}} kg"
+    "weight": "{{weight}} kg",
+    "receiptAdded": "Added to your payment at {{shop}}, {{date}}, {{amount}}"
   },
   "categories": {
     "dairy": "dairy",
@@ -122,5 +123,13 @@
     "disclaimer": "Psst never moves money without your yes.",
     "fromUser": "You:",
     "fromPsst": "Psst:"
+  },
+  "scan": {
+    "title": "Scan a receipt",
+    "intro": "Take a photo of a paper receipt. Psst adds the items to your payment.",
+    "choose": "Take or choose a photo",
+    "reading": "Psst is reading your receipt…",
+    "noMatch": "Psst read the receipt, but no payment matches it.",
+    "error": "Could not read the receipt. Please try again."
   }
 }

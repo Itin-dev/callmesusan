@@ -29,7 +29,7 @@ export default function HomePage() {
       <h1 className="text-center text-hero">{t('home.title')}</h1>
 
       <div className="flex justify-center gap-3 max-[359px]:gap-1">
-        <QuickAction icon={scanIcon} label={t('home.actions.scan')} variant="primary" />
+        <QuickAction icon={scanIcon} label={t('home.actions.scan')} variant="primary" to="/scan" />
         <QuickAction icon={payIcon} label={t('home.actions.pay')} />
         <QuickAction icon={transferIcon} label={t('home.actions.transfer')} />
         <QuickAction icon={analysisIcon} label={t('home.actions.analysis')} />

@@ -1,9 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { getAccounts } from './accounts'
 import { ApiError } from './client'
 import { pickInsight } from './insight'
+import { scanReceipt } from './receipts'
 import { getSpendingByCategory } from './spending'
 import { getAccountTransactions, getTransaction } from './transactions'
+import { downscaleImage } from '@/lib/image'
 import type { TransactionDetail } from './types'
 
 /** React Query hooks: screens read server data only through these. */
@@ -37,4 +39,9 @@ export function useReceiptInsight(transaction: TransactionDetail | undefined) {
     enabled: Boolean(receipt),
     select: (spending) => (receipt ? pickInsight(receipt, spending) : null),
   })
+}
+
+/** Scan a receipt photo: scaled down in the browser, then read and matched by the backend. */
+export function useScanReceipt() {
+  return useMutation({ mutationFn: async (photo: Blob) => scanReceipt(await downscaleImage(photo)) })
 }
