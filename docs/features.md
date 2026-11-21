@@ -15,7 +15,7 @@ The demo shows one or two working features end to end. The rest goes on a "What'
 ## Candidates
 
 | # | Feature | Example question | Effort | Data needed / notes |
-|---|---------|------------------|--------|---------|---------------------|
+|---|---------|------------------|--------|---------------------|
 | 1 | Spending check by category | "Am I spending too much on chocolate?" | M | Item-level data from receipts (the CSV has transactions only) |
 | 2 | Statement on request | "Make me a statement for November." | S | Transactions CSV to summary or PDF |
 | 3 | Year-end tax estimate | "How much tax will I pay in total at the end of the year?" | L | Income from transactions and a rough Bern tax rate; shown clearly as an estimate |
