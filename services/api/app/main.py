@@ -2,10 +2,11 @@
 
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, Form, HTTPException, UploadFile
+from pydantic import BaseModel
 
 from app.accounts import AccountsOverview, accounts_overview
-from app.chat import ChatReply, ChatRequest, build_messages
+from app.chat import ChatReply, ChatRequest, Language, build_messages
 from app.config import Settings, get_settings
 from app.llm import LLM, get_llm
 from app.scan import MAX_UPLOAD_BYTES, ModelAnswerError, ScanResult, UploadError, scan_receipt
@@ -18,6 +19,7 @@ from app.transactions import (
     get_transaction,
     list_transactions,
 )
+from app.transcribe import NoSpeechError, transcribe_audio
 
 app = FastAPI(title="api")
 
@@ -85,5 +87,30 @@ def receipts_scan(
         return scan_receipt(data, llm, fallback_allowed=settings.demo_scan_fallback)
     except UploadError as error:
         raise HTTPException(error.status, error.detail) from error
+    except ModelAnswerError as error:
+        raise HTTPException(502, str(error)) from error
+
+
+class Transcript(BaseModel):
+    text: str
+
+
+@app.post("/api/transcribe")
+def transcribe(
+    file: UploadFile,
+    llm: Annotated[LLM, Depends(get_llm)],
+    settings: Annotated[Settings, Depends(get_settings)],
+    language: Annotated[Language, Form()] = "en",
+) -> Transcript:
+    if not settings.openrouter_transcribe_model:
+        raise HTTPException(503, "OPENROUTER_TRANSCRIBE_MODEL is not set (see .env.example)")
+    # one byte over the limit is enough to know the recording is too large
+    data = file.file.read(MAX_UPLOAD_BYTES + 1)
+    try:
+        return Transcript(text=transcribe_audio(data, language, llm))
+    except UploadError as error:
+        raise HTTPException(error.status, error.detail) from error
+    except NoSpeechError as error:
+        raise HTTPException(422, str(error)) from error
     except ModelAnswerError as error:
         raise HTTPException(502, str(error)) from error
