@@ -91,6 +91,7 @@
     "discount": "Discount",
     "weight": "{{weight}} kg",
     "receiptAdded": "Added to your payment at {{shop}}, {{date}}, {{amount}}",
+    "receiptAlready": "This receipt is already on your payment at {{shop}}, {{date}}, {{amount}}",
     "checks": {
       "title": "Psst checked",
       "amount": "The total matches the payment",

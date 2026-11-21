@@ -91,6 +91,7 @@
     "discount": "خصم",
     "weight": "{{weight}} كغ",
     "receiptAdded": "أُضيف إلى دفعتك في {{shop}}، {{date}}، {{amount}}",
+    "receiptAlready": "هذا الإيصال موجود بالفعل في دفعتك في {{shop}}، {{date}}، {{amount}}",
     "checks": {
       "title": "تحقّق Psst",
       "amount": "المبلغ يطابق الدفعة",

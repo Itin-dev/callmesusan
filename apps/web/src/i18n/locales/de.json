@@ -91,6 +91,7 @@
     "discount": "Rabatt",
     "weight": "{{weight}} kg",
     "receiptAdded": "Zu deiner Zahlung bei {{shop}} hinzugefügt, {{date}}, {{amount}}",
+    "receiptAlready": "Diese Quittung ist schon bei deiner Zahlung bei {{shop}}, {{date}}, {{amount}}",
     "checks": {
       "title": "Psst hat geprüft",
       "amount": "Der Betrag stimmt mit der Zahlung überein",

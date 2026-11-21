@@ -91,6 +91,7 @@
     "discount": "Скидка",
     "weight": "{{weight}} кг",
     "receiptAdded": "Добавлено к вашему платежу в {{shop}}, {{date}}, {{amount}}",
+    "receiptAlready": "Этот чек уже добавлен к вашему платежу в {{shop}}, {{date}}, {{amount}}",
     "checks": {
       "title": "Psst проверил",
       "amount": "Сумма совпадает с платежом",
