@@ -10,6 +10,7 @@ MATCHED = {
     "P-0233": "MIG-20251114-0417",
     "K-0242": "LIDL-20251120-0253",
     "K-0247": "LIDL-20251121-5513",
+    "K-0265": "DEN-20251120-0932",
 }
 
 LIST_FIELDS = {
@@ -34,7 +35,7 @@ def client():
 
 def test_list_returns_all_transactions_with_contract_fields(client):
     rows = client.get("/api/transactions").json()
-    assert len(rows) == 530
+    assert len(rows) == 531
     assert all(set(row) == LIST_FIELDS for row in rows)
 
 
@@ -51,7 +52,7 @@ def test_list_keeps_row_order_reversed_within_one_day(client):
 
 def test_list_filters_by_account(client):
     rows = client.get("/api/transactions", params={"account": "kk"}).json()
-    assert len(rows) == 264
+    assert len(rows) == 265
     assert {row["account"] for row in rows} == {"kk"}
 
 
