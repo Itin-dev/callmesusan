@@ -1,0 +1,78 @@
+{
+  "receipt_id": "LIDL-20251121-5513",
+  "store": "Lidl",
+  "branch": "Emmen",
+  "date": "2025-11-21",
+  "time": "09:31",
+  "currency": "CHF",
+  "payment": "Card",
+  "items": [
+    {
+      "name": "Milbona Vollmilch 1l",
+      "category": "dairy",
+      "quantity": 2,
+      "unit_price_rp": 135,
+      "line_total_rp": 270,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Fin Carré Milchschokolade 100g",
+      "category": "chocolate",
+      "quantity": 3,
+      "unit_price_rp": 85,
+      "line_total_rp": 255,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Bananen 1kg",
+      "category": "fruit",
+      "quantity": 1,
+      "unit_price_rp": 195,
+      "line_total_rp": 195,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Milbona Vorzugsbutter 250g",
+      "category": "dairy",
+      "quantity": 1,
+      "unit_price_rp": 345,
+      "line_total_rp": 345,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Toastbrot 500g",
+      "category": "bakery",
+      "quantity": 1,
+      "unit_price_rp": 165,
+      "line_total_rp": 165,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Perlenbacher Lager 6x50cl",
+      "category": "alcohol",
+      "quantity": 1,
+      "unit_price_rp": 595,
+      "line_total_rp": 595,
+      "vat_rate_pct": 8.1
+    },
+    {
+      "name": "Saskia Mineralwasser 6x1.5l",
+      "category": "beverages",
+      "quantity": 1,
+      "unit_price_rp": 270,
+      "line_total_rp": 270,
+      "vat_rate_pct": 2.6
+    }
+  ],
+  "total_rp": 2095,
+  "vat": [
+    {
+      "rate_pct": 2.6,
+      "amount_rp": 38
+    },
+    {
+      "rate_pct": 8.1,
+      "amount_rp": 45
+    }
+  ]
+}

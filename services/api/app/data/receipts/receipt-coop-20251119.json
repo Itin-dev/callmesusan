@@ -1,0 +1,86 @@
+{
+  "receipt_id": "COOP-20251119-2281",
+  "store": "Coop",
+  "branch": "Luzern Bahnhof",
+  "date": "2025-11-19",
+  "time": "18:15",
+  "currency": "CHF",
+  "payment": "Card",
+  "items": [
+    {
+      "name": "Feldschlösschen Original 10x50cl",
+      "category": "alcohol",
+      "quantity": 1,
+      "unit_price_rp": 1295,
+      "line_total_rp": 1295,
+      "vat_rate_pct": 8.1
+    },
+    {
+      "name": "Fendant du Valais AOC 75cl",
+      "category": "alcohol",
+      "quantity": 2,
+      "unit_price_rp": 1195,
+      "line_total_rp": 2390,
+      "vat_rate_pct": 8.1
+    },
+    {
+      "name": "Rioja Crianza DOCa 75cl",
+      "category": "alcohol",
+      "quantity": 1,
+      "unit_price_rp": 995,
+      "line_total_rp": 995,
+      "vat_rate_pct": 8.1
+    },
+    {
+      "name": "Appenzeller Alpenbitter 70cl",
+      "category": "alcohol",
+      "quantity": 1,
+      "unit_price_rp": 2990,
+      "line_total_rp": 2990,
+      "vat_rate_pct": 8.1
+    },
+    {
+      "name": "Bombay Sapphire Gin 70cl",
+      "category": "alcohol",
+      "quantity": 1,
+      "unit_price_rp": 3495,
+      "line_total_rp": 3495,
+      "vat_rate_pct": 8.1
+    },
+    {
+      "name": "Naturaplan Bio Zopf 500g",
+      "category": "bakery",
+      "quantity": 1,
+      "unit_price_rp": 395,
+      "line_total_rp": 395,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Prix Garantie Chips Paprika 250g",
+      "category": "snacks",
+      "quantity": 1,
+      "unit_price_rp": 230,
+      "line_total_rp": 230,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Halba Milchschokolade 100g",
+      "category": "chocolate",
+      "quantity": 1,
+      "unit_price_rp": 180,
+      "line_total_rp": 180,
+      "vat_rate_pct": 2.6
+    }
+  ],
+  "total_rp": 11970,
+  "vat": [
+    {
+      "rate_pct": 2.6,
+      "amount_rp": 20
+    },
+    {
+      "rate_pct": 8.1,
+      "amount_rp": 837
+    }
+  ]
+}

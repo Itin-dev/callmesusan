@@ -1,0 +1,82 @@
+{
+  "receipt_id": "MIG-20251114-0417",
+  "store": "Migros",
+  "branch": "Luzern Schwanenplatz",
+  "date": "2025-11-14",
+  "time": "17:42",
+  "currency": "CHF",
+  "payment": "TWINT",
+  "items": [
+    {
+      "name": "Frey Chocolat au lait extra 100g",
+      "category": "chocolate",
+      "quantity": 3,
+      "unit_price_rp": 195,
+      "line_total_rp": 585,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Frey Noir 72% 100g",
+      "category": "chocolate",
+      "quantity": 2,
+      "unit_price_rp": 240,
+      "line_total_rp": 480,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Frey Branches Classic 10x27g",
+      "category": "chocolate",
+      "quantity": 1,
+      "unit_price_rp": 750,
+      "line_total_rp": 750,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Frey Pralinés Prestige 250g",
+      "category": "chocolate",
+      "quantity": 1,
+      "unit_price_rp": 1490,
+      "line_total_rp": 1490,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Frey Giandor 100g",
+      "category": "chocolate",
+      "quantity": 2,
+      "unit_price_rp": 220,
+      "line_total_rp": 440,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "M-Classic Vollmilch 1l",
+      "category": "dairy",
+      "quantity": 1,
+      "unit_price_rp": 165,
+      "line_total_rp": 165,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Migros Bio Bananen 1kg",
+      "category": "fruit",
+      "quantity": 1,
+      "unit_price_rp": 320,
+      "line_total_rp": 320,
+      "vat_rate_pct": 2.6
+    },
+    {
+      "name": "Aproz Mineralwasser 6x1.5l",
+      "category": "beverages",
+      "quantity": 1,
+      "unit_price_rp": 495,
+      "line_total_rp": 495,
+      "vat_rate_pct": 2.6
+    }
+  ],
+  "total_rp": 4725,
+  "vat": [
+    {
+      "rate_pct": 2.6,
+      "amount_rp": 120
+    }
+  ]
+}
