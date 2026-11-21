@@ -11,13 +11,10 @@ import { formatChf } from '@/lib/money'
 import { cn } from '@/lib/utils'
 import IncomeExpenseChart from './IncomeExpenseChart'
 
-/** The demo data covers 2025 (docs/mvp.md). */
-const YEAR = 2025
-
 /** Analytics (Figma "03 Analytics + Ask Psst"): income vs expenditures, with Ask Psst in the action row. */
 export default function AnalyticsPage() {
   const { t } = useTranslation()
-  const { data: summary, isPending, isError, refetch } = useSpendingSummary(YEAR)
+  const { data: summary, isPending, isError, refetch } = useSpendingSummary()
   const question = t('analytics.askQuestion')
 
   return (

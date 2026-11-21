@@ -41,8 +41,8 @@ export function useReceiptInsight(transaction: TransactionDetail | undefined) {
   })
 }
 
-/** Income vs expenses of one year for Analytics (totals come from the backend). */
-export function useSpendingSummary(year: number) {
+/** Income vs expenses for Analytics: the given year, or the latest one the backend has. */
+export function useSpendingSummary(year?: number) {
   return useQuery({ queryKey: ['spending', 'summary', year], queryFn: () => getSpendingSummary(year) })
 }
 

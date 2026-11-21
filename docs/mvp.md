@@ -142,7 +142,7 @@ your usual") and the chat.
 }
 ```
 
-### `GET /api/spending/summary?year=2025` (proposed, BE-7)
+### `GET /api/spending/summary?year=2025` (agreed, BE-7)
 
 Income vs expenses of one year for the Analytics donut and its rows. Same spending rules as above:
 `transfer` rows are left out, income is the salary on `privat`, and credit card refunds (`income` on
@@ -153,7 +153,8 @@ Income vs expenses of one year for the Analytics donut and its rows. Same spendi
 - `monthly_average_rp` is `total_rp / months`, rounded down; a full year has 12 months.
 - `year` is optional: without it, the latest year in the data. An unknown year answers 404.
 
-Until it is merged, `apps/web/src/api/spending.ts` returns these values (computed once from
+The Analytics screen calls it without `year`, so it always shows the latest year. Until it is
+merged, `apps/web/src/api/spending.ts` returns these values (computed once from
 `transactions.json`).
 
 ```jsonc
