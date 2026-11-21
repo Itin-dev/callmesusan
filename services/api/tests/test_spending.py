@@ -165,3 +165,56 @@ def test_demo_summary_answers_last_week_and_this_week():
     assert "2025-W46 (2025-11-10 to 2025-11-16): spending 807.80;" in text
     assert "2025-W47 (2025-11-17 to 2025-11-23): spending 469.96;" in text
     assert "2025-12:" not in text
+
+
+def test_summary_lists_what_psst_can_see_and_cannot_do():
+    rows = [tx("2025-01-03", "expense", 1325, "Kantine AG", account="privat"),
+            tx("2025-11-19", "expense", 11970, "Coop Luzern Bahnhof")]  # fmt: skip
+    coop = {
+        "date": "2025-11-19",
+        "store": "Coop",
+        "items": [{"category": "alcohol", "line_total_rp": 11970}],
+    }
+    text = spending_summary(rows, [coop], today=DEMO_TODAY)
+    assert "What Psst can see:" in text
+    assert (
+        "- 2 transactions of the Privatkonto and the credit card account (KK-Konto)"
+        " from 2025-01-03 to 2025-11-21."
+    ) in text
+    assert "- 1 digital receipts from partner shops (Coop) with their item lists." in text
+    assert (
+        "- Psst cannot see other banks, cash payments, or receipts of other shops"
+        " unless the user scans them."
+    ) in text
+    assert "- Psst only reads: it cannot pay, transfer money or sign anything." in text
+
+
+def test_summary_compares_receipt_categories_with_the_usual_month():
+    receipt = {"date": "2025-11-19", "items": [{"category": "alcohol", "line_total_rp": 11165}]}
+    text = spending_summary([], [receipt], usual={"alcohol": 4500})
+    assert "2025-11: alcohol 111.65 (usual 45.00, 2.48x)" in text
+
+
+def test_summary_lists_the_current_month_up_to_today_as_a_statement():
+    rows = [tx("2025-10-31", "expense", 999, "Old Shop"),
+            tx("2025-11-21", "expense", 910, "LOLA Mattenhof", account="privat"),
+            tx("2025-11-03", "income", 500, "Zalando"),
+            tx("2025-11-22", "expense", 777, "Later Shop")]  # fmt: skip
+    text = spending_summary(rows, [], today=DEMO_TODAY)
+    statement = text[text.index("Transactions of 2025-11 up to today") :]
+    lines = [line for line in statement.splitlines()[1:] if line.startswith("2025-")]
+    assert lines == [
+        "2025-11-03 credit card refund Zalando +5.00",
+        "2025-11-21 Privatkonto expense LOLA Mattenhof -9.10",
+    ]
+    assert "Old Shop" not in statement and "Later Shop" not in text
+
+
+def test_demo_summary_answers_the_pitch_questions():
+    text = current_summary(DEMO_TODAY)
+    assert "- 486 transactions of the Privatkonto and the credit card account" in text
+    assert "(Coop, Denner, Lidl, Migros)" in text
+    assert (
+        "2025-11: alcohol 139.50 (usual 45.00, 3.1x), chocolate 49.75 (usual 20.00, 2.49x)" in text
+    )
+    assert "2025-11-19 credit card expense Coop Luzern Bahnhof -119.70" in text
