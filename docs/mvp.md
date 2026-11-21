@@ -107,6 +107,22 @@ The same fields plus `receipt` (or `null`). 404 if the id is unknown.
 }
 ```
 
+### `GET /api/accounts`
+
+The account rows of the Home screen. Demo values from Figma "01 Home"; `total_rp` is the sum of
+the balances.
+
+```jsonc
+{
+  "accounts": [
+    { "id": "privat", "kind": "private", "iban_masked": "CH•• •••• •••• 4821", "balance_rp": 481235 },
+    { "id": "savings", "kind": "savings", "iban_masked": "CH•• •••• •••• 7390", "balance_rp": 1200000 },
+    { "id": "pillar3", "kind": "pillar3", "iban_masked": null, "balance_rp": 666765 }  // no IBAN
+  ],
+  "total_rp": 2348000
+}
+```
+
 ### `GET /api/spending/categories?month=2025-11`
 
 Item-level spending of one month per category, compared with the average of the other months.

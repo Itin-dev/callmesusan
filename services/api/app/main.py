@@ -4,6 +4,7 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException
 
+from app.accounts import AccountsOverview, accounts_overview
 from app.chat import ChatReply, ChatRequest, build_messages
 from app.config import Settings, get_settings
 from app.llm import LLM, get_llm
@@ -21,6 +22,11 @@ app = FastAPI(title="api")
 @app.get("/api/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/api/accounts")
+def accounts() -> AccountsOverview:
+    return accounts_overview()
 
 
 @app.get("/api/transactions")

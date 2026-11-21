@@ -171,3 +171,27 @@ def test_receipt_without_transaction_stays_unmatched():
 def test_one_transaction_gets_at_most_one_receipt():
     twins = [_rc("R1"), _rc("R2")]
     assert match_receipts([_tx("T1")], twins) == {"T1": "R1"}
+
+
+def test_accounts_match_the_frontend_demo_values(client):
+    body = client.get("/api/accounts").json()
+    assert body["accounts"] == [
+        {
+            "id": "privat",
+            "kind": "private",
+            "iban_masked": "CH•• •••• •••• 4821",
+            "balance_rp": 481235,
+        },
+        {
+            "id": "savings",
+            "kind": "savings",
+            "iban_masked": "CH•• •••• •••• 7390",
+            "balance_rp": 1200000,
+        },
+        {"id": "pillar3", "kind": "pillar3", "iban_masked": None, "balance_rp": 666765},
+    ]
+
+
+def test_accounts_total_is_the_sum_of_balances(client):
+    body = client.get("/api/accounts").json()
+    assert body["total_rp"] == sum(a["balance_rp"] for a in body["accounts"]) == 2348000
