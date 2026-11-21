@@ -2,7 +2,8 @@
   "common": {
     "loading": "Loading…",
     "loadError": "Could not load the data. Please try again.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "back": "Back"
   },
   "psst": {
     "name": "Psst",
@@ -50,7 +51,6 @@
   },
   "transaction": {
     "title": "Transaction",
-    "back": "Back",
     "details": "Details",
     "explains": "Psst explains",
     "receipt": "Receipt",
@@ -85,5 +85,23 @@
     "alcohol": "alcohol",
     "household": "household",
     "personal_care": "personal care"
+  },
+  "chat": {
+    "subtitle": "Just between us · reads only, never pays",
+    "log": "Conversation with Psst",
+    "greeting": "Hi, I'm Psst. Ask me anything about your money. I only read, I never pay.",
+    "suggestions": {
+      "save": "Where can I save?",
+      "groceries": "How much did I spend on groceries in November?",
+      "holiday": "Can I afford a holiday in April?"
+    },
+    "inputLabel": "Message to Psst",
+    "placeholder": "Ask Psst…",
+    "send": "Send",
+    "thinking": "Psst is thinking…",
+    "error": "Psst could not answer. Please try again.",
+    "disclaimer": "Psst never moves money without your yes.",
+    "fromUser": "You:",
+    "fromPsst": "Psst:"
   }
 }
