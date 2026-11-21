@@ -25,6 +25,8 @@ export default function TransactionPage() {
   const scanned = justScanned?.scannedReceipt ?? scannedReceiptFor(id)
   const transaction = loaded && scanned && !loaded.receipt ? { ...loaded, receipt: scanned, has_receipt: true } : loaded
   const { data: insight } = useReceiptInsight(transaction)
+  // a second scan of the payment, or a photo of a receipt the shop already sent
+  const alreadyAttached = Boolean(justScanned?.alreadyAttached || loaded?.receipt)
 
   return (
     <div className="flex flex-col gap-4 px-4 pt-3 pb-6">
@@ -57,7 +59,7 @@ export default function TransactionPage() {
           {justScanned && (
             <div role="status" className="flex flex-col gap-2 rounded-xl bg-card p-4">
               <p className="text-body font-semibold">
-                {t('transaction.receiptAdded', {
+                {t(alreadyAttached ? 'transaction.receiptAlready' : 'transaction.receiptAdded', {
                   shop: transaction.counterparty,
                   date: formatDate(transaction.date),
                   amount: formatChf(transaction.amount_rp),

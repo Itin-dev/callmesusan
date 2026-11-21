@@ -95,6 +95,32 @@ describe('ScanPage', () => {
     expect(screen.queryByText(/Added to your payment/)).not.toBeInTheDocument()
   })
 
+  it('says the receipt is already there when the payment was scanned before', async () => {
+    const first = renderApp('/scan')
+    await choosePhoto()
+    await screen.findByText(/Added to your payment/)
+    first.unmount()
+
+    renderApp('/scan')
+    await choosePhoto()
+    expect(
+      await screen.findByText(`This receipt is already on your payment at LOLA Mattenhof, 21.11.2025, CHF${NBSP}9.10`),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/Added to your payment/)).not.toBeInTheDocument()
+  })
+
+  it('says the receipt is already there when the shop sent it digitally', async () => {
+    mockApi({ scan: { ...LOLA_SCAN_FIXTURE, transaction_id: 'K-0241' } })
+    renderApp('/scan')
+    await choosePhoto()
+    expect(
+      await screen.findByText(
+        `This receipt is already on your payment at Coop Luzern Bahnhof, 19.11.2025, CHF${NBSP}119.70`,
+      ),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/Added to your payment/)).not.toBeInTheDocument()
+  })
+
   it('goes back to Home from the matched payment', async () => {
     renderApp('/')
     await userEvent.click(screen.getByRole('link', { name: 'Scan' }))
