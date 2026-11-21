@@ -94,15 +94,32 @@ The same fields plus `receipt` (or `null`). 404 if the id is unknown.
     "total_rp": 11970,
     "items": [
       { "name": "Feldschlösschen Original 10x50cl", "category": "alcohol",
-        "quantity": 1, "unit_price_rp": 1295, "line_total_rp": 1295 },
-      // item shape from the Lidl 20.11 receipt, to show the optional fields
+        "quantity": 1, "unit": "pcs", "unit_price_rp": 1295, "line_total_rp": 1295,
+        "discount_rp": 0 },
+      // item from the Lidl 20.11 receipt: a weighed item with a discount
       { "name": "Apfel rot lose", "category": "fruit",
-        "quantity": 0.714, "unit": "kg",          // optional, weighed items only
+        "quantity": 0.714, "unit": "kg",          // always sent: "pcs" or "kg"
         "unit_price_rp": 219, "line_total_rp": 156,
-        "discount_rp": 17 }                       // optional, subtract from line_total_rp
+        "discount_rp": 17 }                       // always sent, 0 if none; subtract from line_total_rp
     ],
     "category_totals": [ { "category": "alcohol", "total_rp": 11165 } ]  // net: line_total_rp − discount_rp
   }
+}
+```
+
+### `GET /api/accounts`
+
+The account rows of the Home screen. Demo values from Figma "01 Home"; `total_rp` is the sum of
+the balances.
+
+```jsonc
+{
+  "accounts": [
+    { "id": "privat", "kind": "private", "iban_masked": "CH•• •••• •••• 4821", "balance_rp": 481235 },
+    { "id": "savings", "kind": "savings", "iban_masked": "CH•• •••• •••• 7390", "balance_rp": 1200000 },
+    { "id": "pillar3", "kind": "pillar3", "iban_masked": null, "balance_rp": 666765 }  // no IBAN
+  ],
+  "total_rp": 2348000
 }
 ```
 
