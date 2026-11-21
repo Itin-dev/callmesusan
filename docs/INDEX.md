@@ -20,6 +20,7 @@ Entrypoint for humans and agents. Prefer linking here instead of duplicating gui
 |-----|---------|
 | [features.md](features.md) | Psst feature ideas, must-have, where Psst fits in the PostFinance app |
 | [mvp.md](mvp.md) | MVP scope, API contract, frontend/backend task split, session prompts |
+| [Pitch.pdf](Pitch.pdf) | Jury pitch deck: problem, idea, demo, trust, roadmap — the final goal the tasks build towards |
 
 ## Stack
 
