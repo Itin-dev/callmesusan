@@ -11,7 +11,7 @@ describe('Footer', () => {
     const link = screen.getByRole('link', { name: '0123456' })
     expect(link).toHaveAttribute(
       'href',
-      `https://github.com/Itin-dev/aihackaton_test/commit/${SHA}`,
+      `https://github.com/Itin-dev/callmesusan/commit/${SHA}`,
     )
   })
 

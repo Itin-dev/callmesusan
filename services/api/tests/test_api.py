@@ -1,16 +1,13 @@
-import json
-
 import pytest
 from fastapi.testclient import TestClient
 
 from app.config import Settings, get_settings
-from app.knowledge import load_knowledge
 from app.llm import get_llm
 from app.main import app
 
 
 class FakeLLM:
-    def __init__(self, answer: str = '{"reply": "Hello back", "mode": 1}') -> None:
+    def __init__(self, answer: str = "Hello back") -> None:
         self.answer = answer
         self.calls: list[list[dict[str, str]]] = []
 
@@ -40,39 +37,23 @@ def test_health(client):
     assert response.json() == {"status": "ok"}
 
 
-def test_chat_returns_structured_reply(client):
+def test_chat_returns_reply(client):
     use(FakeLLM())
     response = client.post("/api/chat", json=user("Hello"))
     assert response.status_code == 200
-    assert response.json() == {
-        "reply": "Hello back",
-        "mode": 1,
-        "organization_ids": [],
-        "source_url": None,
-    }
+    assert response.json() == {"reply": "Hello back"}
 
 
-def test_chat_returns_grounded_referral(client):
-    org = next(o for o in load_knowledge().organizations if "documents" in o.tiles)
-    answer = json.dumps({"reply": "Ask them", "mode": 2, "organization_ids": [org.id]})
-    use(FakeLLM(answer))
-    body = {**user("Where do I renew my permit?"), "language": "de", "topic": "documents"}
-    response = client.post("/api/chat", json=body)
-    assert response.status_code == 200
-    assert response.json()["organization_ids"] == [org.id]
-
-
-def test_chat_sends_knowledge_and_full_conversation(client):
+def test_chat_sends_system_prompt_and_full_conversation(client):
     fake = use(FakeLLM())
     conversation = [
-        {"role": "user", "content": "I need a doctor"},
-        {"role": "assistant", "content": "Do you have health insurance?"},
-        {"role": "user", "content": "Yes"},
+        {"role": "user", "content": "Can I afford a new phone?"},
+        {"role": "assistant", "content": "What is your monthly budget?"},
+        {"role": "user", "content": "500 CHF"},
     ]
-    client.post("/api/chat", json={"messages": conversation, "topic": "health"})
+    client.post("/api/chat", json={"messages": conversation, "language": "de"})
     sent = fake.calls[0]
     assert sent[0]["role"] == "system"
-    assert "organizations" in sent[0]["content"]
     assert sent[1:] == conversation
 
 
@@ -99,9 +80,9 @@ def test_chat_rejects_system_role(client):
     assert client.post("/api/chat", json=body).status_code == 422
 
 
-def test_chat_rejects_unknown_topic(client):
+def test_chat_rejects_unknown_language(client):
     use(FakeLLM())
-    body = {**user("Hi"), "topic": "space-travel"}
+    body = {**user("Hi"), "language": "xx"}
     assert client.post("/api/chat", json=body).status_code == 422
 
 
