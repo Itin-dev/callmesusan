@@ -28,9 +28,26 @@ All in `services/api/app/data/`:
   `income` or `transfer`, amounts as integer Rappen (`amount_rp`).
 - `receipts/*.json` holds 5 supermarket receipts from November 2025. Each item has `category`,
   `quantity`, `unit_price_rp`, `line_total_rp` and `vat_rate_pct`.
+- Two item fields are optional. `discount_rp` is a discount that is subtracted from
+  `line_total_rp`. `unit: "kg"` marks a weighed item with a decimal `quantity`, for example
+  `0.714 × 219 = 156`. The Lidl 20.11 receipt (from `Lidl Plus.pdf`) has 7 discounts and 3 weighed
+  items. A receipt total is the sum of `line_total_rp − discount_rp`: without the discounts, Lidl
+  20.11 adds up to 85.88 instead of 84.44.
+- Rules for spending numbers:
+  - `transfer` rows are the monthly credit card payments from `privat` to `kk`. They are not
+    spending; counting them counts each card purchase twice.
+  - `income` on `privat` is salary. `income` on `kk` is a merchant refund and reduces the spending
+    of that merchant in its month.
+  - The 13 EUR rows are not converted in the export (exchange rate 1.0), so `amount_rp` equals
+    the EUR amount. Use it as CHF; this is a known limit of the data.
 - Matching receipt to transaction is by date plus `total_rp == amount_rp`, with the store name
   contained in `counterparty`. Coop 19.11 → K-0241, Migros 14.11 → P-0233, Lidl 20.11 → K-0242 and
   Lidl 21.11 → K-0247 match. Denner 20.11 has no transaction.
+- A scanned receipt (`source: photo`) is matched by `total_rp == amount_rp` plus day and month;
+  the year is ignored. The bank data is from 2025, but a receipt photographed now shows 2026: the
+  LOLA Mattenhof photo (21.11.2026, CHF 9.10) belongs to the 2025-11-21 debit card payment of
+  CHF 9.10 on `privat`. `Lidl Plus.pdf` shows 20.11.2026 for the same reason, while its JSON
+  uses 2025.
 - Five receipts are too few for trends, so the backend generates more fake receipts (task BE-2).
 
 ## API contract (frontend and backend build against this)
@@ -77,9 +94,14 @@ The same fields plus `receipt` (or `null`). 404 if the id is unknown.
     "total_rp": 11970,
     "items": [
       { "name": "Feldschlösschen Original 10x50cl", "category": "alcohol",
-        "quantity": 1, "unit_price_rp": 1295, "line_total_rp": 1295 }
+        "quantity": 1, "unit_price_rp": 1295, "line_total_rp": 1295 },
+      // item shape from the Lidl 20.11 receipt, to show the optional fields
+      { "name": "Apfel rot lose", "category": "fruit",
+        "quantity": 0.714, "unit": "kg",          // optional, weighed items only
+        "unit_price_rp": 219, "line_total_rp": 156,
+        "discount_rp": 17 }                       // optional, subtract from line_total_rp
     ],
-    "category_totals": [ { "category": "alcohol", "total_rp": 11165 } ]
+    "category_totals": [ { "category": "alcohol", "total_rp": 11165 } ]  // net: line_total_rp − discount_rp
   }
 }
 ```
