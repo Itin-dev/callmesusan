@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     # reads receipt photos (images in, JSON-schema answers out); the id lives in .env only,
     # as docs/stack.md "AI models" requires; empty means the scan answers 503
     openrouter_vision_model: str = ""
+    # turns chat mic recordings into text; empty means the transcription answers 503
+    openrouter_transcribe_model: str = ""
     # the demo story happens on this day (team decision, #57): the chat sees no later data
     demo_today: date = date(2025, 11, 21)
     # pitch only: when the vision model fails, answer with the prepared LOLA scan
