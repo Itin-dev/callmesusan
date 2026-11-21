@@ -1,11 +1,15 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Button } from '@/components/ui/button'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import Footer from '@/Footer'
+import { forgetScans } from '@/features/scan/scannedReceipts'
 import { LANGUAGES } from '@/i18n'
 
-/** Services tab: app settings for the demo (language) and the build version. */
+/** Services tab: app settings for the demo (language, clearing scans) and the build version. */
 export default function ServicesPage() {
   const { t, i18n } = useTranslation()
+  const [cleared, setCleared] = useState(false)
 
   return (
     <div className="flex flex-1 flex-col gap-5 px-4 pt-3 pb-6">
@@ -36,6 +40,26 @@ export default function ServicesPage() {
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
+      </section>
+
+      <section aria-labelledby="scans-heading" className="flex flex-col gap-3 rounded-xl bg-card p-4">
+        <h2 id="scans-heading" className="text-heading">
+          {t('services.scans')}
+        </h2>
+        <p className="text-body text-muted-foreground">{t('services.scansHint')}</p>
+        <Button
+          variant="outline"
+          className="h-11 text-body"
+          onClick={() => {
+            forgetScans()
+            setCleared(true)
+          }}
+        >
+          {t('services.clearScans')}
+        </Button>
+        <p role="status" className="text-body">
+          {cleared ? t('services.scansCleared') : ''}
+        </p>
       </section>
 
       <Footer commit={import.meta.env.VITE_COMMIT_SHA ?? ''} env={import.meta.env.VITE_DEPLOY_ENV ?? ''} />
