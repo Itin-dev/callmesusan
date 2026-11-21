@@ -14,28 +14,28 @@ The demo shows one or two working features end to end. The rest goes on a "What'
 
 ## Candidates
 
-| # | Feature | Example question | Effort | Idea by | Data needed / notes |
-|---|---------|------------------|--------|---------|---------------------|
-| 1 | Spending check by category | "Am I spending too much on chocolate?" | M | Liuba | Item-level data from receipts (the CSV has transactions only) |
-| 2 | Statement on request | "Make me a statement for November." | S | Liuba | Transactions CSV to summary or PDF |
-| 3 | Year-end tax estimate | "How much tax will I pay in total at the end of the year?" | L | Liuba | Income from transactions and a rough Bern tax rate; shown clearly as an estimate |
-| 4 | Tax savings plan with memory | "Help me put money aside for taxes every month." | L | Liuba | Keeps the plan, reminds in chat how much is still due this month, adds a missed month to the next one. Suggests a transfer, never moves money without confirmation |
-| 5 | Can I afford it? (savings goal) | "I want to go on holiday in April. Can I afford it, and how much should I save each month?" | M | Liuba | Average monthly income and expenses |
-| 6 | Where can I cut costs? | "Where can I cut my expenses?" | M | Liuba | Category totals compared with the monthly average |
-| 7 | Payday reminder | "Remind me to save after every payday." | M | Liuba | Detect the salary transaction |
-| 8 | Mortgage down payment goal | "Where can I save to reach the down payment for a mortgage?" | M | Liuba | Savings goal and cost-cutting tips |
-| 9 | Subscription finder | "Which subscriptions am I paying for?" | S | Claude | Already in PostFinance Analysis ("My subscriptions"); Psst can only explain it |
-| 10 | Unusual spending alert | "Anything unusual this month?" | M | Claude | Compare each category with its monthly average |
-| 11 | Upcoming bills | "Will I have enough for rent and health insurance next month?" | M | Claude | Recurring fixed costs and their dates |
-| 12 | End-of-month balance forecast | "What will my balance be at the end of the month?" | M | Claude | Current balance, expected income and fixed costs |
-| 13 | Explain a transaction | "What is this TWINT payment of CHF 47.80?" | S | Claude | Merchant text from the transaction |
-| 14 | Monthly recap | "Sum up my November in five sentences." | S | Claude | Transactions of one month |
-| 15 | Any language + plain language | Ask in German, English, French, Ukrainian, Arabic… and get answers in simple words | S | Liuba | The LLM handles it; strong "AI for Access" angle |
-| 16 | Voice input | Ask by voice instead of typing | M | Liuba | Browser speech-to-text |
-| 17 | Trust panel | "What can you see, and what can you do?" | S | Claude | Read-only by default; every action needs confirmation. Supports the main pitch argument |
-| 18 | Utility bills import | Add utility payments from a contract or the flat address | L | Liuba | Not in the hackathon data; vision slide |
-| 19 | Tax declaration help | Pre-fill the tax declaration from my data | L | Liuba | Legal limits for a bank; vision slide |
-| 20 | Business: VAT reserve | "How much VAT should I set aside this quarter?" | M | Claude | The challenge also mentions businesses |
+| # | Feature | Example question | Effort | Data needed / notes |
+|---|---------|------------------|--------|---------------------|
+| 1 | Spending check by category | "Am I spending too much on chocolate?" | M | Item-level data from receipts (the CSV has transactions only) |
+| 2 | Statement on request | "Make me a statement for November." | S | Transactions CSV to summary or PDF |
+| 3 | Year-end tax estimate | "How much tax will I pay in total at the end of the year?" | L | Income from transactions and a rough Bern tax rate; shown clearly as an estimate |
+| 4 | Tax savings plan with memory | "Help me put money aside for taxes every month." | L | Keeps the plan, reminds in chat how much is still due this month, adds a missed month to the next one. Suggests a transfer, never moves money without confirmation |
+| 5 | Can I afford it? (savings goal) | "I want to go on holiday in April. Can I afford it, and how much should I save each month?" | M | Average monthly income and expenses |
+| 6 | Where can I cut costs? | "Where can I cut my expenses?" | M | Category totals compared with the monthly average |
+| 7 | Payday reminder | "Remind me to save after every payday." | M | Detect the salary transaction |
+| 8 | Mortgage down payment goal | "Where can I save to reach the down payment for a mortgage?" | M | Savings goal and cost-cutting tips |
+| 9 | Subscription finder | "Which subscriptions am I paying for?" | S | Already in PostFinance Analysis ("My subscriptions"); Psst can only explain it |
+| 10 | Unusual spending alert | "Anything unusual this month?" | M | Compare each category with its monthly average |
+| 11 | Upcoming bills | "Will I have enough for rent and health insurance next month?" | M | Recurring fixed costs and their dates |
+| 12 | End-of-month balance forecast | "What will my balance be at the end of the month?" | M | Current balance, expected income and fixed costs |
+| 13 | Explain a transaction | "What is this TWINT payment of CHF 47.80?" | S | Merchant text from the transaction |
+| 14 | Monthly recap | "Sum up my November in five sentences." | S | Transactions of one month |
+| 15 | Any language + plain language | Ask in German, English, French, Ukrainian, Arabic… and get answers in simple words | S | The LLM handles it; strong "AI for Access" angle |
+| 16 | Voice input | Ask by voice instead of typing | M | Browser speech-to-text |
+| 17 | Trust panel | "What can you see, and what can you do?" | S | Read-only by default; every action needs confirmation. Supports the main pitch argument |
+| 18 | Utility bills import | Add utility payments from a contract or the flat address | L | Not in the hackathon data; vision slide |
+| 19 | Tax declaration help | Pre-fill the tax declaration from my data | L | Legal limits for a bank; vision slide |
+| 20 | Business: VAT reserve | "How much VAT should I set aside this quarter?" | M | The challenge also mentions businesses |
 
 ## Where Psst fits in the PostFinance mobile app
 
