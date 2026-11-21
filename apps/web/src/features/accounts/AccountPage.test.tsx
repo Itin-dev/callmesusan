@@ -45,14 +45,23 @@ describe('AccountPage', () => {
     expect(dayHeadings()).toEqual(['Today', 'Yesterday', '19.11.2025', '16.11.2025'])
   })
 
-  it('shows initials, raw bank text, amount with trailing minus and a link per row', async () => {
+  it('shows the merchant logo, raw bank text, amount with trailing minus and a link per row', async () => {
     mockApi()
     renderApp('/accounts/kk')
     const coop = (await screen.findByText('Coop Luzern Bahnhof 2025-11-19')).closest('a')!
     expect(coop).toHaveAttribute('href', '/transactions/K-0241')
-    expect(within(coop).getByText('CO')).toBeInTheDocument()
+    expect(coop.querySelector('img')).toHaveAttribute('src', '/logos/coop.png')
+    expect(within(coop).queryByText('CO')).not.toBeInTheDocument()
     expect(within(coop).getByText('119.70–')).toBeInTheDocument()
     expect(screen.getAllByRole('link', { name: /\d{4}-\d{2}-\d{2}/ })).toHaveLength(TRANSACTION_LIST_FIXTURES.kk.length)
+  })
+
+  it('shows initials for a merchant without a logo', async () => {
+    mockApi()
+    renderApp('/accounts/privat')
+    const salary = (await screen.findByText('Salärzahlung 13. Monatslohn Employer AG')).closest('a')!
+    expect(within(salary).getByText('EM')).toBeInTheDocument()
+    expect(salary.querySelector('img')).toBeNull()
   })
 
   it('shows a plus for income', async () => {

@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { formatSignedAmount } from '@/lib/money'
 import { scannedReceiptFor } from '@/features/scan/scannedReceipts'
 import { cn } from '@/lib/utils'
-import { formatDay, groupByDay, localIsoDate, merchantInitials, receiptBadge } from './transactionDisplay'
+import { formatDay, groupByDay, localIsoDate, merchantInitials, merchantLogo, receiptBadge } from './transactionDisplay'
 
 /** Transactions grouped by day ("Today", "Yesterday", then dd.mm.yyyy); each row opens the transaction. */
 export default function TransactionList({ transactions }: { transactions: Transaction[] }) {
@@ -42,6 +42,27 @@ export default function TransactionList({ transactions }: { transactions: Transa
   )
 }
 
+/** Merchant logo in a white circle; without a logo, or if it fails to load, the initials. */
+function MerchantAvatar({ counterparty }: { counterparty: string }) {
+  const logo = merchantLogo(counterparty)
+  const [failed, setFailed] = useState(false)
+  if (logo && !failed) {
+    return (
+      <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white">
+        <img src={logo} alt="" width={28} height={28} className="size-7 object-contain" onError={() => setFailed(true)} />
+      </span>
+    )
+  }
+  return (
+    <span
+      aria-hidden="true"
+      className="flex size-11 shrink-0 items-center justify-center rounded-full bg-psst text-small font-bold text-psst-foreground"
+    >
+      {merchantInitials(counterparty)}
+    </span>
+  )
+}
+
 function TransactionRow({ transaction }: { transaction: Transaction }) {
   const direction = transaction.type === 'income' ? 'credit' : 'debit'
   return (
@@ -49,12 +70,7 @@ function TransactionRow({ transaction }: { transaction: Transaction }) {
       to={`/transactions/${encodeURIComponent(transaction.id)}`}
       className="flex min-h-16 items-center gap-3 rounded-lg py-2.5 outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
     >
-      <span
-        aria-hidden="true"
-        className="flex size-11 shrink-0 items-center justify-center rounded-full bg-psst text-small font-bold text-psst-foreground"
-      >
-        {merchantInitials(transaction.counterparty)}
-      </span>
+      <MerchantAvatar counterparty={transaction.counterparty} />
       <span className="flex min-w-0 flex-1 flex-col items-start gap-1">
         <span className="text-sm font-semibold break-words">{transaction.description}</span>
         <ReceiptBadge transaction={transaction} />

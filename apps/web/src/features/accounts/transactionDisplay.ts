@@ -41,6 +41,42 @@ export function merchantInitials(counterparty: string): string {
 }
 
 /**
+ * Brands with a logo in public/logos: keyword in the counterparty (lower case, no accents) → file.
+ * The logos are served by the app itself, so the phone tells no logo service which shops it sees.
+ */
+const MERCHANT_LOGOS: ReadonlyArray<readonly [keyword: string, file: string]> = [
+  ['abercrombie', 'abercrombie'],
+  ['amazon', 'amazon'],
+  ['apple', 'apple'],
+  ['itunes', 'apple'],
+  ['coop', 'coop'],
+  ['denner', 'denner'],
+  ['digitec', 'digitec'],
+  ['galaxus', 'digitec'],
+  ['h&m', 'hm'],
+  ['ikea', 'ikea'],
+  ['lidl', 'lidl'],
+  ['migros', 'migros'],
+  ['netflix', 'netflix'],
+  ['orell', 'orell-fuessli'],
+  ['paypal', 'paypal'],
+  ['sbb', 'sbb'],
+  ['bundesbahnen', 'sbb'],
+  ['spotify', 'spotify'],
+  // only the airline: a bare "swiss" would also match Swisscom
+  ['swiss intl', 'swiss'],
+  ['swiss international', 'swiss'],
+  ['zalando', 'zalando'],
+]
+
+/** Logo path for a merchant, or null: the row then keeps the initials. */
+export function merchantLogo(counterparty: string): string | null {
+  const name = counterparty.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase()
+  const match = MERCHANT_LOGOS.find(([keyword]) => name.includes(keyword))
+  return match ? `/logos/${match[1]}.png` : null
+}
+
+/**
  * Row badge: "Receipt" when attached, "+ Add receipt" when the backend says one is missing.
  * `scanned`: a receipt scanned in this session belongs to the payment (the backend stores no scan).
  */
