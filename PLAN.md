@@ -40,7 +40,7 @@ visibility and support well-informed decisions.
 
 - In: a demo that reads the sample transactions (two accounts, one year) and turns them into
   clear insights, trends and suggestions (AI at the core, not decoration).
-- Out: real bank integration, authentication, real customer data — the demo uses the sample CSVs.
+- Out: business accounts, real bank integration, authentication, real customer data — the demo uses the sample CSVs.
 - Exact features: to be decided by the team (capture as `Idea` / `Ticket`).
 
 ## Approach
@@ -52,8 +52,9 @@ visibility and support well-informed decisions.
 
 ## Risks / open questions
 
-- Target user is not defined yet: individuals, businesses, or both? (newcomers, low financial
-  literacy, language barriers?)
+- Target user: individuals ([#3](https://github.com/Itin-dev/callmesusan/issues/3)); the exact
+  persona is open (newcomers, low financial literacy, language barriers?).
+- Demo moment for the jury: to be clarified.
 - Which insights are "genuinely useful" — pick a few strong ones over many weak ones.
 - Financial advice must stay explanatory, not regulated investment advice.
 - The Figma files may still hold content from the previous topic and need checking.
