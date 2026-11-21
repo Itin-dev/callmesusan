@@ -3,7 +3,7 @@ import { getAccounts } from './accounts'
 import { ApiError } from './client'
 import { pickInsight } from './insight'
 import { scanReceipt } from './receipts'
-import { getSpendingByCategory } from './spending'
+import { getSpendingByCategory, getSpendingSummary } from './spending'
 import { getAccountTransactions, getTransaction } from './transactions'
 import { downscaleImage } from '@/lib/image'
 import type { TransactionDetail } from './types'
@@ -39,6 +39,11 @@ export function useReceiptInsight(transaction: TransactionDetail | undefined) {
     enabled: Boolean(receipt),
     select: (spending) => (receipt ? pickInsight(receipt, spending) : null),
   })
+}
+
+/** Income vs expenses of one year for Analytics (totals come from the backend). */
+export function useSpendingSummary(year: number) {
+  return useQuery({ queryKey: ['spending', 'summary', year], queryFn: () => getSpendingSummary(year) })
 }
 
 /** Scan a receipt photo: scaled down in the browser, then read and matched by the backend. */

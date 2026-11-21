@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router'
 import AppShell from '@/components/shell/AppShell'
 import AccountPage from '@/features/accounts/AccountPage'
+import AnalyticsPage from '@/features/analytics/AnalyticsPage'
 import PsstChatPage from '@/features/chat/PsstChatPage'
 import HomePage from '@/features/home/HomePage'
 import ScanPage from '@/features/scan/ScanPage'
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/psst" element={<PsstChatPage />} />
         <Route path="/scan" element={<ScanPage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/accounts/:account" element={<AccountPage />} />
         <Route path="/transactions/:id" element={<TransactionPage />} />
         <Route path="/services" element={<ServicesPage />} />

@@ -1,4 +1,4 @@
-import type { SpendingByCategory } from './types'
+import type { SpendingByCategory, SpendingSummary } from './types'
 
 // GET /api/spending/categories is not merged yet (BE-3). Placeholder values: the five November
 // receipts give no history for an average, so these follow the example in docs/mvp.md until the
@@ -15,4 +15,17 @@ const FIXTURE: Omit<SpendingByCategory, 'month'> = {
 
 export async function getSpendingByCategory(month: string): Promise<SpendingByCategory> {
   return { month, ...FIXTURE }
+}
+
+// GET /api/spending/summary is not built yet (BE-7, #51). Values computed once from
+// transactions.json with the spending rules in docs/mvp.md (transfers left out, credit card
+// refunds subtracted). Replace the body of getSpendingSummary() with
+// getJson<SpendingSummary>(`/api/spending/summary?year=${year}`).
+const SUMMARY_FIXTURE: Omit<SpendingSummary, 'period_start' | 'period_end'> = {
+  income: { total_rp: 9703200, count: 13, monthly_average_rp: 808600 },
+  expenses: { total_rp: 8897751, count: 461, monthly_average_rp: 741479 },
+}
+
+export async function getSpendingSummary(year: number): Promise<SpendingSummary> {
+  return { period_start: `${year}-01-01`, period_end: `${year}-12-31`, ...SUMMARY_FIXTURE }
 }

@@ -131,5 +131,24 @@
     "reading": "يقرأ Psst إيصالك…",
     "noMatch": "قرأ Psst الإيصال، لكن لا توجد دفعة مطابقة له.",
     "error": "تعذّرت قراءة الإيصال. يُرجى المحاولة مرة أخرى."
+  },
+  "analytics": {
+    "title": "التحليلات",
+    "summarised": "ملخص",
+    "monthlyAverage": "متوسط الإنفاق الشهري",
+    "actions": {
+      "search": "بحث",
+      "co2": "البصمة الكربونية",
+      "askPsst": "اسأل Psst"
+    },
+    "askQuestion": "أين تذهب أموالي كل شهر؟",
+    "income": "الدخل",
+    "expenses": "النفقات",
+    "count_zero": "لا معاملات",
+    "count_one": "معاملة واحدة",
+    "count_two": "معاملتان",
+    "count_few": "{{count}} معاملات",
+    "count_many": "{{count}} معاملة",
+    "count_other": "{{count}} معاملة"
   }
 }

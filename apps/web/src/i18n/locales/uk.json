@@ -131,5 +131,22 @@
     "reading": "Psst читає ваш чек…",
     "noMatch": "Psst прочитав чек, але жоден платіж йому не відповідає.",
     "error": "Не вдалося прочитати чек. Спробуйте ще раз."
+  },
+  "analytics": {
+    "title": "Аналітика",
+    "summarised": "Підсумок",
+    "monthlyAverage": "Витрати в середньому за місяць",
+    "actions": {
+      "search": "Пошук",
+      "co2": "Слід CO2",
+      "askPsst": "Спитати Psst"
+    },
+    "askQuestion": "На що йдуть мої гроші щомісяця?",
+    "income": "Доходи",
+    "expenses": "Витрати",
+    "count_one": "{{count}} транзакція",
+    "count_few": "{{count}} транзакції",
+    "count_many": "{{count}} транзакцій",
+    "count_other": "{{count}} транзакції"
   }
 }
