@@ -130,7 +130,9 @@
     "choose": "Take or choose a photo",
     "reading": "Psst is reading your receipt…",
     "noMatch": "Psst read the receipt, but no payment matches it.",
-    "error": "Could not read the receipt. Please try again."
+    "error": "Could not read the receipt. Please try again.",
+    "tooBig": "The photo is too big. Please take a new one.",
+    "wrongType": "Please use a JPEG or PNG photo."
   },
   "analytics": {
     "title": "Analytics",

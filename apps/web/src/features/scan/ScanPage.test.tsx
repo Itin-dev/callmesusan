@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import * as receipts from '@/api/receipts'
-import { LOLA_SCAN_FIXTURE } from '@/api/receipts'
+import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
 import type { ScanResult } from '@/api/types'
 import i18n from '@/i18n'
 import * as image from '@/lib/image'
@@ -12,7 +12,7 @@ import { mockApi, renderApp } from '@/test-utils'
 const NBSP = ' '
 const photo = () => new File(['raw photo'], 'receipt.png', { type: 'image/png' })
 const small = new Blob(['small'], { type: 'image/jpeg' })
-const noMatch: ScanResult = { transaction_id: null, receipt: LOLA_SCAN_FIXTURE.receipt }
+const noMatch: ScanResult = { ...LOLA_SCAN_FIXTURE, transaction_id: null }
 
 beforeEach(async () => {
   await i18n.changeLanguage('en')
@@ -102,6 +102,34 @@ describe('ScanPage', () => {
     expect(await screen.findByText(/no payment matches/)).toBeInTheDocument()
     expect(scan).toHaveBeenCalledTimes(2)
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('sends the photo to the scan endpoint', async () => {
+    const fetch = mockApi()
+    renderApp('/scan')
+    await choosePhoto()
+    await screen.findByText(/Added to your payment/)
+    const call = fetch.mock.calls.find(([url]) => url === '/api/receipts/scan')
+    expect(((call?.[1]?.body as FormData).get('file') as File).type).toBe('image/jpeg')
+  })
+
+  it.each([
+    [413, 'The photo is too big. Please take a new one.'],
+    [415, 'Please use a JPEG or PNG photo.'],
+  ])('explains a rejected photo (%i) without a retry', async (status, message) => {
+    mockApi({ scan: Response.json({ detail: 'rejected' }, { status }) })
+    renderApp('/scan')
+    await choosePhoto()
+    expect(await screen.findByRole('alert')).toHaveTextContent(message)
+    expect(screen.queryByRole('button', { name: 'Try again' })).not.toBeInTheDocument()
+  })
+
+  it('offers a retry when the model fails (502)', async () => {
+    mockApi({ scan: Response.json({ detail: 'model failed' }, { status: 502 }) })
+    renderApp('/scan')
+    await choosePhoto()
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not read the receipt. Please try again.')
+    expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument()
   })
 
   it('renders right to left in Arabic', async () => {
