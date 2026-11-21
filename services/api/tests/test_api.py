@@ -57,6 +57,14 @@ def test_chat_sends_system_prompt_and_full_conversation(client):
     assert sent[1:] == conversation
 
 
+def test_chat_system_prompt_holds_the_psst_persona(client):
+    fake = use(FakeLLM())
+    client.post("/api/chat", json=user("Where can I save?"))
+    system = fake.calls[0][0]["content"]
+    assert "Psst" in system
+    assert "never move" in system
+
+
 def test_chat_rejects_empty_message(client):
     use(FakeLLM())
     response = client.post("/api/chat", json=user(""))
