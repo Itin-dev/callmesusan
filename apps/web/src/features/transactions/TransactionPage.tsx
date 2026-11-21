@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation, useNavigate, useParams } from 'react-router'
-import backIcon from '@/assets/icons/back.svg'
+import { Link, useParams } from 'react-router'
 import cameraIcon from '@/assets/icons/camera.svg'
 import detailsIcon from '@/assets/icons/details.svg'
 import { isNotFound, useReceiptInsight, useTransaction } from '@/api/queries'
+import BackButton from '@/components/shell/BackButton'
 import { Button } from '@/components/ui/button'
 import PsstInsight from './PsstInsight'
 import ReceiptCard from './ReceiptCard'
@@ -65,16 +65,9 @@ export default function TransactionPage() {
 
 function Header() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
-  const location = useLocation()
-  // Opened directly (no history inside the app): go to Home instead of leaving the app.
-  const goBack = () => (location.key === 'default' ? navigate('/') : navigate(-1))
-
   return (
     <div className="flex items-center justify-between">
-      <Button variant="ghost" size="icon" className="-ms-2.5 size-11 rounded-full" aria-label={t('transaction.back')} onClick={goBack}>
-        <img src={backIcon} alt="" width={24} height={24} className="rtl:-scale-x-100" />
-      </Button>
+      <BackButton />
       <h1 className="text-title">{t('transaction.title')}</h1>
       {/* Decorative in the MVP (Figma "details" menu). */}
       <span className="flex size-11 items-center justify-center -me-2.5">

@@ -99,3 +99,11 @@ export type SpendingByCategory = {
   month: string
   categories: CategorySpending[]
 }
+
+/** One turn of the Psst chat. */
+export type ChatMessage = { role: 'user' | 'assistant'; content: string }
+
+/** POST /api/chat: stateless, the client sends the whole conversation every turn. */
+export type ChatRequest = { messages: ChatMessage[]; language: string }
+
+export type ChatResponse = { reply: string }

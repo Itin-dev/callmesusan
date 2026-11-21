@@ -2,7 +2,8 @@
   "common": {
     "loading": "Wird geladen…",
     "loadError": "Die Daten konnten nicht geladen werden. Bitte versuche es erneut.",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "back": "Zurück"
   },
   "psst": {
     "name": "Psst",
@@ -50,7 +51,6 @@
   },
   "transaction": {
     "title": "Transaktion",
-    "back": "Zurück",
     "details": "Details",
     "explains": "Psst erklärt",
     "receipt": "Quittung",
@@ -85,5 +85,23 @@
     "alcohol": "Alkohol",
     "household": "Haushalt",
     "personal_care": "Körperpflege"
+  },
+  "chat": {
+    "subtitle": "Unter uns · liest nur, zahlt nie",
+    "log": "Gespräch mit Psst",
+    "greeting": "Hallo, ich bin Psst. Frag mich alles zu deinem Geld. Ich lese nur, ich zahle nie.",
+    "suggestions": {
+      "save": "Wo kann ich sparen?",
+      "groceries": "Wie viel habe ich im November für Lebensmittel ausgegeben?",
+      "holiday": "Kann ich mir im April Ferien leisten?"
+    },
+    "inputLabel": "Nachricht an Psst",
+    "placeholder": "Frag Psst…",
+    "send": "Senden",
+    "thinking": "Psst denkt nach…",
+    "error": "Psst konnte nicht antworten. Bitte versuch es nochmals.",
+    "disclaimer": "Psst bewegt nie Geld ohne dein Ja.",
+    "fromUser": "Du:",
+    "fromPsst": "Psst:"
   }
 }
