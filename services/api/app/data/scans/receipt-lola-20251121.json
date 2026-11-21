@@ -1,0 +1,13 @@
+{
+  "store": "LOLA",
+  "branch": "Mattenhof",
+  "date": "2026-11-21",
+  "time": "11:52",
+  "total_rp": 910,
+  "items": [
+    {"name": "Club-Mate, Loscher, 50cl", "category": "beverages", "quantity": 1, "unit": "pcs", "unit_price_rp": 200, "line_total_rp": 200, "discount_rp": 0},
+    {"name": "Depot", "category": "beverages", "quantity": 1, "unit": "pcs", "unit_price_rp": 30, "line_total_rp": 30, "discount_rp": 0},
+    {"name": "Stella Schokolade Lait Noisette, Morga, 100g", "category": "chocolate", "quantity": 1, "unit": "pcs", "unit_price_rp": 360, "line_total_rp": 360, "discount_rp": 0},
+    {"name": "Cookie Caramel&Sel gf, Freely, 65g", "category": "snacks", "quantity": 1, "unit": "pcs", "unit_price_rp": 320, "line_total_rp": 320, "discount_rp": 0}
+  ]
+}

@@ -1,6 +1,7 @@
 """LLM access through OpenRouter's OpenAI-compatible API."""
 
-from typing import Annotated, Protocol
+import json
+from typing import Annotated, Any, Protocol
 
 from fastapi import Depends, HTTPException
 from openai import OpenAI
@@ -13,6 +14,9 @@ Message = dict[str, str]
 class LLM(Protocol):
     def complete(self, messages: list[Message]) -> str: ...
 
+    # messages may hold image parts; the answer must follow the JSON schema
+    def extract_json(self, messages: list[dict[str, Any]], schema: dict[str, Any]) -> Any: ...
+
 
 class OpenRouterLLM:
     def __init__(self, settings: Settings) -> None:
@@ -20,10 +24,22 @@ class OpenRouterLLM:
             base_url=settings.openrouter_base_url, api_key=settings.openrouter_api_key
         )
         self._model = settings.openrouter_model
+        self._vision_model = settings.openrouter_vision_model
 
     def complete(self, messages: list[Message]) -> str:
         response = self._client.chat.completions.create(model=self._model, messages=messages)
         return response.choices[0].message.content or ""
+
+    def extract_json(self, messages: list[dict[str, Any]], schema: dict[str, Any]) -> Any:
+        response = self._client.chat.completions.create(
+            model=self._vision_model,
+            messages=messages,
+            response_format={
+                "type": "json_schema",
+                "json_schema": {"name": "result", "strict": True, "schema": schema},
+            },
+        )
+        return json.loads(response.choices[0].message.content or "")
 
 
 def get_llm(settings: Annotated[Settings, Depends(get_settings)]) -> LLM:

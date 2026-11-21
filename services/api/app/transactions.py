@@ -121,6 +121,11 @@ def _receipt(raw: dict) -> Receipt:
     )
 
 
+def all_transactions() -> list[dict]:
+    """The raw transactions, newest first."""
+    return _data()[0]
+
+
 def list_transactions(account: Account | None = None) -> list[TransactionOut]:
     transactions, links, _ = _data()
     return [
