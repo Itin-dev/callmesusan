@@ -65,6 +65,8 @@ def receipts_scan(
     llm: Annotated[LLM, Depends(get_llm)],
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> ScanResult:
+    if not settings.openrouter_vision_model:
+        raise HTTPException(503, "OPENROUTER_VISION_MODEL is not set (see .env.example)")
     # one byte over the limit is enough to know the photo is too large
     data = file.file.read(MAX_UPLOAD_BYTES + 1)
     try:

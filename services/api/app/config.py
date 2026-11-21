@@ -15,8 +15,9 @@ class Settings(BaseSettings):
     # "openrouter/auto" lets OpenRouter pick a model; set a specific one in .env.
     openrouter_model: str = "openrouter/auto"
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
-    # reads receipt photos; it must accept images and JSON-schema answers
-    openrouter_vision_model: str = "google/gemini-2.5-flash"
+    # reads receipt photos (images in, JSON-schema answers out); the id lives in .env only,
+    # as docs/stack.md "AI models" requires; empty means the scan answers 503
+    openrouter_vision_model: str = ""
     # pitch only: when the vision model fails, answer with the prepared LOLA scan
     demo_scan_fallback: bool = False
     # the Psst persona (docs/mvp.md, BE-4); .env can override it with SYSTEM_PROMPT

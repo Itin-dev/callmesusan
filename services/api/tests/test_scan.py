@@ -56,7 +56,11 @@ def client():
 
 def use(fake: FakeVisionLLM, fallback: bool = False) -> FakeVisionLLM:
     app.dependency_overrides[get_llm] = lambda: fake
-    settings = Settings(openrouter_api_key="test", demo_scan_fallback=fallback)
+    settings = Settings(
+        openrouter_api_key="test",
+        openrouter_vision_model="test-vision-model",
+        demo_scan_fallback=fallback,
+    )
     app.dependency_overrides[get_settings] = lambda: settings
     return fake
 
@@ -224,3 +228,21 @@ def test_scan_fallback_answers_with_the_prepared_lola_result(client):
 def test_scan_without_model_failure_is_no_fallback(client):
     use(FakeVisionLLM(LOLA_READ), fallback=True)
     assert scan(client).json()["fallback"] is False
+
+
+def test_scan_without_a_vision_model_setting_is_503(client):
+    fake = use(FakeVisionLLM(LOLA_READ))
+    settings = Settings(
+        openrouter_api_key="test",
+        openrouter_vision_model="",
+    )
+    app.dependency_overrides[get_settings] = lambda: settings
+    response = scan(client)
+    assert response.status_code == 503
+    assert "OPENROUTER_VISION_MODEL" in response.json()["detail"]
+    assert fake.calls == []
+
+
+def test_vision_model_has_no_default_in_code(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_VISION_MODEL", raising=False)
+    assert Settings(_env_file=None).openrouter_vision_model == ""

@@ -25,12 +25,15 @@ never in code, so they can change without a deploy of new code.
 | Task | Model | Setting |
 | --- | --- | --- |
 | Voice to text (chat mic input) | `google/gemini-3.5-flash-lite` | `OPENROUTER_TRANSCRIBE_MODEL` |
-| Receipt photo (`POST /api/receipts/scan`) | OpenRouter `file-parser` plugin, engine `mistral-ocr`; its text is scaled down and extracted into the receipt JSON schema | `OPENROUTER_OCR_ENGINE` |
-| Receipt photo, fallback | `google/gemini-3.5-flash-lite` reads the photo directly (vision) when the OCR step fails | `OPENROUTER_VISION_MODEL` |
+| Receipt photo (`POST /api/receipts/scan`) | `google/gemini-3.5-flash-lite` reads the photo directly (vision) into the receipt JSON schema | `OPENROUTER_VISION_MODEL` |
+| Receipt photo, OCR step (not built) | OpenRouter `file-parser` plugin, engine `mistral-ocr`. Left out for the pitch: the vision step read all three test photos correctly in one call | `OPENROUTER_OCR_ENGINE` |
 | Psst chat over the dataset (`POST /api/chat`) | `openai/gpt-6-luna` | `OPENROUTER_MODEL` |
 
-If the fallback fails too, the scan endpoint returns its prepared result for the LOLA test photo, so
-the demo never breaks (BE-6, #40). Tests never call a model: they override `get_llm` with a fake.
+If the vision step fails and `DEMO_SCAN_FALLBACK=1` is set (for the pitch), the scan endpoint
+returns its prepared result for the LOLA test photo, marked `"fallback": true`, so the demo never
+breaks and the app can label it. Without the flag it answers 502, and without
+`OPENROUTER_VISION_MODEL` it answers 503 (BE-6, #40). Tests never call a model: they override
+`get_llm` with a fake.
 Until the backend reads these settings, `app/config.py` defaults `OPENROUTER_MODEL` to `openrouter/auto`.
 
 ## Deploy
