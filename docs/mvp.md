@@ -129,9 +129,14 @@ the balances.
 
 ### `GET /api/spending/categories?month=2025-11`
 
-Item-level spending of one month per category, compared with the average of the other months.
-It feeds the insight line on the receipt screen ("chocolate this month is CHF 38.60, about twice
-your usual") and the chat.
+Item-level spending of one month per category, compared with the user's usual month. It feeds
+the insight line on the receipt screen ("chocolate this month is CHF 38.60, about twice your
+usual") and the chat. Receipts exist only for November 2025, so no average of other months
+exists: `average_rp` is the demo "usual month" in `services/api/app/data/usual_categories.json`
+(set values, not computed). `total_rp` is net of discounts, `ratio` = `total_rp / average_rp`
+rounded to 2 decimals. Only categories with spending in the month are listed, largest ratio
+first; a month without receipts answers `categories: []`. `month` is required (`YYYY-MM`),
+other values answer 422.
 
 ```jsonc
 {

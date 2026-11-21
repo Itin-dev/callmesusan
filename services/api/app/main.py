@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, Form, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, Form, HTTPException, Query, UploadFile
 from pydantic import BaseModel
 
 from app.accounts import AccountsOverview, accounts_overview
@@ -10,7 +10,14 @@ from app.chat import ChatReply, ChatRequest, Language, build_messages
 from app.config import Settings, get_settings
 from app.llm import LLM, get_llm
 from app.scan import MAX_UPLOAD_BYTES, ModelAnswerError, ScanResult, UploadError, scan_receipt
-from app.spending import SpendingSummary, current_summary, data_years, year_summary
+from app.spending import (
+    SpendingByCategory,
+    SpendingSummary,
+    current_categories,
+    current_summary,
+    data_years,
+    year_summary,
+)
 from app.transactions import (
     Account,
     TransactionDetail,
@@ -56,6 +63,13 @@ def spending_summary(year: int | None = None) -> SpendingSummary:
     if chosen not in years:
         raise HTTPException(404, f"no transactions in {chosen}")
     return SpendingSummary.model_validate(year_summary(transactions, chosen))
+
+
+@app.get("/api/spending/categories")
+def spending_categories(
+    month: Annotated[str, Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$")],
+) -> SpendingByCategory:
+    return current_categories(month)
 
 
 @app.post("/api/chat")
