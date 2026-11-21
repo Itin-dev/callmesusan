@@ -42,8 +42,27 @@
     "kind": {
       "private": "Private account",
       "savings": "Savings",
-      "pillar3": "3rd pillar"
-    }
+      "pillar3": "3rd pillar",
+      "credit_card": "Credit card"
+    },
+    "card": "Card account"
+  },
+  "account": {
+    "switch": "Switch account",
+    "actions": {
+      "payments": "Payments",
+      "search": "Search",
+      "details": "Details"
+    },
+    "pendingOrders": "Show pending orders",
+    "transactions": "Transactions",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "receipt": "Receipt",
+    "addReceipt": "Add receipt",
+    "empty": "No transactions on this account yet.",
+    "notFound": "We could not find this account.",
+    "toHome": "Back to Home"
   },
   "services": {
     "title": "Services",

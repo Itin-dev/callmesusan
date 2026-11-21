@@ -1,16 +1,14 @@
-import type { AccountsOverview } from './types'
+import { getJson } from './client'
+import type { Account, AccountsOverview } from './types'
 
-// No accounts endpoint exists yet (docs/mvp.md). This fixture mirrors Figma "01 Home"; replace the
-// body of getAccounts() with getJson<AccountsOverview>('/api/accounts') once the backend has it.
-const FIXTURE: AccountsOverview = {
-  accounts: [
-    { id: 'privat', kind: 'private', iban_masked: 'CH•• •••• •••• 4821', balance_rp: 481235 },
-    { id: 'savings', kind: 'savings', iban_masked: 'CH•• •••• •••• 7390', balance_rp: 1200000 },
-    { id: 'pillar3', kind: 'pillar3', iban_masked: null, balance_rp: 666765 },
-  ],
-  total_rp: 2348000,
-}
+// STOPGAP until GET /api/accounts serves the credit card: most receipts (e.g. Coop K-0241) are on
+// `kk`, so Home needs a row for it. The balance is 0 because the last kk transaction in the demo
+// data is the monthly card payment. total_rp stays the backend's value.
+const CREDIT_CARD_FIXTURE: Account = { id: 'kk', kind: 'credit_card', iban_masked: null, balance_rp: 0 }
 
+/** GET /api/accounts: the account rows of the Home screen. */
 export async function getAccounts(): Promise<AccountsOverview> {
-  return FIXTURE
+  const overview = await getJson<AccountsOverview>('/api/accounts')
+  if (overview.accounts.some((account) => account.id === CREDIT_CARD_FIXTURE.id)) return overview
+  return { ...overview, accounts: [...overview.accounts, CREDIT_CARD_FIXTURE] }
 }

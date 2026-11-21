@@ -1,9 +1,13 @@
 // Types for the API contract in docs/mvp.md. Amounts are integer Rappen (*_rp), always positive.
 
-export type AccountKind = 'private' | 'savings' | 'pillar3'
+export type AccountKind = 'private' | 'savings' | 'pillar3' | 'credit_card'
 
-/** Home account row. Not in the contract yet: served from a fixture (see accounts.ts). */
+/** Accounts that have transactions in GET /api/transactions?account=. */
+export type TransactionAccount = 'privat' | 'kk'
+
+/** Home account row of GET /api/accounts. The credit card `kk` is still a frontend stopgap (accounts.ts). */
 export type Account = {
+  /** privat | savings | pillar3 | kk */
   id: string
   kind: AccountKind
   /** Masked IBAN, e.g. "CH•• •••• •••• 4821"; null for products without one (3rd pillar). */
@@ -37,10 +41,16 @@ export type ItemCategory =
 
 export type TransactionType = 'expense' | 'income' | 'transfer'
 
+/**
+ * Proposed in #39, not served yet: attached = receipt linked, missing = a purchase that could
+ * have one (shows "+ Add receipt"), none = no receipt expected.
+ */
+export type ReceiptStatus = 'attached' | 'missing' | 'none'
+
 /** Item of GET /api/transactions. */
 export type Transaction = {
   id: string
-  account: 'privat' | 'kk'
+  account: TransactionAccount
   date: string // YYYY-MM-DD
   type: TransactionType
   /** Raw bank text, e.g. "Coop Luzern Bahnhof 2025-11-19". */
@@ -51,6 +61,8 @@ export type Transaction = {
   original_amount: number | null
   original_currency: string | null
   has_receipt: boolean
+  /** Optional until the backend sends it; the UI falls back to has_receipt. */
+  receipt_status?: ReceiptStatus
 }
 
 export type ReceiptItem = {
