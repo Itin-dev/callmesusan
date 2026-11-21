@@ -7,11 +7,15 @@ credit card account (kk) is a merchant refund and reduces spending, income on pr
 import json
 from functools import lru_cache
 
+from pydantic import BaseModel
+
 from app.transactions import RECEIPTS_DIR, TRANSACTIONS_FILE
 
 # merchants per month line and for the whole year; small numbers keep the system prompt short
 TOP_PER_MONTH = 5
 TOP_PER_YEAR = 10
+# the period of GET /api/spending/summary is one calendar year
+MONTHS_PER_YEAR = 12
 
 
 def _is_refund(tx: dict) -> bool:
@@ -89,6 +93,46 @@ def spending_summary(transactions: list[dict], receipts: list[dict]) -> str:
         lines.append("Shop receipt items by category (only partner shops send receipts):")
         lines.extend(f"{month}: {_amounts(entries)}" for month, entries in categories.items())
     return "\n".join(lines)
+
+
+class SummaryTotals(BaseModel):
+    total_rp: int
+    count: int
+    monthly_average_rp: int
+
+
+class SpendingSummary(BaseModel):
+    period_start: str
+    period_end: str
+    income: SummaryTotals
+    expenses: SummaryTotals
+
+
+def data_years(transactions: list[dict]) -> list[int]:
+    """Years that have at least one transaction, oldest first."""
+    return sorted({int(tx["date"][:4]) for tx in transactions})
+
+
+def year_summary(transactions: list[dict], year: int) -> dict:
+    """Income and expenses of one year (docs/mvp.md, GET /api/spending/summary).
+
+    Refunds lower the expense total but are not counted as expense rows.
+    """
+    rows = [tx for tx in transactions if tx["date"].startswith(f"{year}-")]
+    income = [tx for tx in rows if tx["type"] == "income" and not _is_refund(tx)]
+    expenses = [tx for tx in rows if tx["type"] == "expense"]
+    refunds_rp = sum(tx["amount_rp"] for tx in rows if _is_refund(tx))
+
+    def totals(total_rp: int, count: int) -> dict:
+        return {"total_rp": total_rp, "count": count,
+                "monthly_average_rp": total_rp // MONTHS_PER_YEAR}  # fmt: skip
+
+    return {
+        "period_start": f"{year}-01-01",
+        "period_end": f"{year}-12-31",
+        "income": totals(sum(tx["amount_rp"] for tx in income), len(income)),
+        "expenses": totals(sum(tx["amount_rp"] for tx in expenses) - refunds_rp, len(expenses)),
+    }
 
 
 @lru_cache
