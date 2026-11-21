@@ -10,6 +10,9 @@ Team **Call me Susan** builds a working prototype for the challenge **Beyond the
 
 > What if your bank could do more than show transactions and actually help you make smarter decisions?
 
+Product name: **Psst** — an AI assistant inside your bank that you can trust with your money
+questions. The full pitch is still in progress.
+
 Decision: [#1](https://github.com/Itin-dev/callmesusan/issues/1).
 Source: [challenges](https://hackathon.powercoders.org/en/#challenges).
 
