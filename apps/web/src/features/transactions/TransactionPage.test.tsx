@@ -58,7 +58,7 @@ describe('TransactionPage', () => {
   it('does not offer a receipt photo when the receipt already exists', async () => {
     renderApp('/transactions/K-0241')
     await screen.findByRole('region', { name: 'Receipt' })
-    expect(screen.queryByRole('button', { name: 'Add receipt photo' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Add receipt photo' })).not.toBeInTheDocument()
   })
 
   it('shows the Psst insight with a chip that opens the chat', async () => {
@@ -93,7 +93,13 @@ describe('TransactionPage', () => {
     expect(await screen.findByText(`CHF${NBSP}39.25–`)).toBeInTheDocument()
     expect(screen.queryByRole('region', { name: 'Receipt' })).not.toBeInTheDocument()
     expect(screen.queryByText(/Psst:/)).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Add receipt photo' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Add receipt photo' })).toBeInTheDocument()
+  })
+
+  it('opens the receipt scan from Add receipt photo', async () => {
+    renderApp('/transactions/K-0240')
+    await userEvent.click(await screen.findByRole('link', { name: 'Add receipt photo' }))
+    expect(await screen.findByRole('heading', { name: 'Scan a receipt' })).toBeInTheDocument()
   })
 
   it('says when the transaction does not exist', async () => {
