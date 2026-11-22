@@ -37,7 +37,7 @@ Rows marked "Vision" are ideas we present but do not build for the demo.
 
 | Feature | Example | Effort | Notes |
 |---------|---------|--------|-------|
-| Detailed receipt per transaction | Tap a transaction and see the full receipt: every item and its price. Pulled from a retailer app (Lidl Plus type) or from a photo of the paper receipt | M | Demo: mock retailer-app receipts linked to CSV transactions by date, amount and merchant, plus photo upload read by `mistral-ocr` with a vision-model fallback ([AI models](stack.md#ai-models)). Unlocks #1 and item-level advice |
+| Detailed receipt per transaction | Tap a transaction and see the full receipt: every item and its price. Pulled from a retailer app (Lidl Plus type) or from a photo of the paper receipt | M | Demo: mock retailer-app receipts linked to CSV transactions by date, amount and merchant, plus photo upload read by a vision model in one call ([AI models](stack.md#ai-models)). Unlocks #1 and item-level advice |
 
 ## Candidates
 

@@ -32,7 +32,8 @@ never in code, so they can change without a deploy of new code.
 If the vision step fails and `DEMO_SCAN_FALLBACK=1` is set (for the pitch), the scan endpoint
 returns its prepared result for the LOLA test photo, marked `"fallback": true`, so the demo never
 breaks and the app can label it. Without the flag it answers 502, and without
-`OPENROUTER_VISION_MODEL` it answers 503 (BE-6, #40). Tests never call a model: they override
+`OPENROUTER_VISION_MODEL` it answers 503 (BE-6, #40). Production ran with the flag for the pitch;
+it is off since the hackathon ended, so a photo that is not a receipt gets an error, not LOLA. Tests never call a model: they override
 `get_llm` with a fake.
 Until the backend reads these settings, `app/config.py` defaults `OPENROUTER_MODEL` to `openrouter/auto`.
 
