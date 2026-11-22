@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { cn } from '@/lib/utils'
 import { Link, useLocation, useParams } from 'react-router'
 import cameraIcon from '@/assets/icons/camera.svg'
 import detailsIcon from '@/assets/icons/details.svg'
@@ -57,7 +58,14 @@ export default function TransactionPage() {
       {transaction && (
         <>
           {justScanned && (
-            <div role="status" className="flex flex-col gap-2 rounded-xl bg-card p-4">
+            <div
+              role="status"
+              className={cn(
+                'flex flex-col gap-2 rounded-xl bg-card p-4',
+                // red: the user sees at once that this scan added nothing new
+                alreadyAttached && 'border-2 border-destructive text-destructive',
+              )}
+            >
               <p className="text-body font-semibold">
                 {t(alreadyAttached ? 'transaction.receiptAlready' : 'transaction.receiptAdded', {
                   shop: transaction.counterparty,
