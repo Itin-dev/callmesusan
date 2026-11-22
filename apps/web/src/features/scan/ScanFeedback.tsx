@@ -4,7 +4,7 @@ import ReceiptCard from '@/features/transactions/ReceiptCard'
 import type { ReceiptScan } from './useReceiptScan'
 
 /** Reading, error with retry, or "no payment matches" for a receipt scan. */
-export default function ScanFeedback({ scan: { scan, photo, status, rejected, send } }: { scan: ReceiptScan }) {
+export default function ScanFeedback({ scan: { scan, photo, status, rejected, send, proposal } }: { scan: ReceiptScan }) {
   const { t } = useTranslation()
   return (
     <>
@@ -27,7 +27,7 @@ export default function ScanFeedback({ scan: { scan, photo, status, rejected, se
         </div>
       )}
 
-      {scan.data && !scan.data.transaction_id && (
+      {scan.data && !scan.data.transaction_id && !proposal && (
         <>
           <p className="rounded-xl bg-card p-4 text-body">{t('scan.noMatch')}</p>
           <ReceiptCard receipt={scan.data.receipt} />

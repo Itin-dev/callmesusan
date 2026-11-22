@@ -133,32 +133,44 @@ describe('TransactionPage', () => {
     it('adds nothing when the user says it is the wrong receipt', async () => {
       const check = await scanFrom('P-0236')
       await userEvent.click(within(check).getByRole('button', { name: 'No, wrong receipt' }))
-      expect(await screen.findByText('Receipt not added. Try another photo.')).toBeInTheDocument()
+      expect(await screen.findByText('Receipt not added. Scan the right receipt for this payment.')).toBeInTheDocument()
       expect(screen.queryByRole('group', { name: 'Check the receipt' })).not.toBeInTheDocument()
       expect(screen.queryByRole('region', { name: 'Receipt' })).not.toBeInTheDocument()
       expect(screen.getByLabelText('Add receipt photo')).toBeInTheDocument()
     })
 
-    it('warns when the receipt belongs to another payment', async () => {
+    it('says the receipt is not from this purchase and lets the user scan the right one', async () => {
       const check = await scanFrom('K-0240')
       expect(
-        within(check).getByText(`This receipt is from LOLA Mattenhof, CHF${NBSP}9.10. It matches another payment, not this one.`),
+        within(check).getByText(`This receipt (LOLA Mattenhof, CHF${NBSP}9.10) is not from this purchase.`),
       ).toBeInTheDocument()
+      expect(within(check).queryByRole('button', { name: /add/i })).not.toBeInTheDocument()
+      expect(screen.queryByRole('region', { name: 'Receipt' })).not.toBeInTheDocument()
 
-      await userEvent.click(within(check).getByRole('button', { name: 'Add to that payment' }))
+      // the right receipt this time: the scan answers with this payment
+      mockApi({ scan: { ...LOLA_SCAN_FIXTURE, transaction_id: 'K-0240' } })
+      const right = new File(['right photo'], 'right.png', { type: 'image/png' })
+      await userEvent.upload(within(check).getByLabelText('Scan the right receipt'), right)
+      expect(await screen.findByRole('button', { name: 'Yes, add it' })).toBeInTheDocument()
+    })
+
+    it('says when the photo is not a receipt, even if the demo fallback answers', async () => {
+      mockApi({ scan: { ...LOLA_SCAN_FIXTURE, fallback: true } })
+      const check = await scanFrom('P-0236')
       expect(
-        await screen.findByText(`Added to your payment at LOLA Mattenhof, 21.11.2025, CHF${NBSP}9.10`),
+        within(check).getByText("This doesn't look like a receipt. Take a photo of the receipt for this payment."),
+      ).toBeInTheDocument()
+      expect(within(check).queryByRole('button', { name: 'Yes, add it' })).not.toBeInTheDocument()
+      expect(within(check).getByLabelText('Scan the right receipt')).toBeInTheDocument()
+    })
+
+    it('says when the receipt matches no payment', async () => {
+      mockApi({ scan: { ...LOLA_SCAN_FIXTURE, transaction_id: null, match: null } })
+      const check = await scanFrom('K-0240')
+      expect(
+        within(check).getByText(`This receipt (LOLA Mattenhof, CHF${NBSP}9.10) is not from this purchase.`),
       ).toBeInTheDocument()
     })
-  })
-
-  it('says when the photo matches no payment', async () => {
-    vi.spyOn(image, 'downscaleImage').mockResolvedValue(new Blob(['small'], { type: 'image/jpeg' }))
-    mockApi({ scan: { ...LOLA_SCAN_FIXTURE, transaction_id: null, match: null } })
-    renderApp('/transactions/K-0240')
-    const photo = new File(['raw photo'], 'receipt.png', { type: 'image/png' })
-    await userEvent.upload(await screen.findByLabelText('Add receipt photo'), photo)
-    expect(await screen.findByText('Psst read the receipt, but no payment matches it.')).toBeInTheDocument()
   })
 
   it('says when the transaction does not exist', async () => {

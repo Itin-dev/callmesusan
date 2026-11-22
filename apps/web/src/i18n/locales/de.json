@@ -102,12 +102,13 @@
     },
     "confirm": {
       "title": "Beleg prüfen",
-      "question": "Ist das dein Beleg von {{store}} {{branch}}, {{time}}, {{amount}}?",
-      "otherPayment": "Dieser Beleg ist von {{store}} {{branch}}, {{amount}}. Er passt zu einer anderen Zahlung, nicht zu dieser.",
+      "matches": "Ist das dein Beleg von {{store}} {{branch}}, {{time}}, {{amount}}?",
       "accept": "Ja, hinzufügen",
-      "acceptOther": "Zu dieser Zahlung hinzufügen",
       "decline": "Nein, falscher Beleg",
-      "declined": "Beleg nicht hinzugefügt. Versuche ein anderes Foto."
+      "declined": "Beleg nicht hinzugefügt. Scanne den richtigen Beleg zu dieser Zahlung.",
+      "otherPurchase": "Dieser Beleg ({{store}} {{branch}}, {{amount}}) gehört nicht zu diesem Kauf.",
+      "notReceipt": "Das sieht nicht wie ein Beleg aus. Fotografiere den Beleg zu dieser Zahlung.",
+      "rescan": "Richtigen Beleg scannen"
     }
   },
   "categories": {

@@ -8,7 +8,7 @@ import type { ScanState } from './scanState'
 
 /**
  * Receipt photo → scan → open the matching payment with the receipt. Shared by Scan and a transaction.
- * With `confirm`, a matched receipt waits in `proposal` until the user accepts or declines it.
+ * With `confirm`, every scan result waits in `proposal`: the screen checks it and the user accepts or declines it.
  */
 export function useReceiptScan({ confirm = false }: { confirm?: boolean } = {}) {
   const navigate = useNavigate()
@@ -34,9 +34,10 @@ export function useReceiptScan({ confirm = false }: { confirm?: boolean } = {}) 
 
   const send = (file: File) => {
     setDeclined(false)
+    setProposal(null)
     scan.mutate(file, {
       onSuccess: (result) => {
-        if (confirm && result.transaction_id) setProposal(result)
+        if (confirm) setProposal(result)
         else attach(result)
       },
     })

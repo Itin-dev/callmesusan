@@ -1,3 +1,4 @@
+import type { ChangeEventHandler } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useParams } from 'react-router'
 import cameraIcon from '@/assets/icons/camera.svg'
@@ -90,8 +91,8 @@ export default function TransactionPage() {
 }
 
 /**
- * Camera or photo picker for a payment without a receipt. The scanned receipt is only added after
- * the user confirms it is theirs; Psst says when it matches another payment instead.
+ * Camera or photo picker for a payment without a receipt. A receipt is only added when it matches
+ * this payment and the user confirms it; otherwise Psst says why and offers to scan the right one.
  */
 function AddReceiptPhoto({ transactionId }: { transactionId: string }) {
   const { t } = useTranslation()
@@ -100,27 +101,34 @@ function AddReceiptPhoto({ transactionId }: { transactionId: string }) {
 
   if (proposal) {
     const { receipt, match } = proposal
-    const forThisPayment = proposal.transaction_id === transactionId
+    // fallback: the model could not read the photo and the backend sent its prepared demo receipt
+    const verdict = proposal.fallback ? 'notReceipt' : proposal.transaction_id === transactionId ? 'matches' : 'otherPurchase'
     const shop = { store: receipt.store, branch: receipt.branch, time: receipt.time, amount: formatChf(receipt.total_rp) }
     return (
       <div
         role="group"
         aria-label={t('transaction.confirm.title')}
-        className={cn('flex flex-col gap-3 rounded-xl bg-card p-4', !forThisPayment && 'border-2 border-destructive')}
+        className={cn('flex flex-col gap-3 rounded-xl bg-card p-4', verdict !== 'matches' && 'border-2 border-destructive')}
       >
-        <p className="text-body font-semibold">
-          {t(forThisPayment ? 'transaction.confirm.question' : 'transaction.confirm.otherPayment', shop)}
+        <p className={cn('text-body font-semibold', verdict !== 'matches' && 'text-destructive')}>
+          {t(`transaction.confirm.${verdict}`, shop)}
         </p>
-        {forThisPayment && match && <MatchChecks match={match} />}
-        <ReceiptCard receipt={receipt} />
-        <div className="flex gap-2">
-          <Button className="h-11 flex-1 rounded-full text-body font-semibold" onClick={accept}>
-            {t(forThisPayment ? 'transaction.confirm.accept' : 'transaction.confirm.acceptOther')}
-          </Button>
-          <Button variant="outline" className="h-11 flex-1 rounded-full text-body font-semibold" onClick={decline}>
-            {t('transaction.confirm.decline')}
-          </Button>
-        </div>
+        {verdict === 'matches' ? (
+          <>
+            {match && <MatchChecks match={match} />}
+            <ReceiptCard receipt={receipt} />
+            <div className="flex gap-2">
+              <Button className="h-11 flex-1 rounded-full text-body font-semibold" onClick={accept}>
+                {t('transaction.confirm.accept')}
+              </Button>
+              <Button variant="outline" className="h-11 flex-1 rounded-full text-body font-semibold" onClick={decline}>
+                {t('transaction.confirm.decline')}
+              </Button>
+            </div>
+          </>
+        ) : (
+          <PhotoPicker label={t('transaction.confirm.rescan')} pending={scan.isPending} onChange={onChange} />
+        )}
       </div>
     )
   }
@@ -132,25 +140,25 @@ function AddReceiptPhoto({ transactionId }: { transactionId: string }) {
           {t('transaction.confirm.declined')}
         </p>
       )}
-      <label
-        className={cn(
-          'flex h-12 cursor-pointer items-center justify-center gap-2 rounded-full border-[1.5px] border-foreground text-body font-semibold hover:bg-card has-focus-visible:ring-3 has-focus-visible:ring-ring/50',
-          scan.isPending && 'pointer-events-none opacity-50',
-        )}
-      >
-        <img src={cameraIcon} alt="" width={24} height={24} />
-        {t('transaction.addPhoto')}
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          className="sr-only"
-          disabled={scan.isPending}
-          onChange={onChange}
-        />
-      </label>
+      <PhotoPicker label={t('transaction.addPhoto')} pending={scan.isPending} onChange={onChange} />
       <ScanFeedback scan={receiptScan} />
     </>
+  )
+}
+
+/** Outline button that opens the camera or the photo picker. */
+function PhotoPicker({ label, pending, onChange }: { label: string; pending: boolean; onChange: ChangeEventHandler<HTMLInputElement> }) {
+  return (
+    <label
+      className={cn(
+        'flex h-12 cursor-pointer items-center justify-center gap-2 rounded-full border-[1.5px] border-foreground text-body font-semibold text-foreground hover:bg-card has-focus-visible:ring-3 has-focus-visible:ring-ring/50',
+        pending && 'pointer-events-none opacity-50',
+      )}
+    >
+      <img src={cameraIcon} alt="" width={24} height={24} />
+      {label}
+      <input type="file" accept="image/*" capture="environment" className="sr-only" disabled={pending} onChange={onChange} />
+    </label>
   )
 }
 

@@ -102,12 +102,13 @@
     },
     "confirm": {
       "title": "Check the receipt",
-      "question": "Is this your receipt from {{store}} {{branch}}, {{time}}, {{amount}}?",
-      "otherPayment": "This receipt is from {{store}} {{branch}}, {{amount}}. It matches another payment, not this one.",
+      "matches": "Is this your receipt from {{store}} {{branch}}, {{time}}, {{amount}}?",
       "accept": "Yes, add it",
-      "acceptOther": "Add to that payment",
       "decline": "No, wrong receipt",
-      "declined": "Receipt not added. Try another photo."
+      "declined": "Receipt not added. Scan the right receipt for this payment.",
+      "otherPurchase": "This receipt ({{store}} {{branch}}, {{amount}}) is not from this purchase.",
+      "notReceipt": "This doesn't look like a receipt. Take a photo of the receipt for this payment.",
+      "rescan": "Scan the right receipt"
     }
   },
   "categories": {
