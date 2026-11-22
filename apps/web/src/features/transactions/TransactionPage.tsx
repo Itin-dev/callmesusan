@@ -7,9 +7,12 @@ import type { PaymentMatch } from '@/api/types'
 import BackButton from '@/components/shell/BackButton'
 import { Button } from '@/components/ui/button'
 import { scannedReceiptFor } from '@/features/scan/scannedReceipts'
+import ScanFeedback from '@/features/scan/ScanFeedback'
 import { scanStateFrom } from '@/features/scan/scanState'
+import { useReceiptScan } from '@/features/scan/useReceiptScan'
 import { formatDate } from '@/lib/date'
 import { formatChf } from '@/lib/money'
+import { cn } from '@/lib/utils'
 import PsstInsight from './PsstInsight'
 import ReceiptCard from './ReceiptCard'
 import TransactionSummary from './TransactionSummary'
@@ -71,19 +74,40 @@ export default function TransactionPage() {
           <TransactionSummary transaction={transaction} />
           {transaction.receipt && <ReceiptCard receipt={transaction.receipt} highlight={insight?.category} />}
           {insight && <PsstInsight insight={insight} />}
-          {/* Only without a receipt. Opens the receipt scan, which finds the matching payment. */}
-          {!transaction.receipt && (
-            <Link
-              to="/scan"
-              className="flex h-12 items-center justify-center gap-2 rounded-full border-[1.5px] border-foreground text-body font-semibold outline-none hover:bg-card focus-visible:ring-3 focus-visible:ring-ring/50"
-            >
-              <img src={cameraIcon} alt="" width={24} height={24} />
-              {t('transaction.addPhoto')}
-            </Link>
-          )}
+          {/* Only without a receipt. Scans the photo like Home "Scan" and opens the matching payment. */}
+          {!transaction.receipt && <AddReceiptPhoto />}
         </>
       )}
     </div>
+  )
+}
+
+/** Camera or photo picker for a payment without a receipt, with the scan's progress and errors. */
+function AddReceiptPhoto() {
+  const { t } = useTranslation()
+  const receiptScan = useReceiptScan()
+  const { scan, onChange } = receiptScan
+  return (
+    <>
+      <label
+        className={cn(
+          'flex h-12 cursor-pointer items-center justify-center gap-2 rounded-full border-[1.5px] border-foreground text-body font-semibold hover:bg-card has-focus-visible:ring-3 has-focus-visible:ring-ring/50',
+          scan.isPending && 'pointer-events-none opacity-50',
+        )}
+      >
+        <img src={cameraIcon} alt="" width={24} height={24} />
+        {t('transaction.addPhoto')}
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="sr-only"
+          disabled={scan.isPending}
+          onChange={onChange}
+        />
+      </label>
+      <ScanFeedback scan={receiptScan} />
+    </>
   )
 }
 

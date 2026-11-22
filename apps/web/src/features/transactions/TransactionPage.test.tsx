@@ -3,7 +3,9 @@ import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import * as transactions from '@/api/transactions'
+import { LOLA_SCAN_FIXTURE } from '@/api/receipts.fixtures'
 import i18n from '@/i18n'
+import * as image from '@/lib/image'
 import { TRANSACTION_FIXTURES } from '@/api/transactions.fixtures'
 import { mockApi, renderApp } from '@/test-utils'
 
@@ -58,7 +60,7 @@ describe('TransactionPage', () => {
   it('does not offer a receipt photo when the receipt already exists', async () => {
     renderApp('/transactions/K-0241')
     await screen.findByRole('region', { name: 'Receipt' })
-    expect(screen.queryByRole('link', { name: 'Add receipt photo' })).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Add receipt photo')).not.toBeInTheDocument()
   })
 
   it('shows the Psst insight with a chip that opens the chat', async () => {
@@ -93,13 +95,35 @@ describe('TransactionPage', () => {
     expect(await screen.findByText(`CHF${NBSP}39.25–`)).toBeInTheDocument()
     expect(screen.queryByRole('region', { name: 'Receipt' })).not.toBeInTheDocument()
     expect(screen.queryByText(/Psst:/)).not.toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Add receipt photo' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Add receipt photo')).toBeInTheDocument()
   })
 
-  it('opens the receipt scan from Add receipt photo', async () => {
+  it('opens the camera or the photo picker from Add receipt photo', async () => {
     renderApp('/transactions/K-0240')
-    await userEvent.click(await screen.findByRole('link', { name: 'Add receipt photo' }))
-    expect(await screen.findByRole('heading', { name: 'Scan a receipt' })).toBeInTheDocument()
+    const input = await screen.findByLabelText('Add receipt photo')
+    expect(input).toHaveAttribute('type', 'file')
+    expect(input).toHaveAttribute('accept', 'image/*')
+    expect(input).toHaveAttribute('capture', 'environment')
+  })
+
+  it('scans the photo and shows the matching payment with the receipt', async () => {
+    vi.spyOn(image, 'downscaleImage').mockResolvedValue(new Blob(['small'], { type: 'image/jpeg' }))
+    renderApp('/transactions/K-0240')
+    const photo = new File(['raw photo'], 'receipt.png', { type: 'image/png' })
+    await userEvent.upload(await screen.findByLabelText('Add receipt photo'), photo)
+    expect(
+      await screen.findByText(`Added to your payment at LOLA Mattenhof, 21.11.2025, CHF${NBSP}9.10`),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Receipt' })).toBeInTheDocument()
+  })
+
+  it('says when the photo matches no payment', async () => {
+    vi.spyOn(image, 'downscaleImage').mockResolvedValue(new Blob(['small'], { type: 'image/jpeg' }))
+    mockApi({ scan: { ...LOLA_SCAN_FIXTURE, transaction_id: null, match: null } })
+    renderApp('/transactions/K-0240')
+    const photo = new File(['raw photo'], 'receipt.png', { type: 'image/png' })
+    await userEvent.upload(await screen.findByLabelText('Add receipt photo'), photo)
+    expect(await screen.findByText('Psst read the receipt, but no payment matches it.')).toBeInTheDocument()
   })
 
   it('says when the transaction does not exist', async () => {
