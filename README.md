@@ -18,14 +18,31 @@ challenge **Beyond the List** by PostFinance AG.
 
 ## Try the demo
 
-1. Open <https://callmesusan.vercel.app> on a phone (or a narrow browser window).
-2. **Home → an account → a payment** with a **Receipt** tag: see every item, its category and a
-   Psst insight.
-3. **Scan** (yellow button) with one of the test photos in
-   [services/api/app/data/scans/](services/api/app/data/scans/): Psst reads it and finds the
-   matching payment. On a payment without a receipt, **Add receipt photo** asks before adding it.
-4. **Psst** (chat): tap a suggested question or ask your own, by text or by voice.
-5. Switch the language on the **Services** tab, for example to Arabic (right-to-left) or Ukrainian.
+**The idea in one sentence:** your bank already knows *that* you paid CHF 27.80 at Smokee — Psst
+adds *what* you bought, item by item, and lets you ask about it in your own words.
+
+Open <https://callmesusan.vercel.app> on a phone (or a narrow browser window), then:
+
+1. **See a receipt.** Home → an account → a payment with a **Receipt** tag: every item, its
+   category and a Psst insight.
+2. **Scan a demo receipt.** Open one of the photos below on another screen (or save it to your
+   phone) and photograph it, either with the yellow **Scan** button on Home or with
+   **Add receipt photo** on the matching payment. Psst reads the receipt, checks amount, date and
+   shop. On a payment, it asks before adding the receipt and refuses a photo that is not that
+   payment's receipt.
+
+   | Receipt | Matching payment |
+   | --- | --- |
+   | <a href="services/api/app/data/scans/receipt-lola-20251121.png"><img src="services/api/app/data/scans/receipt-lola-20251121.png" alt="LOLA Mattenhof receipt" width="110"></a> | LOLA Mattenhof, 21.11.2025, CHF 9.10 — Private account |
+   | <a href="services/api/app/data/scans/receipt-smokee-20251005.png"><img src="services/api/app/data/scans/receipt-smokee-20251005.png" alt="Smokee Luzern receipt" width="110"></a> | Smokee Luzern, 05.10.2025, CHF 27.80 — Private account |
+   | <a href="services/api/app/data/scans/receipt-ikea-20251010.png"><img src="services/api/app/data/scans/receipt-ikea-20251010.png" alt="IKEA Lyssach receipt" width="110"></a> | IKEA Lyssach, 10.10.2025, CHF 230.95 — Credit card |
+
+3. **Ask Psst.** Open the chat, tap a suggested question or ask your own ("What did I buy at
+   IKEA?"), by text or by voice. Scanned receipts are part of what Psst knows.
+4. **Change the language** on the **Services** tab, for example to Arabic (right-to-left) or
+   Ukrainian.
+5. **Clean up.** Scans live only in your browser tab, nothing is stored on the server. To start
+   over or scan the same receipt again: **Services → Clear scanned receipts**.
 
 ## The problem
 
