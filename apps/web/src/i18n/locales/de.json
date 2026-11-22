@@ -99,6 +99,16 @@
       "dayApart": "Einen Tag auseinander",
       "merchant": "Der Geschäftsname stimmt überein",
       "otherMerchant": "Die Bank zeigt einen anderen Geschäftsnamen"
+    },
+    "confirm": {
+      "title": "Beleg prüfen",
+      "matches": "Ist das dein Beleg von {{store}} {{branch}}, {{time}}, {{amount}}?",
+      "accept": "Ja, hinzufügen",
+      "decline": "Nein, falscher Beleg",
+      "declined": "Beleg nicht hinzugefügt. Scanne den richtigen Beleg zu dieser Zahlung.",
+      "otherPurchase": "Dieser Beleg ({{store}} {{branch}}, {{amount}}) gehört nicht zu diesem Kauf.",
+      "notReceipt": "Das sieht nicht wie ein Beleg aus. Fotografiere den Beleg zu dieser Zahlung.",
+      "rescan": "Richtigen Beleg scannen"
     }
   },
   "categories": {
