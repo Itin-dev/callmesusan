@@ -99,6 +99,15 @@
       "dayApart": "One day apart",
       "merchant": "The shop name matches",
       "otherMerchant": "The bank shows another shop name"
+    },
+    "confirm": {
+      "title": "Check the receipt",
+      "question": "Is this your receipt from {{store}} {{branch}}, {{time}}, {{amount}}?",
+      "otherPayment": "This receipt is from {{store}} {{branch}}, {{amount}}. It matches another payment, not this one.",
+      "accept": "Yes, add it",
+      "acceptOther": "Add to that payment",
+      "decline": "No, wrong receipt",
+      "declined": "Receipt not added. Try another photo."
     }
   },
   "categories": {

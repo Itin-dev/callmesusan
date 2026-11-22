@@ -106,15 +106,50 @@ describe('TransactionPage', () => {
     expect(input).toHaveAttribute('capture', 'environment')
   })
 
-  it('scans the photo and shows the matching payment with the receipt', async () => {
-    vi.spyOn(image, 'downscaleImage').mockResolvedValue(new Blob(['small'], { type: 'image/jpeg' }))
-    renderApp('/transactions/K-0240')
-    const photo = new File(['raw photo'], 'receipt.png', { type: 'image/png' })
-    await userEvent.upload(await screen.findByLabelText('Add receipt photo'), photo)
-    expect(
-      await screen.findByText(`Added to your payment at LOLA Mattenhof, 21.11.2025, CHF${NBSP}9.10`),
-    ).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: 'Receipt' })).toBeInTheDocument()
+  describe('checking a scanned receipt before adding it', () => {
+    const scanFrom = async (id: string) => {
+      vi.spyOn(image, 'downscaleImage').mockResolvedValue(new Blob(['small'], { type: 'image/jpeg' }))
+      renderApp(`/transactions/${id}`)
+      const photo = new File(['raw photo'], 'receipt.png', { type: 'image/png' })
+      await userEvent.upload(await screen.findByLabelText('Add receipt photo'), photo)
+      return screen.findByRole('group', { name: 'Check the receipt' })
+    }
+
+    it('asks before adding a receipt that matches this payment', async () => {
+      const check = await scanFrom('P-0236')
+      expect(within(check).getByText(`Is this your receipt from LOLA Mattenhof, 11:52, CHF${NBSP}9.10?`)).toBeInTheDocument()
+      expect(within(check).getByRole('list', { name: 'Psst checked' })).toBeInTheDocument()
+      // the items are shown to compare, but nothing is added yet
+      expect(within(check).getByRole('region', { name: 'Receipt' })).toBeInTheDocument()
+      expect(screen.getAllByRole('region', { name: 'Receipt' })).toHaveLength(1)
+
+      await userEvent.click(within(check).getByRole('button', { name: 'Yes, add it' }))
+      expect(
+        await screen.findByText(`Added to your payment at LOLA Mattenhof, 21.11.2025, CHF${NBSP}9.10`),
+      ).toBeInTheDocument()
+      expect(screen.getByRole('region', { name: 'Receipt' })).toBeInTheDocument()
+    })
+
+    it('adds nothing when the user says it is the wrong receipt', async () => {
+      const check = await scanFrom('P-0236')
+      await userEvent.click(within(check).getByRole('button', { name: 'No, wrong receipt' }))
+      expect(await screen.findByText('Receipt not added. Try another photo.')).toBeInTheDocument()
+      expect(screen.queryByRole('group', { name: 'Check the receipt' })).not.toBeInTheDocument()
+      expect(screen.queryByRole('region', { name: 'Receipt' })).not.toBeInTheDocument()
+      expect(screen.getByLabelText('Add receipt photo')).toBeInTheDocument()
+    })
+
+    it('warns when the receipt belongs to another payment', async () => {
+      const check = await scanFrom('K-0240')
+      expect(
+        within(check).getByText(`This receipt is from LOLA Mattenhof, CHF${NBSP}9.10. It matches another payment, not this one.`),
+      ).toBeInTheDocument()
+
+      await userEvent.click(within(check).getByRole('button', { name: 'Add to that payment' }))
+      expect(
+        await screen.findByText(`Added to your payment at LOLA Mattenhof, 21.11.2025, CHF${NBSP}9.10`),
+      ).toBeInTheDocument()
+    })
   })
 
   it('says when the photo matches no payment', async () => {

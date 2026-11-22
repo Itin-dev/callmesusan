@@ -81,21 +81,57 @@ export default function TransactionPage() {
           <TransactionSummary transaction={transaction} />
           {transaction.receipt && <ReceiptCard receipt={transaction.receipt} highlight={insight?.category} />}
           {insight && <PsstInsight insight={insight} />}
-          {/* Only without a receipt. Scans the photo like Home "Scan" and opens the matching payment. */}
-          {!transaction.receipt && <AddReceiptPhoto />}
+          {/* Only without a receipt. Scans the photo like Home "Scan", then the user checks it. */}
+          {!transaction.receipt && <AddReceiptPhoto transactionId={transaction.id} />}
         </>
       )}
     </div>
   )
 }
 
-/** Camera or photo picker for a payment without a receipt, with the scan's progress and errors. */
-function AddReceiptPhoto() {
+/**
+ * Camera or photo picker for a payment without a receipt. The scanned receipt is only added after
+ * the user confirms it is theirs; Psst says when it matches another payment instead.
+ */
+function AddReceiptPhoto({ transactionId }: { transactionId: string }) {
   const { t } = useTranslation()
-  const receiptScan = useReceiptScan()
-  const { scan, onChange } = receiptScan
+  const receiptScan = useReceiptScan({ confirm: true })
+  const { scan, onChange, proposal, accept, decline, declined } = receiptScan
+
+  if (proposal) {
+    const { receipt, match } = proposal
+    const forThisPayment = proposal.transaction_id === transactionId
+    const shop = { store: receipt.store, branch: receipt.branch, time: receipt.time, amount: formatChf(receipt.total_rp) }
+    return (
+      <div
+        role="group"
+        aria-label={t('transaction.confirm.title')}
+        className={cn('flex flex-col gap-3 rounded-xl bg-card p-4', !forThisPayment && 'border-2 border-destructive')}
+      >
+        <p className="text-body font-semibold">
+          {t(forThisPayment ? 'transaction.confirm.question' : 'transaction.confirm.otherPayment', shop)}
+        </p>
+        {forThisPayment && match && <MatchChecks match={match} />}
+        <ReceiptCard receipt={receipt} />
+        <div className="flex gap-2">
+          <Button className="h-11 flex-1 rounded-full text-body font-semibold" onClick={accept}>
+            {t(forThisPayment ? 'transaction.confirm.accept' : 'transaction.confirm.acceptOther')}
+          </Button>
+          <Button variant="outline" className="h-11 flex-1 rounded-full text-body font-semibold" onClick={decline}>
+            {t('transaction.confirm.decline')}
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
+      {declined && (
+        <p role="status" className="rounded-xl bg-card p-4 text-body">
+          {t('transaction.confirm.declined')}
+        </p>
+      )}
       <label
         className={cn(
           'flex h-12 cursor-pointer items-center justify-center gap-2 rounded-full border-[1.5px] border-foreground text-body font-semibold hover:bg-card has-focus-visible:ring-3 has-focus-visible:ring-ring/50',

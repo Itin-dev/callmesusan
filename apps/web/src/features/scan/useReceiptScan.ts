@@ -2,32 +2,58 @@ import { useState, type ChangeEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { ApiError } from '@/api/client'
 import { useScanReceipt } from '@/api/queries'
+import type { ScanResult } from '@/api/types'
 import { rememberScan, scannedReceiptFor } from './scannedReceipts'
 import type { ScanState } from './scanState'
 
-/** Receipt photo → scan → open the matching payment with the receipt. Shared by Scan and a transaction. */
-export function useReceiptScan() {
+/**
+ * Receipt photo → scan → open the matching payment with the receipt. Shared by Scan and a transaction.
+ * With `confirm`, a matched receipt waits in `proposal` until the user accepts or declines it.
+ */
+export function useReceiptScan({ confirm = false }: { confirm?: boolean } = {}) {
   const navigate = useNavigate()
   const [photo, setPhoto] = useState<File | null>(null)
+  const [proposal, setProposal] = useState<ScanResult | null>(null)
+  const [declined, setDeclined] = useState(false)
   const scan = useScanReceipt()
   // 413 / 415: the same photo would fail again, so no retry; the user picks another one.
   const status = scan.error instanceof ApiError ? scan.error.status : 0
   const rejected = status === 413 || status === 415
 
-  const send = (file: File) =>
+  const attach = ({ transaction_id, receipt, match }: ScanResult) => {
+    // ask before rememberScan, which replaces the earlier scan of this payment
+    const alreadyAttached = transaction_id !== null && scannedReceiptFor(transaction_id) !== null
+    rememberScan(transaction_id, receipt)
+    if (!transaction_id) return
+    // Replace: Back from the payment goes to where the scan was started, not to the scan step.
+    navigate(`/transactions/${encodeURIComponent(transaction_id)}`, {
+      replace: true,
+      state: { scannedReceipt: receipt, match, alreadyAttached } satisfies ScanState,
+    })
+  }
+
+  const send = (file: File) => {
+    setDeclined(false)
     scan.mutate(file, {
-      onSuccess: ({ transaction_id, receipt, match }) => {
-        // ask before rememberScan, which replaces the earlier scan of this payment
-        const alreadyAttached = transaction_id !== null && scannedReceiptFor(transaction_id) !== null
-        rememberScan(transaction_id, receipt)
-        if (!transaction_id) return
-        // Replace: Back from the payment goes to where the scan was started, not to the scan step.
-        navigate(`/transactions/${encodeURIComponent(transaction_id)}`, {
-          replace: true,
-          state: { scannedReceipt: receipt, match, alreadyAttached } satisfies ScanState,
-        })
+      onSuccess: (result) => {
+        if (confirm && result.transaction_id) setProposal(result)
+        else attach(result)
       },
     })
+  }
+
+  const accept = () => {
+    if (!proposal) return
+    setProposal(null)
+    attach(proposal)
+  }
+
+  // Nothing was stored yet, so declining only forgets the scan.
+  const decline = () => {
+    setProposal(null)
+    setDeclined(true)
+    scan.reset()
+  }
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -37,7 +63,7 @@ export function useReceiptScan() {
     send(file)
   }
 
-  return { scan, photo, status, rejected, send, onChange }
+  return { scan, photo, status, rejected, send, onChange, proposal, accept, decline, declined }
 }
 
 export type ReceiptScan = ReturnType<typeof useReceiptScan>
