@@ -4,8 +4,9 @@ Track multi-session work here. Update at the end of each meaningful session.
 
 ## Current status
 
-- Status: code freeze — MVP live at <https://callmesusan.vercel.app>
-- Last updated: 2026-11-21
+- Status: hackathon finished (21 November 2026). The MVP stays live at
+  <https://callmesusan.vercel.app> as a showcase; no active development.
+- Last updated: 2026-11-22
 
 ## Done
 
@@ -16,8 +17,10 @@ Track multi-session work here. Update at the end of each meaningful session.
 - Frontend: Home, account detail, transaction with receipt, receipt scan, Analytics with Ask Psst,
   Psst chat with pitch-question chips and voice input; five languages including Arabic RTL
 - Pitch deck: [docs/Pitch.pdf](docs/Pitch.pdf)
+- After the event: Add receipt photo scans directly from a payment and asks before adding the
+  receipt (#91, #92); the demo scan fallback is off in production
 
-## Next
+## Ideas for later
 
 See the roadmap in [docs/features.md](docs/features.md): tax savings plan, payday reminder,
 upcoming bills, statement on request, document help.

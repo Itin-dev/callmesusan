@@ -13,7 +13,19 @@ challenge **Beyond the List** by PostFinance AG.
   <img src="design/screens/08-account-detail.png" alt="Psst account detail screen: transactions grouped by day, each with a Receipt or Add receipt tag" width="320">
 </p>
 
-<!-- Demo video / GIF: add the link after code freeze. -->
+> **Status:** built in two days at the hackathon (20–21 November 2026). The hackathon is over: the
+> live demo stays online as a showcase, and the repo is no longer actively developed.
+
+## Try the demo
+
+1. Open <https://callmesusan.vercel.app> on a phone (or a narrow browser window).
+2. **Home → an account → a payment** with a **Receipt** tag: see every item, its category and a
+   Psst insight.
+3. **Scan** (yellow button) with one of the test photos in
+   [services/api/app/data/scans/](services/api/app/data/scans/): Psst reads it and finds the
+   matching payment. On a payment without a receipt, **Add receipt photo** asks before adding it.
+4. **Psst** (chat): tap a suggested question or ask your own, by text or by voice.
+5. Switch the language on the **Services** tab, for example to Arabic (right-to-left) or Ukrainian.
 
 ## The problem
 
